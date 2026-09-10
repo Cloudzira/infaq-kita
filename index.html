@@ -288,6 +288,15 @@
       background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
       box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
     }
+    .btn-warning {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+    }
+    .btn-warning:hover {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+    }
     .btn-danger {
       background: rgba(239, 68, 68, 0.1);
       color: #ef4444;
@@ -297,6 +306,22 @@
     .btn-danger:hover {
       background: rgba(239, 68, 68, 0.2);
       border-color: rgba(239, 68, 68, 0.4);
+    }
+    .btn-icon-del {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      width: auto;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-icon-del:hover {
+      background: rgba(239, 68, 68, 0.3);
     }
 
     /* Dashboard Header & Cards */
@@ -390,7 +415,7 @@
       box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
     }
 
-    /* Target Modifier Box */
+    /* Action Box */
     .target-box {
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid var(--glass-border);
@@ -453,7 +478,7 @@
         color: #000000 !important;
         padding: 0;
       }
-      .glow-orb, .btn-back, .no-print, button, form {
+      .glow-orb, .btn-back, .no-print, button, form, .target-box {
         display: none !important;
       }
       .card {
@@ -622,6 +647,31 @@
       </div>
     </div>
 
+    <!-- Edit Profil Anggota Box -->
+    <div class="target-box">
+      <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; color: #fff;"><i data-lucide="user-pen" size="14"></i> Edit Profil / Data Akun</h4>
+      <form id="form-edit-a">
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label>Kode Grup</label>
+          <input type="text" id="ea-code" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label>ID Anggota</label>
+          <input type="text" id="ea-id" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label>Nama Lengkap</label>
+          <input type="text" id="ea-nama" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label>PIN Baru (Opsional)</label>
+          <input type="password" id="ea-pin" placeholder="Kosongkan jika tidak diubah">
+        </div>
+        <button type="submit" class="btn-warning" style="padding: 10px;"><i data-lucide="save" size="16"></i> Simpan Perubahan Profil</button>
+      </form>
+    </div>
+
+    <!-- Atur Target Infaq Box -->
     <div class="target-box">
       <label>Atur Ulang Target Infaq Pribadi:</label>
       <div class="target-box-flex">
@@ -741,6 +791,24 @@
         </thead>
         <tbody id="dash-admin-rekap-table"></tbody>
       </table>
+    </div>
+
+    <!-- Tabel Daftar Transaksi Masuk untuk Hapus Inputan -->
+    <div class="no-print" style="margin-top: 24px;">
+      <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">Dikelola / Hapus Inputan Salah</h4>
+      <div class="table-container" style="max-height: 250px; overflow-y: auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>ID Anggota</th>
+              <th>Nominal</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="dash-admin-trans-table"></tbody>
+        </table>
+      </div>
     </div>
 
     <button class="btn-danger no-print" onclick="logout()"><i data-lucide="log-out" size="16"></i> Keluar Panel</button>
@@ -865,12 +933,66 @@
     document.getElementById('dash-a-code').innerText = currMember.kode_grup;
     document.getElementById('dash-a-id').innerText = currMember.id_anggota;
     
+    // Set form edit values
+    document.getElementById('ea-code').value = currMember.kode_grup;
+    document.getElementById('ea-id').value = currMember.id_anggota;
+    document.getElementById('ea-nama').value = currMember.nama_anggota;
+    document.getElementById('ea-pin').value = '';
+
     const targetInfaq = currMember.target_infaq || 100000;
     document.getElementById('dash-a-target-input').value = targetInfaq;
     
     loadMyInfaq();
     showSection('dash-a');
   }
+
+  // UPDATE PROFIL ANGGOTA
+  document.getElementById('form-edit-a').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const newCode = document.getElementById('ea-code').value.trim();
+    const newId = document.getElementById('ea-id').value.trim();
+    const newNama = document.getElementById('ea-nama').value.trim();
+    const newPin = document.getElementById('ea-pin').value.trim();
+
+    // Pastikan kode grup tujuan valid di database
+    const { data: gCheck } = await supabaseClient.from('grup').select('kode_grup, nama_grup').eq('kode_grup', newCode).single();
+    if (!gCheck) return alert("Kode Grup baru tidak ditemukan/tidak valid di sistem.");
+
+    const updatePayload = {
+      kode_grup: newCode,
+      id_anggota: newId,
+      nama_anggota: newNama
+    };
+    if (newPin !== "") {
+      updatePayload.pin_anggota = newPin;
+    }
+
+    // Update di tabel anggota (berdasarkan primary key lama/identitas lama)
+    const { error } = await supabaseClient.from('anggota')
+      .update(updatePayload)
+      .eq('kode_grup', currMember.kode_grup)
+      .eq('id_anggota', currMember.id_anggota);
+
+    if (error) return alert("Gagal memperbarui profil: " + error.message);
+
+    // Update juga kode_grup / id_anggota pada tabel infaq jika ID atau Kode Grup berubah agar riwayat tetap terhubung
+    if (newCode !== currMember.kode_grup || newId !== currMember.id_anggota) {
+      await supabaseClient.from('infaq')
+        .update({ kode_grup: newCode, id_anggota: newId })
+        .eq('kode_grup', currMember.kode_grup)
+        .eq('id_anggota', currMember.id_anggota);
+    }
+
+    currMember.kode_grup = newCode;
+    currMember.id_anggota = newId;
+    currMember.nama_anggota = newNama;
+    currMember.nama_grup = gCheck.nama_grup;
+    if (newPin !== "") currMember.pin_anggota = newPin;
+
+    localStorage.setItem('infaq_member', JSON.stringify(currMember));
+    alert("Profil berhasil diperbarui!");
+    showMemberDash();
+  });
 
   async function updateTargetInfaq() {
     const newTarget = Number(document.getElementById('dash-a-target-input').value);
@@ -941,6 +1063,7 @@
     document.getElementById('dash-admin-code').innerText = currAdmin.kode_grup;
     loadMembersForAdmin();
     loadAllMembersSummary();
+    loadAdminTransactions();
     showSection('dash-admin');
   }
 
@@ -970,9 +1093,9 @@
     const nominal = Number(document.getElementById('at-nominal').value);
     const catatan = document.getElementById('at-catatan').value;
 
-    if (!idAnggota) return alert("Silakan pilih anggota terlebih dahulu!");
+    if (!idAnggota) return alert("Pilih anggota terlebih dahulu.");
 
-    const { data, error } = await supabaseClient.from('infaq').insert([{
+    const { error } = await supabaseClient.from('infaq').insert([{
       kode_grup: currAdmin.kode_grup,
       id_anggota: idAnggota,
       tanggal: tanggal,
@@ -982,55 +1105,93 @@
 
     if (error) return alert("Gagal menyimpan infaq: " + error.message);
 
-    alert("Transaksi infaq berhasil disimpan!");
+    alert("Infaq berhasil disimpan!");
     document.getElementById('at-nominal').value = '';
     document.getElementById('at-catatan').value = '';
     loadAllMembersSummary();
+    loadAdminTransactions();
   });
 
-  // 6. REKAP INFAQ SUMMARY (Melengkapi bagian yang terpotong)
   async function loadAllMembersSummary() {
+    const { data: members } = await supabaseClient.from('anggota')
+      .select('*')
+      .eq('kode_grup', currAdmin.kode_grup);
+
+    const { data: infaqs } = await supabaseClient.from('infaq')
+      .select('*')
+      .eq('kode_grup', currAdmin.kode_grup);
+
     const tbody = document.getElementById('dash-admin-rekap-table');
-    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 18px;">Memuat data...</td></tr>';
-
-    // Ambil daftar anggota
-    const { data: anggotaList, error: errAnggota } = await supabaseClient.from('anggota')
-      .select('id_anggota, nama_anggota')
-      .eq('kode_grup', currAdmin.kode_grup);
-
-    if (errAnggota) return alert("Gagal memuat rekap anggota: " + errAnggota.message);
-
-    // Ambil semua transaksi infaq grup ini
-    const { data: infaqList, error: errInfaq } = await supabaseClient.from('infaq')
-      .select('id_anggota, nominal')
-      .eq('kode_grup', currAdmin.kode_grup);
-
-    if (errInfaq) return alert("Gagal memuat rekap infaq: " + errInfaq.message);
-
-    // Hitung total infaq per id_anggota
-    const totalMap = {};
-    if (infaqList) {
-      infaqList.forEach(item => {
-        totalMap[item.id_anggota] = (totalMap[item.id_anggota] || 0) + Number(item.nominal);
-      });
-    }
-
     tbody.innerHTML = '';
-    if (anggotaList && anggotaList.length > 0) {
-      anggotaList.forEach((a, index) => {
-        const totalInfaq = totalMap[a.id_anggota] || 0;
+
+    if (members && members.length > 0) {
+      members.forEach((m, index) => {
+        let totalM = 0;
+        if (infaqs) {
+          infaqs.filter(i => i.id_anggota === m.id_anggota).forEach(i => {
+            totalM += Number(i.nominal);
+          });
+        }
         tbody.innerHTML += `
           <tr>
             <td>${index + 1}</td>
-            <td><strong>${a.id_anggota}</strong></td>
-            <td>${a.nama_anggota}</td>
-            <td><strong style="color: var(--accent-emerald);">Rp ${totalInfaq.toLocaleString('id-ID')}</strong></td>
+            <td>${m.id_anggota}</td>
+            <td><strong>${m.nama_anggota}</strong></td>
+            <td><strong style="color: var(--accent-emerald);">Rp ${totalM.toLocaleString('id-ID')}</strong></td>
           </tr>
         `;
       });
     } else {
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 18px;">Belum ada anggota terdaftar dalam grup ini</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 18px;">Belum ada anggota terdaftar</td></tr>';
     }
+  }
+
+  async function loadAdminTransactions() {
+    const { data, error } = await supabaseClient.from('infaq')
+      .select('*')
+      .eq('kode_grup', currAdmin.kode_grup)
+      .order('tanggal', { ascending: false });
+
+    const tbody = document.getElementById('dash-admin-trans-table');
+    tbody.innerHTML = '';
+
+    if (data && data.length > 0) {
+      data.forEach(item => {
+        // Asumsi tabel infaq memiliki kolom primary key 'id' atau kita gunakan filter id unik jika ada, 
+        // namun jika struktur supabase menggunakan row id bawaan (biasanya kolom 'id' bertipe serial/uuid):
+        // Jika kolom primary key tabel infaq bernama 'id', kita bisa hapus via .eq('id', item.id)
+        const transId = item.id; 
+        tbody.innerHTML += `
+          <tr>
+            <td>${item.tanggal}</td>
+            <td>${item.id_anggota}</td>
+            <td>Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
+            <td>
+              <button class="btn-icon-del" onclick="deleteTransaction(${transId})">
+                <i data-lucide="trash-2" size="12"></i> Hapus
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+      lucide.createIcons();
+    } else {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 14px;">Belum ada riwayat transaksi</td></tr>';
+    }
+  }
+
+  async function deleteTransaction(transId) {
+    if (!confirm("Apakah Anda yakin ingin menghapus data inputan infaq ini?")) return;
+
+    const { error } = await supabaseClient.from('infaq')
+      .delete()
+      .eq('id', transId);
+
+    if (error) return alert("Gagal menghapus transaksi: " + error.message);
+
+    alert("Data transaksi berhasil dihapus!");
+    loadAllMembersSummary();
+    loadAdminTransactions();
   }
 </script>
 </body>
