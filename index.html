@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>INFAQU - Kurniapedia</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- Library html2pdf.js untuk Fitur Save As PDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <!-- Library SheetJS untuk Export Spreadsheet / Excel -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <!-- Google Fonts & Lucide Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -506,54 +506,6 @@
       color: var(--accent-emerald);
       margin-top: 16px;
     }
-
-    /* TEMPLATE KHUSUS UNTUK EXPORT PDF TERPISAH (HIDDEN TAPi RENDERABLE) */
-    #pdf-export-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 750px; /* Lebar optimal untuk A4 */
-      background: #ffffff;
-      color: #0f172a;
-      padding: 30px;
-      font-family: 'Plus Jakarta Sans', Arial, sans-serif;
-      z-index: -9999;
-      opacity: 0;
-      pointer-events: none;
-    }
-    #pdf-export-container h2 {
-      font-size: 20px;
-      font-weight: 800;
-      color: #0f172a;
-      margin-bottom: 4px;
-    }
-    #pdf-export-container p {
-      font-size: 12px;
-      color: #475569;
-      margin-bottom: 20px;
-    }
-    #pdf-export-container table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    #pdf-export-container th, #pdf-export-container td {
-      border: 1px solid #cbd5e1;
-      padding: 8px 12px;
-      font-size: 11px;
-      text-align: left;
-      color: #1e293b;
-    }
-    #pdf-export-container th {
-      background-color: #f1f5f9;
-      font-weight: 700;
-      color: #334155;
-    }
-    #pdf-export-container tfoot td {
-      background-color: #f8fafc;
-      font-weight: 800;
-      color: #0f172a;
-    }
   </style>
 </head>
 <body>
@@ -713,7 +665,7 @@
       </table>
     </div>
 
-    <!-- Edit Profil Anggota Box (Collapsible) -->
+    <!-- Edit Profil Anggota Box -->
     <div class="target-box">
       <div class="collapsible-header" onclick="toggleEditProfile()">
         <span><i data-lucide="user-pen" size="14" style="vertical-align: middle; margin-right: 4px;"></i> Edit Data Akun</span>
@@ -844,11 +796,12 @@
       <h4 style="font-size: 14px; font-weight: 700;">Rekapitulasi Infaq</h4>
       <div style="display: flex; gap: 8px;">
         <button class="btn-primary" onclick="refreshAdminData()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="refresh-cw" size="14"></i> Refresh</button>
-        <button class="btn-success" id="btn-export-pdf" onclick="saveAsPdf()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="download" size="14"></i> Save PDF</button>
+        <!-- TOMBOL EXPORT SPREADSHEET -->
+        <button class="btn-success" id="btn-export-excel" onclick="exportToSpreadsheet()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="file-spreadsheet" size="14"></i> Export Spreadsheet</button>
       </div>
     </div>
 
-    <!-- AREA REKAPITULASI DITAMPILKAN PADA WIDGET/PANEL ADMIN -->
+    <!-- AREA REKAPITULASI PANEL ADMIN -->
     <div class="table-container">
       <table>
         <thead>
@@ -863,7 +816,7 @@
       </table>
     </div>
 
-    <!-- Tabel Daftar Transaksi Masuk untuk Hapus Inputan -->
+    <!-- Tabel Daftar Transaksi Masuk -->
     <div style="margin-top: 24px;">
       <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">Kelola Input</h4>
       <div class="table-container" style="max-height: 250px; overflow-y: auto;">
@@ -891,32 +844,7 @@
   Kurniapedia | 2026
 </div>
 
-<!-- TEMPLATE PDF HIDDEN TERPISAH (PROSESSABLE BY HTML2CANVAS) -->
-<div id="pdf-export-container">
-  <h2>LAPORAN REKAPITULASI INFAQ BULANAN</h2>
-  <p id="pdf-meta-info">Grup: - | Instansi: - | Periode: -</p>
-
-  <table>
-    <thead>
-      <tr>
-        <th style="width: 8%;">No</th>
-        <th style="width: 22%;">ID Anggota</th>
-        <th style="width: 35%;">Nama Anggota</th>
-        <th style="width: 35%;">Infaq Bulan Ini (Rp)</th>
-      </tr>
-    </thead>
-    <tbody id="pdf-table-body"></tbody>
-    <tfoot>
-      <tr>
-        <td colspan="3" style="text-align: right;">GRAND TOTAL:</td>
-        <td id="pdf-grand-monthly">Rp 0</td>
-      </tr>
-    </tfoot>
-  </table>
-</div>
-
 <script>
-  // Inisialisasi Lucide Icons
   lucide.createIcons();
 
   const SUPABASE_URL = "https://oouzppxbakkiwwttkbet.supabase.co";
@@ -926,7 +854,6 @@
   let currMember = null;
   let currAdmin = null;
 
-  // Helper fungsi format tanggal ke konsisten DD/MM/YYYY
   function formatDateIndo(dateStr) {
     if (!dateStr) return '-';
     const parts = dateStr.split('-');
@@ -938,16 +865,16 @@
 
   document.getElementById('at-tanggal').value = new Date().toISOString().split('T')[0];
 
-  window.addEventListener('DOMContentLoaded', () => {
+  window.addEventListener('DOMContentLoaded', async () => {
     const savedMember = localStorage.getItem('infaq_member');
     const savedAdmin = localStorage.getItem('infaq_admin');
 
     if (savedMember) {
       currMember = JSON.parse(savedMember);
-      showMemberDash();
+      await showMemberDash();
     } else if (savedAdmin) {
       currAdmin = JSON.parse(savedAdmin);
-      showAdminDash();
+      await showAdminDash();
     } else {
       showSection('home');
     }
@@ -1046,10 +973,10 @@
     currMember.nama_grup = groupData ? groupData.nama_grup : 'Grup';
     
     localStorage.setItem('infaq_member', JSON.stringify(currMember));
-    showMemberDash();
+    await showMemberDash();
   });
 
-  function showMemberDash() {
+  async function showMemberDash() {
     document.getElementById('dash-a-nama').innerText = currMember.nama_anggota;
     document.getElementById('dash-a-group-name').innerText = "Grup " + (currMember.nama_grup || '-');
     document.getElementById('dash-a-code').innerText = currMember.kode_grup;
@@ -1065,7 +992,7 @@
     const targetInfaq = currMember.target_infaq || 100000;
     document.getElementById('dash-a-target-input').value = targetInfaq;
     
-    loadMyInfaq();
+    await loadMyInfaq();
     showSection('dash-a');
   }
 
@@ -1128,7 +1055,7 @@
 
     localStorage.setItem('infaq_member', JSON.stringify(currMember));
     alert("Profil berhasil diperbarui!");
-    showMemberDash();
+    await showMemberDash();
   });
 
   async function updateTargetInfaq() {
@@ -1144,7 +1071,7 @@
       .eq('id_anggota', currMember.id_anggota);
 
     alert("Target infaq berhasil diperbarui!");
-    loadMyInfaq();
+    await loadMyInfaq();
   }
 
   async function loadMyInfaq() {
@@ -1191,22 +1118,24 @@
     if (error || !data) return alert("Login admin gagal!");
     currAdmin = data;
     localStorage.setItem('infaq_admin', JSON.stringify(currAdmin));
-    showAdminDash();
+    await showAdminDash();
   });
 
-  function showAdminDash() {
+  async function showAdminDash() {
     document.getElementById('dash-admin-title').innerText = "Panel Admin " + currAdmin.nama_grup;
     document.getElementById('dash-admin-sekolah').innerText = currAdmin.nama_sekolah;
     document.getElementById('dash-admin-code').innerText = currAdmin.kode_grup;
-    loadMembersForAdmin();
-    refreshAdminData();
+    await loadMembersForAdmin();
+    await refreshAdminData();
     showSection('dash-admin');
   }
 
-  function refreshAdminData() {
-    loadAllMembersSummary();
-    loadAdminTransactions();
-    loadAdminStats();
+  async function refreshAdminData() {
+    await Promise.all([
+      loadAllMembersSummary(),
+      loadAdminTransactions(),
+      loadAdminStats()
+    ]);
   }
 
   async function loadAdminStats() {
@@ -1283,7 +1212,7 @@
     alert("Infaq berhasil disimpan!");
     document.getElementById('at-nominal').value = '';
     document.getElementById('at-catatan').value = '';
-    refreshAdminData();
+    await refreshAdminData();
   });
 
   async function loadAllMembersSummary() {
@@ -1320,11 +1249,11 @@
     }
   }
 
-  // FUNGSI PERBAIKAN: SAVE AS PDF TERPISAH DAN TANPA PERSENTASE PROGRES
-  async function saveAsPdf() {
-    const btn = document.getElementById('btn-export-pdf');
+  // FUNGSI EXPORT DATA REKAPITULASI KE SPREADSHEET (EXCEL .XLSX)
+  async function exportToSpreadsheet() {
+    const btn = document.getElementById('btn-export-excel');
     btn.disabled = true;
-    btn.innerText = "Proses PDF...";
+    btn.innerText = "Mengekspor...";
 
     try {
       const now = new Date();
@@ -1332,86 +1261,90 @@
       const currentMonth = now.getMonth();
       const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
-      // Set Metadata Laporan
-      document.getElementById('pdf-meta-info').innerText = 
-        `Grup: ${currAdmin.nama_grup} | Instansi: ${currAdmin.nama_sekolah} | Kode Grup: ${currAdmin.kode_grup} | Periode: ${namaBulan[currentMonth]} ${currentYear}`;
-
-      // Ambil Seluruh Data Anggota
+      // 1. Ambil Data Terbaru dari Supabase
       const { data: members, error: errM } = await supabaseClient.from('anggota')
         .select('*')
         .eq('kode_grup', currAdmin.kode_grup);
 
-      // Ambil Seluruh Transaksi Infaq
       const { data: infaqs, error: errI } = await supabaseClient.from('infaq')
         .select('*')
         .eq('kode_grup', currAdmin.kode_grup);
 
-      if (errM || errI) throw new Error("Gagal mengambil data dari server.");
+      if (errM || errI) throw new Error("Gagal mengambil data dari database server.");
 
-      const pdfTbody = document.getElementById('pdf-table-body');
-      pdfTbody.innerHTML = '';
+      // 2. Susun Matriks Data Laporan Spreadsheet
+      const sheetData = [
+        ["LAPORAN REKAPITULASI PROGRES INFAQ ANGGOTA"],
+        [`Grup: ${currAdmin.nama_grup}`, `Instansi: ${currAdmin.nama_sekolah}`, `Kode Grup: ${currAdmin.kode_grup}`, `Periode: ${namaBulan[currentMonth]} ${currentYear}`],
+        [], // Baris Kosong
+        ["No", "ID Anggota", "Nama Anggota", "Infaq Bulan Ini (Rp)", "Total Infaq Akumulasi (Rp)"]
+      ];
 
       let grandMonthly = 0;
+      let grandTotal = 0;
 
       if (members && members.length > 0) {
         members.forEach((m, idx) => {
           let monthlyInfaq = 0;
+          let totalInfaq = 0;
 
-          // Filter hitung infaq per anggota khusus untuk bulan berjalan
           if (infaqs) {
-            infaqs.filter(i => {
-              if (i.id_anggota !== m.id_anggota || !i.tanggal) return false;
-              const tDate = new Date(i.tanggal);
-              return tDate.getFullYear() === currentYear && tDate.getMonth() === currentMonth;
-            }).forEach(i => {
-              monthlyInfaq += Number(i.nominal) || 0;
+            infaqs.filter(i => i.id_anggota === m.id_anggota).forEach(i => {
+              const nominal = Number(i.nominal) || 0;
+              totalInfaq += nominal;
+
+              if (i.tanggal) {
+                const tDate = new Date(i.tanggal);
+                if (tDate.getFullYear() === currentYear && tDate.getMonth() === currentMonth) {
+                  monthlyInfaq += nominal;
+                }
+              }
             });
           }
 
           grandMonthly += monthlyInfaq;
+          grandTotal += totalInfaq;
 
-          pdfTbody.innerHTML += `
-            <tr>
-              <td style="text-align: center;">${idx + 1}</td>
-              <td>${m.id_anggota}</td>
-              <td><strong>${m.nama_anggota}</strong></td>
-              <td>Rp ${monthlyInfaq.toLocaleString('id-ID')}</td>
-            </tr>
-          `;
+          sheetData.push([
+            idx + 1,
+            m.id_anggota,
+            m.nama_anggota,
+            monthlyInfaq,
+            totalInfaq
+          ]);
         });
-
-        // Set Total Keseluruhan (Grand Total)
-        document.getElementById('pdf-grand-monthly').innerText = "Rp " + grandMonthly.toLocaleString('id-ID');
-
       } else {
-        pdfTbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Tidak ada data anggota</td></tr>';
+        sheetData.push(["-", "-", "Belum Ada Anggota Terdaftar", 0, 0]);
       }
 
-      // Konfigurasi html2pdf
-      const element = document.getElementById('pdf-export-container');
-      
-      // Tampilkan kontainer secara transparan di layer belakang agar html2canvas dapat merender dengan sempurna
-      element.style.opacity = '1';
+      // Baris Total
+      sheetData.push([]);
+      sheetData.push(["", "", "GRAND TOTAL:", grandMonthly, grandTotal]);
 
-      const opt = {
-        margin:       [10, 10, 10, 10],
-        filename:     `Laporan_Infaq_${currAdmin.kode_grup}_${namaBulan[currentMonth]}_${currentYear}.pdf`,
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true, logging: false },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
+      // 3. Konversi Data Array menjadi Worksheet & Workbook
+      const worksheet = XLSX.utils.aoa_to_sheet(sheetData);
 
-      // Generate File PDF
-      await html2pdf().set(opt).from(element).save();
+      // Set Lebar Kolom Otomatis
+      worksheet['!cols'] = [
+        { wch: 6 },  // No
+        { wch: 16 }, // ID Anggota
+        { wch: 28 }, // Nama Anggota
+        { wch: 22 }, // Infaq Bulan Ini
+        { wch: 26 }  // Total Infaq
+      ];
 
-      // Sembunyikan kembali kontainer setelah ekspor
-      element.style.opacity = '0';
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Rekapitulasi Infaq");
+
+      // 4. Unduh Berkas Spreadsheet (.xlsx)
+      const fileName = `Rekap_Infaq_${currAdmin.kode_grup}_${namaBulan[currentMonth]}_${currentYear}.xlsx`;
+      XLSX.writeFile(workbook, fileName);
 
     } catch (err) {
-      alert("Gagal memproses PDF: " + err.message);
+      alert("Proses Export Spreadsheet Gagal: " + err.message);
     } finally {
       btn.disabled = false;
-      btn.innerHTML = '<i data-lucide="download" size="14"></i> Save PDF';
+      btn.innerHTML = '<i data-lucide="file-spreadsheet" size="14"></i> Export Spreadsheet';
       lucide.createIcons();
     }
   }
@@ -1457,7 +1390,7 @@
     if (error) return alert("Gagal menghapus transaksi: " + error.message);
 
     alert("Data transaksi berhasil dihapus!");
-    refreshAdminData();
+    await refreshAdminData();
   }
 </script>
 </body>
