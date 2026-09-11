@@ -474,14 +474,30 @@
       border: 1px solid var(--glass-border);
       background: rgba(0, 0, 0, 0.2);
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-      text-align: left;
+
+    /* Custom Scrollbar Styling */
+    .table-container::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
     }
+    .table-container::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+    }
+    .table-container::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+    }
+    .table-container::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-emerald);
+    }
+
+    /* Sticky Table Header saat Scroll */
     th {
-      background: rgba(255, 255, 255, 0.03);
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #0f172a !important;
       padding: 14px 16px;
       font-weight: 700;
       color: var(--text-muted);
@@ -489,6 +505,13 @@
       text-transform: uppercase;
       font-size: 11px;
       letter-spacing: 0.5px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
     }
     td {
       padding: 14px 16px;
@@ -801,8 +824,8 @@
       </div>
     </div>
 
-    <!-- AREA REKAPITULASI PANEL ADMIN -->
-    <div class="table-container">
+    <!-- AREA REKAPITULASI PANEL ADMIN (TAMPIL 10 ANGGOTA, SELEBIHNYA SCROLL) -->
+    <div class="table-container" style="max-height: 380px; overflow-y: auto;">
       <table>
         <thead>
           <tr>
@@ -816,10 +839,10 @@
       </table>
     </div>
 
-    <!-- Tabel Daftar Transaksi Masuk -->
+    <!-- Tabel Daftar Transaksi Masuk (TAMPIL 5 DATA, SELEBIHNYA SCROLL) -->
     <div style="margin-top: 24px;">
       <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">Kelola Input</h4>
-      <div class="table-container" style="max-height: 250px; overflow-y: auto;">
+      <div class="table-container" style="max-height: 210px; overflow-y: auto;">
         <table>
           <thead>
             <tr>
