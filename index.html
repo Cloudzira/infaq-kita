@@ -507,25 +507,23 @@
       margin-top: 16px;
     }
 
-    /* TEMPLATE KHUSUS UNTUK EXPORT PDF TERPISAH (HIDDEN TAPi RENDERABLE) */
+    /* FIX DEFINITIF PDF CONTAINER: OFF-SCREEN RENDERABLE */
     #pdf-export-container {
       position: absolute;
       top: 0;
-      left: 0;
-      width: 750px; /* Lebar optimal untuk A4 */
-      background: #ffffff;
-      color: #0f172a;
+      left: 10000px; /* Posisi di luar layar agar tidak menggangu UI */
+      width: 700px; /* Ukuran pas A4 */
+      background: #ffffff !important;
+      color: #0f172a !important;
       padding: 30px;
       font-family: 'Plus Jakarta Sans', Arial, sans-serif;
-      z-index: -9999;
-      opacity: 0;
-      pointer-events: none;
+      box-sizing: border-box;
     }
     #pdf-export-container h2 {
       font-size: 20px;
       font-weight: 800;
       color: #0f172a;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
     #pdf-export-container p {
       font-size: 12px;
@@ -891,7 +889,7 @@
   Kurniapedia | 2026
 </div>
 
-<!-- TEMPLATE PDF HIDDEN TERPISAH (PROSESSABLE BY HTML2CANVAS) -->
+<!-- TEMPLATE PDF DITEMPATKAN OFF-SCREEN (TERJAMIN BISA DIBACA HTML2CANVAS) -->
 <div id="pdf-export-container">
   <h2>LAPORAN REKAPITULASI INFAQ BULANAN</h2>
   <p id="pdf-meta-info">Grup: - | Instansi: - | Periode: -</p>
@@ -1320,7 +1318,7 @@
     }
   }
 
-  // FUNGSI PERBAIKAN: SAVE AS PDF TERPISAH DAN TANPA PERSENTASE PROGRES
+  // FUNGSI PERBAIKAN TOTAL TERLAKSANA: SAVE AS PDF
   async function saveAsPdf() {
     const btn = document.getElementById('btn-export-pdf');
     btn.disabled = true;
@@ -1332,7 +1330,7 @@
       const currentMonth = now.getMonth();
       const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
-      // Set Metadata Laporan
+      // Update Metadata Laporan PDF
       document.getElementById('pdf-meta-info').innerText = 
         `Grup: ${currAdmin.nama_grup} | Instansi: ${currAdmin.nama_sekolah} | Kode Grup: ${currAdmin.kode_grup} | Periode: ${namaBulan[currentMonth]} ${currentYear}`;
 
@@ -1346,7 +1344,7 @@
         .select('*')
         .eq('kode_grup', currAdmin.kode_grup);
 
-      if (errM || errI) throw new Error("Gagal mengambil data dari server.");
+      if (errM || errI) throw new Error("Gagal mengambil data dari server database.");
 
       const pdfTbody = document.getElementById('pdf-table-body');
       pdfTbody.innerHTML = '';
@@ -1357,7 +1355,7 @@
         members.forEach((m, idx) => {
           let monthlyInfaq = 0;
 
-          // Filter hitung infaq per anggota khusus untuk bulan berjalan
+          // Filter transaksi per anggota khusus bulan berjalan
           if (infaqs) {
             infaqs.filter(i => {
               if (i.id_anggota !== m.id_anggota || !i.tanggal) return false;
@@ -1380,32 +1378,31 @@
           `;
         });
 
-        // Set Total Keseluruhan (Grand Total)
         document.getElementById('pdf-grand-monthly').innerText = "Rp " + grandMonthly.toLocaleString('id-ID');
 
       } else {
         pdfTbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Tidak ada data anggota</td></tr>';
       }
 
-      // Konfigurasi html2pdf
+      // Konfigurasi Pustaka html2pdf
       const element = document.getElementById('pdf-export-container');
-      
-      // Tampilkan kontainer secara transparan di layer belakang agar html2canvas dapat merender dengan sempurna
-      element.style.opacity = '1';
 
       const opt = {
-        margin:       [10, 10, 10, 10],
+        margin:       10,
         filename:     `Laporan_Infaq_${currAdmin.kode_grup}_${namaBulan[currentMonth]}_${currentYear}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        html2canvas:  { 
+          scale: 2, 
+          useCORS: true, 
+          logging: false,
+          scrollX: 0,
+          scrollY: 0
+        },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
-      // Generate File PDF
+      // Proses Ekspor PDF
       await html2pdf().set(opt).from(element).save();
-
-      // Sembunyikan kembali kontainer setelah ekspor
-      element.style.opacity = '0';
 
     } catch (err) {
       alert("Gagal memproses PDF: " + err.message);
