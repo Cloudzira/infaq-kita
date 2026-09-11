@@ -507,16 +507,19 @@
       margin-top: 16px;
     }
 
-    /* TEMPLATE KHUSUS UNTUK EXPORT PDF TERPISAH (OFF-SCREEN) */
+    /* TEMPLATE KHUSUS UNTUK EXPORT PDF TERPISAH (HIDDEN TAPi RENDERABLE) */
     #pdf-export-container {
       position: absolute;
-      left: -9999px;
-      top: -9999px;
-      width: 780px; /* Lebar standar dokumen A4 dalam px */
+      top: 0;
+      left: 0;
+      width: 750px; /* Lebar optimal untuk A4 */
       background: #ffffff;
       color: #0f172a;
       padding: 30px;
       font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+      z-index: -9999;
+      opacity: 0;
+      pointer-events: none;
     }
     #pdf-export-container h2 {
       font-size: 20px;
@@ -888,29 +891,25 @@
   Kurniapedia | 2026
 </div>
 
-<!-- TEMPLATE PDF HIDDEN TERPISAH DARI UTAMA SEHINGGA TIDAK MERUSAK UI WEB -->
+<!-- TEMPLATE PDF HIDDEN TERPISAH (PROSESSABLE BY HTML2CANVAS) -->
 <div id="pdf-export-container">
-  <h2>LAPORAN PROGRES INFAQ BULANAN</h2>
+  <h2>LAPORAN REKAPITULASI INFAQ BULANAN</h2>
   <p id="pdf-meta-info">Grup: - | Instansi: - | Periode: -</p>
 
   <table>
     <thead>
       <tr>
-        <th style="width: 5%;">No</th>
-        <th style="width: 15%;">ID Anggota</th>
-        <th style="width: 25%;">Nama Anggota</th>
-        <th style="width: 18%;">Target (Rp)</th>
-        <th style="width: 18%;">Infaq Bulan Ini (Rp)</th>
-        <th style="width: 19%;">Progres (%)</th>
+        <th style="width: 8%;">No</th>
+        <th style="width: 22%;">ID Anggota</th>
+        <th style="width: 35%;">Nama Anggota</th>
+        <th style="width: 35%;">Infaq Bulan Ini (Rp)</th>
       </tr>
     </thead>
     <tbody id="pdf-table-body"></tbody>
     <tfoot>
       <tr>
         <td colspan="3" style="text-align: right;">GRAND TOTAL:</td>
-        <td id="pdf-grand-target">Rp 0</td>
         <td id="pdf-grand-monthly">Rp 0</td>
-        <td id="pdf-grand-progress">0%</td>
       </tr>
     </tfoot>
   </table>
@@ -1321,7 +1320,7 @@
     }
   }
 
-  // FUNGSI PERBAIKAN: SAVE AS PDF TERPISAH TANPA BUG & HASIL LENGKAP LAPAN 1 BULAN
+  // FUNGSI PERBAIKAN: SAVE AS PDF TERPISAH DAN TANPA PERSENTASE PROGRES
   async function saveAsPdf() {
     const btn = document.getElementById('btn-export-pdf');
     btn.disabled = true;
@@ -1352,12 +1351,10 @@
       const pdfTbody = document.getElementById('pdf-table-body');
       pdfTbody.innerHTML = '';
 
-      let grandTarget = 0;
       let grandMonthly = 0;
 
       if (members && members.length > 0) {
         members.forEach((m, idx) => {
-          const targetInfaq = Number(m.target_infaq) || 100000;
           let monthlyInfaq = 0;
 
           // Filter hitung infaq per anggota khusus untuk bulan berjalan
@@ -1371,9 +1368,6 @@
             });
           }
 
-          const percentProgress = Math.min((monthlyInfaq / targetInfaq) * 100, 100).toFixed(1);
-
-          grandTarget += targetInfaq;
           grandMonthly += monthlyInfaq;
 
           pdfTbody.innerHTML += `
@@ -1381,26 +1375,24 @@
               <td style="text-align: center;">${idx + 1}</td>
               <td>${m.id_anggota}</td>
               <td><strong>${m.nama_anggota}</strong></td>
-              <td>Rp ${targetInfaq.toLocaleString('id-ID')}</td>
               <td>Rp ${monthlyInfaq.toLocaleString('id-ID')}</td>
-              <td>${percentProgress}%</td>
             </tr>
           `;
         });
 
         // Set Total Keseluruhan (Grand Total)
-        document.getElementById('pdf-grand-target').innerText = "Rp " + grandTarget.toLocaleString('id-ID');
         document.getElementById('pdf-grand-monthly').innerText = "Rp " + grandMonthly.toLocaleString('id-ID');
-        
-        const totalGrandPercent = grandTarget > 0 ? Math.min((grandMonthly / grandTarget) * 100, 100).toFixed(1) : "0";
-        document.getElementById('pdf-grand-progress').innerText = totalGrandPercent + "%";
 
       } else {
-        pdfTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Tidak ada data anggota</td></tr>';
+        pdfTbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Tidak ada data anggota</td></tr>';
       }
 
       // Konfigurasi html2pdf
       const element = document.getElementById('pdf-export-container');
+      
+      // Tampilkan kontainer secara transparan di layer belakang agar html2canvas dapat merender dengan sempurna
+      element.style.opacity = '1';
+
       const opt = {
         margin:       [10, 10, 10, 10],
         filename:     `Laporan_Infaq_${currAdmin.kode_grup}_${namaBulan[currentMonth]}_${currentYear}.pdf`,
@@ -1411,6 +1403,9 @@
 
       // Generate File PDF
       await html2pdf().set(opt).from(element).save();
+
+      // Sembunyikan kembali kontainer setelah ekspor
+      element.style.opacity = '0';
 
     } catch (err) {
       alert("Gagal memproses PDF: " + err.message);
