@@ -37,6 +37,7 @@
       min-height: 100vh;
       color: var(--text-main);
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       padding: 20px;
@@ -73,6 +74,19 @@
       max-width: 520px;
       position: relative;
       z-index: 10;
+      margin-bottom: 20px;
+    }
+
+    /* Footer Copyright di Paling Bawah */
+    .page-footer {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      opacity: 0.7;
+      letter-spacing: 0.5px;
+      margin-top: 10px;
     }
 
     /* Header Brand */
@@ -498,7 +512,7 @@
         color: #000000 !important;
         padding: 0;
       }
-      .glow-orb, .btn-back, .no-print, button, form, .target-box {
+      .glow-orb, .btn-back, .no-print, button, form, .target-box, .page-footer {
         display: none !important;
       }
       .card {
@@ -539,7 +553,6 @@
     </div>
     <h1 class="main-title">INFAQU</h1>
     <p class="main-subtitle">Sistem Manajemen & Transparansi Infaq Digital</p>
-    <p class="main-subtitle">Kurniapedia | 2026</p>
   </div>
 
   <!-- HALAMAN UTAMA (MENU) -->
@@ -667,7 +680,7 @@
       </div>
     </div>
 
-    <!-- Riwayat Infaq (Dipindah ke bawah progress bar) -->
+    <!-- Riwayat Infaq (Di bawah blok pencapaian target) -->
     <h4 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 700;">Riwayat Infaq</h4>
     <div class="table-container" style="margin-bottom: 20px;">
       <table>
@@ -713,7 +726,7 @@
 
     <!-- Atur Target Infaq Box -->
     <div class="target-box">
-      <label>Target Infaq Pribadi:</label>
+      <label>Atur Ulang Target Infaq Pribadi:</label>
       <div class="target-box-flex">
         <input type="number" id="dash-a-target-input" placeholder="Nominal Rp...">
         <button type="button" class="btn-primary" onclick="updateTargetInfaq()">Simpan</button>
@@ -840,6 +853,11 @@
     <button class="btn-danger no-print" onclick="logout()"><i data-lucide="log-out" size="16"></i> Keluar Panel</button>
   </div>
 
+</div>
+
+<!-- FOOTER DI PALING BAWAH HALAMAN -->
+<div class="page-footer">
+  Kurniapedia | 2026
 </div>
 
 <script>
