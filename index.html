@@ -323,18 +323,20 @@
       background: rgba(239, 68, 68, 0.2);
       border-color: rgba(239, 68, 68, 0.4);
     }
+    /* Tombol Hapus Dibuat Lebih Ringkas & Kecil */
     .btn-icon-del {
       background: rgba(239, 68, 68, 0.15);
       color: #ef4444;
       border: 1px solid rgba(239, 68, 68, 0.3);
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      line-height: 1;
       width: auto;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
     }
     .btn-icon-del:hover {
       background: rgba(239, 68, 68, 0.3);
@@ -518,6 +520,7 @@
       padding: 8px 12px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.03);
       color: #e2e8f0;
+      vertical-align: middle;
     }
     tr:last-child td { border-bottom: none; }
 
@@ -1269,7 +1272,7 @@
         `;
       });
     } else {
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 18px;">Belum ada anggota terdaftar</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 8px 12px;">Belum ada anggota terdaftar</td></tr>';
     }
   }
 
@@ -1392,7 +1395,7 @@
             <td>Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
             <td>
               <button class="btn-icon-del" onclick="deleteTransaction(${transId})">
-                <i data-lucide="trash-2" size="12"></i> Hapus
+                <i data-lucide="trash-2" size="10"></i> Hapus
               </button>
             </td>
           </tr>
@@ -1400,7 +1403,7 @@
       });
       lucide.createIcons();
     } else {
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 14px;">Belum ada riwayat transaksi</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 8px 12px;">Belum ada riwayat transaksi</td></tr>';
     }
   }
 
