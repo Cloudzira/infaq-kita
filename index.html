@@ -718,7 +718,7 @@
 
     <!-- Atur Target Infaq Box -->
     <div class="target-box">
-      <label>Atur Ulang Target Infaq Pribadi:</label>
+      <label>Target Infaq Pribadi:</label>
       <div class="target-box-flex">
         <input type="number" id="dash-a-target-input" placeholder="Nominal Rp...">
         <button type="button" class="btn-primary" onclick="updateTargetInfaq()">Simpan</button>
@@ -778,7 +778,7 @@
   <div id="sec-dash-admin" class="card" style="display:none;">
     <div class="user-header">
       <h3 id="dash-admin-title">Panel Admin</h3>
-      <p class="group-title">Instansi: <span id="dash-admin-sekolah" style="color: #fff;">-</span> | Kode Grup: <span id="dash-admin-code" style="color: var(--accent-emerald);">-</span></p>
+      <p class="group-title">Instansi <span id="dash-admin-sekolah" style="color: #fff;">-</span> | Kode Grup <span id="dash-admin-code" style="color: var(--accent-emerald);">-</span></p>
     </div>
 
     <form id="form-add-infaq" style="margin-bottom: 24px;">
@@ -823,8 +823,8 @@
           <thead>
             <tr>
               <th>No</th>
-              <th>ID Anggota</th>
-              <th>Nama Anggota</th>
+              <th>ID</th>
+              <th>Nama</th>
               <th>Total Infaq</th>
             </tr>
           </thead>
@@ -835,13 +835,13 @@
 
     <!-- Tabel Daftar Transaksi Masuk untuk Hapus Inputan -->
     <div style="margin-top: 24px;">
-      <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">Dikelola / Hapus Inputan Salah</h4>
+      <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">Kelola Input</h4>
       <div class="table-container" style="max-height: 250px; overflow-y: auto;">
         <table>
           <thead>
             <tr>
               <th>Tanggal</th>
-              <th>ID Anggota</th>
+              <th>ID</th>
               <th>Nominal</th>
               <th>Aksi</th>
             </tr>
@@ -1131,7 +1131,7 @@
   });
 
   function showAdminDash() {
-    document.getElementById('dash-admin-title').innerText = "Panel Admin: " + currAdmin.nama_grup;
+    document.getElementById('dash-admin-title').innerText = "Panel Admin " + currAdmin.nama_grup;
     document.getElementById('dash-admin-sekolah').innerText = currAdmin.nama_sekolah;
     document.getElementById('dash-admin-code').innerText = currAdmin.kode_grup;
     loadMembersForAdmin();
