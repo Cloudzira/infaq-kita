@@ -77,7 +77,7 @@
       margin-bottom: 20px;
     }
 
-    /* Footer Copyright di Paling Bawah */
+    /* Footer Copyright */
     .page-footer {
       position: relative;
       z-index: 10;
@@ -505,13 +505,13 @@
       margin-top: 16px;
     }
 
-    /* Print Styles Overrides (PERBAIKAN CETAK PDF) */
+    /* CSS PERBAIKAN TOTAL UNTUK CETAK PDF */
     @media print {
       body {
         background: #ffffff !important;
         color: #000000 !important;
-        padding: 0;
-        margin: 0;
+        padding: 0 !important;
+        margin: 0 !important;
       }
       .glow-orb, .btn-back, .no-print, button, form, .target-box, .page-footer, .brand-header {
         display: none !important;
@@ -522,13 +522,13 @@
         margin: 0 !important;
         padding: 0 !important;
       }
-      .card {
+      #sec-dash-admin, #sec-dash-admin .card, .card {
+        display: block !important;
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
         padding: 0 !important;
         margin: 0 !important;
-        display: block !important;
       }
       .user-header {
         border-bottom: 2px solid #000 !important;
@@ -538,7 +538,8 @@
       .user-header h3, .user-header p, .user-header span {
         color: #000 !important;
       }
-      .table-container {
+      #print-area, .table-container {
+        display: block !important;
         border: none !important;
         background: transparent !important;
         overflow: visible !important;
@@ -835,11 +836,11 @@
       <h4 style="font-size: 14px; font-weight: 700;">Rekapitulasi Infaq</h4>
       <div style="display: flex; gap: 8px;">
         <button class="btn-primary" onclick="loadAllMembersSummary()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="refresh-cw" size="14"></i> Refresh</button>
-        <button class="btn-success" onclick="window.print()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="printer" size="14"></i> Cetak PDF</button>
+        <button class="btn-success" onclick="printPdfData()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="printer" size="14"></i> Cetak PDF</button>
       </div>
     </div>
 
-    <!-- AREA REKAPITULASI BISA DICETAK -->
+    <!-- AREA REKAPITULASI DENGAN CSS KHUSUS PRINT -->
     <div id="print-area" class="table-container">
       <table>
         <thead>
@@ -877,7 +878,7 @@
 
 </div>
 
-<!-- FOOTER DI PALING BAWAH HALAMAN -->
+<!-- FOOTER -->
 <div class="page-footer">
   Kurniapedia | 2026
 </div>
@@ -1026,7 +1027,7 @@
     showSection('dash-a');
   }
 
-  // UPDATE PROFIL ANGGOTA (PERBAIKAN PROSES EDIT ID ANGGOTA)
+  // UPDATE PROFIL ANGGOTA (SISTEM UPSERT UNTUK MENGATASI FOREIGN KEY ERROR)
   document.getElementById('form-edit-a').addEventListener('submit', async (e) => {
     e.preventDefault();
     const newCode = document.getElementById('ea-code').value.trim();
@@ -1040,44 +1041,50 @@
 
     const oldCode = currMember.kode_grup;
     const oldId = currMember.id_anggota;
+    const isIdOrGroupChanged = (newCode !== oldCode || newId !== oldId);
 
-    // 1. Apabila ID atau Kode Grup berubah, perbarui riwayat transaksi pada tabel 'infaq' terlebih dahulu
-    if (newCode !== oldCode || newId !== oldId) {
+    if (isIdOrGroupChanged) {
+      // 1. Buat data profil baru terlebih dahulu di tabel 'anggota' agar foreign key constraint terpenuhi
+      const newMemberData = {
+        kode_grup: newCode,
+        id_anggota: newId,
+        nama_anggota: newNama,
+        pin_anggota: (newPin !== "") ? newPin : currMember.pin_anggota,
+        target_infaq: currMember.target_infaq || 100000
+      };
+
+      const { error: errInsert } = await supabaseClient.from('anggota').insert([newMemberData]);
+      if (errInsert) return alert("Gagal memperbarui ID (ID Baru mungkin sudah dipakai): " + errInsert.message);
+
+      // 2. Alihkan seluruh riwayat infaq dari ID lama ke ID baru
       const { error: errInfaq } = await supabaseClient.from('infaq')
         .update({ kode_grup: newCode, id_anggota: newId })
         .eq('kode_grup', oldCode)
         .eq('id_anggota', oldId);
 
-      if (errInfaq) return alert("Gagal memperbarui relasi data infaq: " + errInfaq.message);
-    }
-
-    // 2. Perbarui data pada tabel 'anggota'
-    const updatePayload = {
-      kode_grup: newCode,
-      id_anggota: newId,
-      nama_anggota: newNama
-    };
-    if (newPin !== "") {
-      updatePayload.pin_anggota = newPin;
-    }
-
-    const { error: errMember } = await supabaseClient.from('anggota')
-      .update(updatePayload)
-      .eq('kode_grup', oldCode)
-      .eq('id_anggota', oldId);
-
-    if (errMember) {
-      // Rollback riwayat transaksi jika tabel anggota gagal diperbarui
-      if (newCode !== oldCode || newId !== oldId) {
-        await supabaseClient.from('infaq')
-          .update({ kode_grup: oldCode, id_anggota: oldId })
-          .eq('kode_grup', newCode)
-          .eq('id_anggota', newId);
+      if (errInfaq) {
+        // Rollback pembuatan akun baru jika gagal update transaksi
+        await supabaseClient.from('anggota').delete().eq('kode_grup', newCode).eq('id_anggota', newId);
+        return alert("Gagal memindahkan data riwayat transaksi: " + errInfaq.message);
       }
-      return alert("Gagal memperbarui profil: " + errMember.message);
+
+      // 3. Hapus entitas profil lama di tabel 'anggota'
+      await supabaseClient.from('anggota').delete().eq('kode_grup', oldCode).eq('id_anggota', oldId);
+
+    } else {
+      // Jika ID tidak berubah, langsung lakukan update standar
+      const updatePayload = { nama_anggota: newNama };
+      if (newPin !== "") updatePayload.pin_anggota = newPin;
+
+      const { error: errUpdate } = await supabaseClient.from('anggota')
+        .update(updatePayload)
+        .eq('kode_grup', oldCode)
+        .eq('id_anggota', oldId);
+
+      if (errUpdate) return alert("Gagal memperbarui profil: " + errUpdate.message);
     }
 
-    // 3. Simpan perubahan ke local state
+    // Update state aplikasi lokal
     currMember.kode_grup = newCode;
     currMember.id_anggota = newId;
     currMember.nama_anggota = newNama;
@@ -1241,6 +1248,14 @@
     }
   }
 
+  // PERBAIKAN CETAK PDF MANDIRI
+  async function printPdfData() {
+    await loadAllMembersSummary();
+    setTimeout(() => {
+      window.print();
+    }, 200);
+  }
+
   async function loadAdminTransactions() {
     const { data, error } = await supabaseClient.from('infaq')
       .select('*')
@@ -1288,3 +1303,4 @@
 </script>
 </body>
 </html>
+
