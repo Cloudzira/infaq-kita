@@ -775,10 +775,22 @@
   </div>
 
   <!-- DASHBOARD ADMIN -->
-  <div id="sec-dash-admin" class="card" style="display none;">
+  <div id="sec-dash-admin" class="card" style="display: none;">
     <div class="user-header">
       <h3 id="dash-admin-title">Panel Admin</h3>
       <p class="group-title">Instansi <span id="dash-admin-sekolah" style="color: #fff;">-</span> | Kode Grup <span id="dash-admin-code" style="color: var(--accent-emerald);">-</span></p>
+    </div>
+
+    <!-- STATISTIK BULANAN & TAHUNAN ADMIN -->
+    <div class="stat-grid">
+      <div class="stat-card">
+        <span class="stat-label">Infaq Bulan Ini</span>
+        <div class="stat-value" style="color: var(--accent-cyan);">Rp <span id="dash-admin-monthly">0</span></div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Infaq Tahun Ini</span>
+        <div class="stat-value" style="color: var(--accent-emerald);">Rp <span id="dash-admin-yearly">0</span></div>
+      </div>
     </div>
 
     <form id="form-add-infaq" style="margin-bottom: 24px;">
@@ -805,8 +817,8 @@
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
       <h4 style="font-size: 14px; font-weight: 700;">Rekapitulasi Infaq</h4>
       <div style="display: flex; gap: 8px;">
-        <button class="btn-primary" onclick="loadAllMembersSummary()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="refresh-cw" size="14"></i> Refresh</button>
-        <button class="btn-success" id="btn-export-pdf" onclick="saveAsPdf()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="download" size="14"></i> Save PDF</button>
+        <button class="btn-primary" onclick="refreshAdminData()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="refresh-cw" size="14"></i> Refresh</button>
+        <button class="btn-success" id="btn-export-pdf" onclick="saveAsPdf()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="download" size="14"></i> Save as PDF</button>
       </div>
     </div>
 
@@ -1135,9 +1147,48 @@
     document.getElementById('dash-admin-sekolah').innerText = currAdmin.nama_sekolah;
     document.getElementById('dash-admin-code').innerText = currAdmin.kode_grup;
     loadMembersForAdmin();
+    refreshAdminData();
+    showSection('dash-admin');
+  }
+
+  function refreshAdminData() {
     loadAllMembersSummary();
     loadAdminTransactions();
-    showSection('dash-admin');
+    loadAdminStats();
+  }
+
+  // FUNGSI HITUNG TOTAL INFAQ BULANAN & TAHUNAN ADMIN
+  async function loadAdminStats() {
+    const { data: infaqs, error } = await supabaseClient.from('infaq')
+      .select('nominal, tanggal')
+      .eq('kode_grup', currAdmin.kode_grup);
+
+    if (error || !infaqs) return;
+
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth(); // 0-based index (0 = Jan, 11 = Des)
+
+    let totalMonthly = 0;
+    let totalYearly = 0;
+
+    infaqs.forEach(item => {
+      if (!item.tanggal) return;
+      const tDate = new Date(item.tanggal);
+      const year = tDate.getFullYear();
+      const month = tDate.getMonth();
+      const nominal = Number(item.nominal) || 0;
+
+      if (year === currentYear) {
+        totalYearly += nominal;
+        if (month === currentMonth) {
+          totalMonthly += nominal;
+        }
+      }
+    });
+
+    document.getElementById('dash-admin-monthly').innerText = totalMonthly.toLocaleString('id-ID');
+    document.getElementById('dash-admin-yearly').innerText = totalYearly.toLocaleString('id-ID');
   }
 
   async function loadMembersForAdmin() {
@@ -1181,8 +1232,7 @@
     alert("Infaq berhasil disimpan!");
     document.getElementById('at-nominal').value = '';
     document.getElementById('at-catatan').value = '';
-    loadAllMembersSummary();
-    loadAdminTransactions();
+    refreshAdminData();
   });
 
   async function loadAllMembersSummary() {
@@ -1251,7 +1301,7 @@
       pdfHeader.style.display = 'none';
       printElement.classList.remove('pdf-export-style');
       btn.disabled = false;
-      btn.innerHTML = '<i data-lucide="download" size="14"></i> Save as PDF';
+      btn.innerHTML = '<i data-lucide="download" size="14"></i> Save PDF';
       lucide.createIcons();
     }
   }
@@ -1297,8 +1347,7 @@
     if (error) return alert("Gagal menghapus transaksi: " + error.message);
 
     alert("Data transaksi berhasil dihapus!");
-    loadAllMembersSummary();
-    loadAdminTransactions();
+    refreshAdminData();
   }
 </script>
 </body>
