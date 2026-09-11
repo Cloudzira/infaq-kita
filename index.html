@@ -864,16 +864,16 @@
 
   document.getElementById('at-tanggal').value = new Date().toISOString().split('T')[0];
 
-  window.addEventListener('DOMContentLoaded', () => {
+  window.addEventListener('DOMContentLoaded', async () => {
     const savedMember = localStorage.getItem('infaq_member');
     const savedAdmin = localStorage.getItem('infaq_admin');
 
     if (savedMember) {
       currMember = JSON.parse(savedMember);
-      showMemberDash();
+      await showMemberDash();
     } else if (savedAdmin) {
       currAdmin = JSON.parse(savedAdmin);
-      showAdminDash();
+      await showAdminDash();
     } else {
       showSection('home');
     }
@@ -972,10 +972,10 @@
     currMember.nama_grup = groupData ? groupData.nama_grup : 'Grup';
     
     localStorage.setItem('infaq_member', JSON.stringify(currMember));
-    showMemberDash();
+    await showMemberDash();
   });
 
-  function showMemberDash() {
+  async function showMemberDash() {
     document.getElementById('dash-a-nama').innerText = currMember.nama_anggota;
     document.getElementById('dash-a-group-name').innerText = "Grup " + (currMember.nama_grup || '-');
     document.getElementById('dash-a-code').innerText = currMember.kode_grup;
@@ -991,7 +991,7 @@
     const targetInfaq = currMember.target_infaq || 100000;
     document.getElementById('dash-a-target-input').value = targetInfaq;
     
-    loadMyInfaq();
+    await loadMyInfaq();
     showSection('dash-a');
   }
 
@@ -1054,7 +1054,7 @@
 
     localStorage.setItem('infaq_member', JSON.stringify(currMember));
     alert("Profil berhasil diperbarui!");
-    showMemberDash();
+    await showMemberDash();
   });
 
   async function updateTargetInfaq() {
@@ -1070,7 +1070,7 @@
       .eq('id_anggota', currMember.id_anggota);
 
     alert("Target infaq berhasil diperbarui!");
-    loadMyInfaq();
+    await loadMyInfaq();
   }
 
   async function loadMyInfaq() {
@@ -1117,22 +1117,24 @@
     if (error || !data) return alert("Login admin gagal!");
     currAdmin = data;
     localStorage.setItem('infaq_admin', JSON.stringify(currAdmin));
-    showAdminDash();
+    await showAdminDash();
   });
 
-  function showAdminDash() {
+  async function showAdminDash() {
     document.getElementById('dash-admin-title').innerText = "Panel Admin " + currAdmin.nama_grup;
     document.getElementById('dash-admin-sekolah').innerText = currAdmin.nama_sekolah;
     document.getElementById('dash-admin-code').innerText = currAdmin.kode_grup;
-    loadMembersForAdmin();
-    refreshAdminData();
+    await loadMembersForAdmin();
+    await refreshAdminData();
     showSection('dash-admin');
   }
 
-  function refreshAdminData() {
-    loadAllMembersSummary();
-    loadAdminTransactions();
-    loadAdminStats();
+  async function refreshAdminData() {
+    await Promise.all([
+      loadAllMembersSummary(),
+      loadAdminTransactions(),
+      loadAdminStats()
+    ]);
   }
 
   async function loadAdminStats() {
@@ -1209,7 +1211,7 @@
     alert("Infaq berhasil disimpan!");
     document.getElementById('at-nominal').value = '';
     document.getElementById('at-catatan').value = '';
-    refreshAdminData();
+    await refreshAdminData();
   });
 
   async function loadAllMembersSummary() {
@@ -1246,7 +1248,7 @@
     }
   }
 
-  // FUNGSI EKSPOR PDF TERPERBAIKI DENGAN RENDER DYNAMIC DOM CONTAINER
+  // FUNGSI EKSPOR PDF DENGAN DYNAMIC VISIBLE RENDER WINDOW
   async function saveAsPdf() {
     const btn = document.getElementById('btn-export-pdf');
     btn.disabled = true;
@@ -1258,7 +1260,7 @@
       const currentMonth = now.getMonth();
       const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
-      // 1. Fetch Data dari Supabase
+      // 1. Fetch Data Langsung dari Supabase
       const { data: members, error: errM } = await supabaseClient.from('anggota')
         .select('*')
         .eq('kode_grup', currAdmin.kode_grup);
@@ -1267,9 +1269,9 @@
         .select('*')
         .eq('kode_grup', currAdmin.kode_grup);
 
-      if (errM || errI) throw new Error("Gagal mengambil data riwayat dari server.");
+      if (errM || errI) throw new Error("Gagal mengambil data dari server database.");
 
-      // 2. Susun Baris Tabel Rekap
+      // 2. Kalkulasi Data Rekapitulasi
       let grandMonthly = 0;
       let grandTotal = 0;
       let tableRowsHtml = '';
@@ -1297,12 +1299,12 @@
           grandTotal += totalInfaq;
 
           tableRowsHtml += `
-            <tr style="border-bottom: 1px solid #e2e8f0;">
-              <td style="padding: 8px 10px; text-align: center; border: 1px solid #cbd5e1;">${idx + 1}</td>
-              <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">${m.id_anggota}</td>
-              <td style="padding: 8px 10px; border: 1px solid #cbd5e1;"><strong>${m.nama_anggota}</strong></td>
-              <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Rp ${monthlyInfaq.toLocaleString('id-ID')}</td>
-              <td style="padding: 8px 10px; border: 1px solid #cbd5e1;"><strong>Rp ${totalInfaq.toLocaleString('id-ID')}</strong></td>
+            <tr>
+              <td style="padding: 8px; text-align: center; border: 1px solid #cbd5e1;">${idx + 1}</td>
+              <td style="padding: 8px; border: 1px solid #cbd5e1;">${m.id_anggota}</td>
+              <td style="padding: 8px; border: 1px solid #cbd5e1;"><strong>${m.nama_anggota}</strong></td>
+              <td style="padding: 8px; border: 1px solid #cbd5e1;">Rp ${monthlyInfaq.toLocaleString('id-ID')}</td>
+              <td style="padding: 8px; border: 1px solid #cbd5e1;"><strong>Rp ${totalInfaq.toLocaleString('id-ID')}</strong></td>
             </tr>
           `;
         });
@@ -1310,34 +1312,34 @@
         tableRowsHtml = '<tr><td colspan="5" style="text-align:center; padding: 12px; border: 1px solid #cbd5e1;">Tidak ada data anggota terdaftar</td></tr>';
       }
 
-      // 3. Buat Elemen DOM Sementara secara Eksplisit
+      // 3. Konstruksi DOM Pencetakan yang Terlihat (Visible Element Window)
       const pdfWrapper = document.createElement('div');
-      pdfWrapper.id = 'dynamic-pdf-render-wrapper';
+      pdfWrapper.id = 'visible-pdf-container';
       pdfWrapper.style.position = 'fixed';
       pdfWrapper.style.top = '0';
       pdfWrapper.style.left = '0';
       pdfWrapper.style.width = '750px';
       pdfWrapper.style.backgroundColor = '#ffffff';
-      pdfWrapper.style.color = '#0f172a';
-      pdfWrapper.style.padding = '30px';
-      pdfWrapper.style.zIndex = '-99999';
-      pdfWrapper.style.fontFamily = 'Arial, sans-serif';
+      pdfWrapper.style.color = '#000000';
+      pdfWrapper.style.padding = '25px';
+      pdfWrapper.style.zIndex = '99999';
       pdfWrapper.style.boxSizing = 'border-box';
+      pdfWrapper.style.fontFamily = 'Arial, sans-serif';
 
       pdfWrapper.innerHTML = `
         <div style="border-bottom: 2px solid #0f172a; padding-bottom: 10px; margin-bottom: 15px;">
-          <h2 style="font-size: 18px; font-weight: 800; color: #0f172a; margin: 0 0 4px 0; text-transform: uppercase;">LAPORAN REKAPITULASI PROGRES INFAQ ANGGOTA</h2>
+          <h2 style="font-size: 16px; font-weight: 800; color: #0f172a; margin: 0 0 4px 0; text-transform: uppercase;">LAPORAN REKAPITULASI PROGRES INFAQ ANGGOTA</h2>
           <p style="font-size: 11px; color: #475569; margin: 0;">Grup: <strong>${currAdmin.nama_grup}</strong> | Instansi: <strong>${currAdmin.nama_sekolah}</strong> | Kode Grup: <strong>${currAdmin.kode_grup}</strong> | Periode: <strong>${namaBulan[currentMonth]} ${currentYear}</strong></p>
         </div>
 
-        <table style="width: 100%; border-collapse: collapse; font-size: 11px; color: #1e293b;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 11px; color: #000000;">
           <thead>
             <tr style="background-color: #f1f5f9;">
-              <th style="padding: 8px 10px; border: 1px solid #cbd5e1; text-align: center; width: 6%;">No</th>
-              <th style="padding: 8px 10px; border: 1px solid #cbd5e1; text-align: left; width: 18%;">ID Anggota</th>
-              <th style="padding: 8px 10px; border: 1px solid #cbd5e1; text-align: left; width: 28%;">Nama Anggota</th>
-              <th style="padding: 8px 10px; border: 1px solid #cbd5e1; text-align: left; width: 24%;">Infaq Bulan Ini</th>
-              <th style="padding: 8px 10px; border: 1px solid #cbd5e1; text-align: left; width: 24%;">Total Infaq (Akumulasi)</th>
+              <th style="padding: 8px; border: 1px solid #cbd5e1; text-align: center; width: 6%;">No</th>
+              <th style="padding: 8px; border: 1px solid #cbd5e1; text-align: left; width: 18%;">ID Anggota</th>
+              <th style="padding: 8px; border: 1px solid #cbd5e1; text-align: left; width: 28%;">Nama Anggota</th>
+              <th style="padding: 8px; border: 1px solid #cbd5e1; text-align: left; width: 24%;">Infaq Bulan Ini</th>
+              <th style="padding: 8px; border: 1px solid #cbd5e1; text-align: left; width: 24%;">Total Infaq (Akumulasi)</th>
             </tr>
           </thead>
           <tbody>
@@ -1345,9 +1347,9 @@
           </tbody>
           <tfoot>
             <tr style="background-color: #f8fafc; font-weight: 800;">
-              <td colspan="3" style="padding: 8px 10px; text-align: right; border: 1px solid #cbd5e1;">GRAND TOTAL:</td>
-              <td style="padding: 8px 10px; border: 1px solid #cbd5e1; color: #0284c7;">Rp ${grandMonthly.toLocaleString('id-ID')}</td>
-              <td style="padding: 8px 10px; border: 1px solid #cbd5e1; color: #16a34a;">Rp ${grandTotal.toLocaleString('id-ID')}</td>
+              <td colspan="3" style="padding: 8px; text-align: right; border: 1px solid #cbd5e1;">GRAND TOTAL:</td>
+              <td style="padding: 8px; border: 1px solid #cbd5e1; color: #0284c7;">Rp ${grandMonthly.toLocaleString('id-ID')}</td>
+              <td style="padding: 8px; border: 1px solid #cbd5e1; color: #16a34a;">Rp ${grandTotal.toLocaleString('id-ID')}</td>
             </tr>
           </tfoot>
         </table>
@@ -1355,10 +1357,10 @@
 
       document.body.appendChild(pdfWrapper);
 
-      // 4. Berikan micro-delay 100ms
-      await new Promise(resolve => setTimeout(resolve, 100));
+      // 4. Berikan Penundaan Render Sempurna (250ms Delay)
+      await new Promise(resolve => setTimeout(resolve, 250));
 
-      // 5. Konversi PDF
+      // 5. Eksekusi PDF Konversi
       const opt = {
         margin:       10,
         filename:     `Rekap_Infaq_${currAdmin.kode_grup}_${namaBulan[currentMonth]}_${currentYear}.pdf`,
@@ -1369,13 +1371,13 @@
 
       await html2pdf().set(opt).from(pdfWrapper).save();
 
-      // 6. Hapus Wadah Sementara dari DOM
+      // 6. Hapus Kontainer Rendering dari DOM
       document.body.removeChild(pdfWrapper);
 
     } catch (err) {
-      alert("Proses pencetakan PDF gagal: " + err.message);
-      const existing = document.getElementById('dynamic-pdf-render-wrapper');
-      if (existing) document.body.removeChild(existing);
+      alert("Pencetakan PDF gagal: " + err.message);
+      const targetElement = document.getElementById('visible-pdf-container');
+      if (targetElement) document.body.removeChild(targetElement);
     } finally {
       btn.disabled = false;
       btn.innerHTML = '<i data-lucide="download" size="14"></i> Save PDF';
@@ -1424,7 +1426,7 @@
     if (error) return alert("Gagal menghapus transaksi: " + error.message);
 
     alert("Data transaksi berhasil dihapus!");
-    refreshAdminData();
+    await refreshAdminData();
   }
 </script>
 </body>
