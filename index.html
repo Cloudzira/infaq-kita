@@ -505,6 +505,1260 @@
       margin-top: 16px;
     }
 
+    /* Print Styles Overrides (PERBAIKAN CETAK PDF) */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0;
+        margin: 0;
+      }
+      .glow-orb, .btn-back, .no-print, button, form, .target-box, .page-footer, .brand-header {
+        display: none !important;
+      }
+      .container {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .card {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: block !important;
+      }
+      .user-header {
+        border-bottom: 2px solid #000 !important;
+        color: #000 !important;
+        margin-bottom: 15px !important;
+      }
+      .user-header h3, .user-header p, .user-header span {
+        color: #000 !important;
+      }
+      .table-container {
+        border: none !important;
+        background: transparent !important;
+        overflow: visible !important;
+      }
+      table {
+        border-collapse: collapse !important;
+        width: 100% !important;
+        color: #000 !important;
+      }
+      th, td {
+        border: 1px solid #000 !important;
+        color: #000 !important;
+        padding: 8px 12px !important;
+      }
+      th {
+        background: #f1f5f9 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Background Glow Effects -->
+<div class="glow-orb glow-orb-1"></div>
+<div class="glow-orb glow-orb-2"></div>
+
+<div class="container">
+
+  <!-- BRAND HEADER -->
+  <div class="brand-header">
+    <div class="brand-logo">
+      <i data-lucide="heart-handshake" size="28"></i>
+    </div>
+    <h1 class="main-title">INFAQU</h1>
+    <p class="main-subtitle">Sistem Manajemen & Transparansi Infaq Digital</p>
+  </div>
+
+  <!-- HALAMAN UTAMA (MENU) -->
+  <div id="sec-home">
+    <div class="menu-grid">
+      <div class="menu-card" onclick="showSection('login-a')">
+        <div class="menu-icon"><i data-lucide="user"></i></div>
+        <div class="menu-content">
+          <h4>Login Anggota</h4>
+          <p>Cek progress dan atur target pencapaian pribadi</p>
+        </div>
+        <i data-lucide="chevron-right" class="menu-arrow"></i>
+      </div>
+
+      <div class="menu-card" onclick="showSection('reg-a')">
+        <div class="menu-icon"><i data-lucide="user-plus"></i></div>
+        <div class="menu-content">
+          <h4>Daftar Anggota Baru</h4>
+          <p>Registrasi mandiri dengan Kode Grup</p>
+        </div>
+        <i data-lucide="chevron-right" class="menu-arrow"></i>
+      </div>
+
+      <div class="menu-card" onclick="showSection('login-admin')">
+        <div class="menu-icon"><i data-lucide="shield-check"></i></div>
+        <div class="menu-content">
+          <h4>Login Admin</h4>
+          <p>Input pemasukan infaq dan rekapitulasi data</p>
+        </div>
+        <i data-lucide="chevron-right" class="menu-arrow"></i>
+      </div>
+
+      <div class="menu-card" onclick="showSection('create-c')">
+        <div class="menu-icon"><i data-lucide="folder-plus"></i></div>
+        <div class="menu-content">
+          <h4>Buat Grup Baru</h4>
+          <p>Daftarkan instansi / kelompok untuk dapatkan Kode Grup</p>
+        </div>
+        <i data-lucide="chevron-right" class="menu-arrow"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM LOGIN ANGGOTA -->
+  <div id="sec-login-a" class="card" style="display:none;">
+    <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
+    <h3 style="margin-bottom: 20px; font-weight: 800;">Login Anggota</h3>
+    <form id="form-login-a">
+      <div class="form-group">
+        <label>Kode Grup</label>
+        <input type="text" id="la-code" placeholder="Contoh: GRP-1234" required>
+      </div>
+      <div class="form-group">
+        <label>ID Anggota</label>
+        <input type="text" id="la-id" placeholder="ID Anggota Anda" required>
+      </div>
+      <div class="form-group">
+        <label>PIN Anggota</label>
+        <input type="password" id="la-pin" placeholder="••••" required>
+      </div>
+      <button type="submit" class="btn-primary"><i data-lucide="log-in" size="18"></i> Masuk Sekarang</button>
+    </form>
+  </div>
+
+  <!-- FORM DAFTAR ANGGOTA -->
+  <div id="sec-reg-a" class="card" style="display:none;">
+    <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
+    <h3 style="margin-bottom: 20px; font-weight: 800;">Pendaftaran Anggota</h3>
+    <form id="form-reg-a">
+      <div class="form-group">
+        <label>Kode Grup</label>
+        <input type="text" id="ra-code" placeholder="Contoh: GRP-1234" required>
+      </div>
+      <div class="form-group">
+        <label>Nama Lengkap</label>
+        <input type="text" id="ra-nama" placeholder="Nama Lengkap" required>
+      </div>
+      <div class="form-group">
+        <label>ID Anggota</label>
+        <input type="text" id="ra-id" placeholder="Misal: awan10" required>
+      </div>
+      <div class="form-group">
+        <label>Buat PIN</label>
+        <input type="password" id="ra-pin" placeholder="••••" required>
+      </div>
+      <div class="form-group">
+        <label>Target Infaq Pribadi (Rp)</label>
+        <input type="number" id="ra-target" placeholder="100000" value="100000">
+      </div>
+      <button type="submit" class="btn-success"><i data-lucide="user-check" size="18"></i> Selesaikan Registrasi</button>
+    </form>
+  </div>
+
+  <!-- DASHBOARD ANGGOTA -->
+  <div id="sec-dash-a" class="card" style="display:none;">
+    <div class="user-header">
+      <div class="user-info">
+        <h3 id="dash-a-nama">Nama Anggota</h3>
+        <p class="group-title" id="dash-a-group-name">Grup: -</p>
+        <div class="user-badges">
+          <span class="badge">Kode: <strong id="dash-a-code">-</strong></span>
+          <span class="badge">ID: <strong id="dash-a-id">-</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <span class="stat-label">Total Terkumpul</span>
+        <div class="stat-value" style="color: var(--accent-emerald);">Rp <span id="dash-a-total">0</span></div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Target Infaq</span>
+        <div class="stat-value" id="dash-a-target-text" style="color: #fff;">Rp 0</div>
+      </div>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-header">
+        <span style="color: var(--text-muted);">Pencapaian Target</span>
+        <span id="dash-a-percent" style="color: var(--accent-emerald);">0%</span>
+      </div>
+      <div class="progress-bg">
+        <div id="dash-a-bar" class="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- Riwayat Infaq -->
+    <h4 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 700;">Riwayat Infaq</h4>
+    <div class="table-container" style="margin-bottom: 20px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Tanggal</th>
+            <th>Nominal</th>
+            <th>Catatan</th>
+          </tr>
+        </thead>
+        <tbody id="dash-a-table"></tbody>
+      </table>
+    </div>
+
+    <!-- Edit Profil Anggota Box (Collapsible) -->
+    <div class="target-box">
+      <div class="collapsible-header" onclick="toggleEditProfile()">
+        <span><i data-lucide="user-pen" size="14" style="vertical-align: middle; margin-right: 4px;"></i> Edit Profil / Data Akun</span>
+        <i data-lucide="chevron-down" id="edit-profile-icon" size="16"></i>
+      </div>
+      <div id="edit-profile-content" class="collapsible-content">
+        <form id="form-edit-a">
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label>Kode Grup</label>
+            <input type="text" id="ea-code" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label>ID Anggota</label>
+            <input type="text" id="ea-id" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label>Nama Lengkap</label>
+            <input type="text" id="ea-nama" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label>PIN Baru (Opsional)</label>
+            <input type="password" id="ea-pin" placeholder="Kosongkan jika tidak diubah">
+          </div>
+          <button type="submit" class="btn-warning" style="padding: 10px;"><i data-lucide="save" size="16"></i> Simpan Perubahan Profil</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Atur Target Infaq Box -->
+    <div class="target-box">
+      <label>Atur Ulang Target Infaq Pribadi:</label>
+      <div class="target-box-flex">
+        <input type="number" id="dash-a-target-input" placeholder="Nominal Rp...">
+        <button type="button" class="btn-primary" onclick="updateTargetInfaq()">Simpan</button>
+      </div>
+    </div>
+
+    <button class="btn-danger" onclick="logout()"><i data-lucide="log-out" size="16"></i> Keluar Akun</button>
+  </div>
+
+  <!-- FORM LOGIN ADMIN -->
+  <div id="sec-login-admin" class="card" style="display:none;">
+    <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
+    <h3 style="margin-bottom: 20px; font-weight: 800;">Login Admin</h3>
+    <form id="form-login-admin">
+      <div class="form-group">
+        <label>Kode Grup</label>
+        <input type="text" id="ladmin-code" placeholder="Contoh: GRP-1234" required>
+      </div>
+      <div class="form-group">
+        <label>PIN Admin Grup</label>
+        <input type="password" id="ladmin-pin" placeholder="••••" required>
+      </div>
+      <button type="submit" class="btn-primary"><i data-lucide="shield" size="18"></i> Masuk Panel Admin</button>
+    </form>
+  </div>
+
+  <!-- FORM BUAT GRUP -->
+  <div id="sec-create-c" class="card" style="display:none;">
+    <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
+    <h3 style="margin-bottom: 20px; font-weight: 800;">Buat Grup Baru</h3>
+    <form id="form-create-c">
+      <div class="form-group">
+        <label>Nama Instansi / Yayasan</label>
+        <input type="text" id="cc-sekolah" placeholder="PT Baiti Jannati" required>
+      </div>
+      <div class="form-group">
+        <label>Nama Grup / Kelompok</label>
+        <input type="text" id="cc-kelas" placeholder="Perindu Surga" required>
+      </div>
+      <div class="form-group">
+        <label>Nama Admin/Pengelola</label>
+        <input type="text" id="cc-admin" placeholder="Nama Penanggung Jawab" required>
+      </div>
+      <div class="form-group">
+        <label>Buat PIN Admin</label>
+        <input type="password" id="cc-pin" placeholder="••••" required>
+      </div>
+      <button type="submit" class="btn-success"><i data-lucide="plus-circle" size="18"></i> Buat Grup Sekarang</button>
+    </form>
+    <div id="cc-result" style="display:none;" class="code-box">
+      <p style="font-size: 12px; font-weight: 600; text-transform: uppercase;">Kode Grup Anda Berhasil Dibuat:</p>
+      <span id="cc-code-display" style="font-size: 28px; font-weight: 800; letter-spacing: 2px;">-</span>
+    </div>
+  </div>
+
+  <!-- DASHBOARD ADMIN -->
+  <div id="sec-dash-admin" class="card" style="display:none;">
+    <div class="user-header">
+      <h3 id="dash-admin-title">Panel Admin</h3>
+      <p class="group-title">Instansi: <span id="dash-admin-sekolah" style="color: #fff;">-</span> | Kode Grup: <span id="dash-admin-code" style="color: var(--accent-emerald);">-</span></p>
+    </div>
+
+    <form id="form-add-infaq" class="no-print" style="margin-bottom: 24px;">
+      <h4 style="margin-bottom: 14px; font-size: 14px;">Input Transaksi Infaq</h4>
+      <div class="form-group">
+        <label>Pilih Anggota</label>
+        <select id="at-anggota" required></select>
+      </div>
+      <div class="form-group">
+        <label>Tanggal Input</label>
+        <input type="date" id="at-tanggal" required>
+      </div>
+      <div class="form-group">
+        <label>Nominal (Rp)</label>
+        <input type="number" id="at-nominal" placeholder="50000" required>
+      </div>
+      <div class="form-group">
+        <label>Catatan</label>
+        <input type="text" id="at-catatan" placeholder="Infaq Harian / Subuh">
+      </div>
+      <button type="submit" class="btn-success"><i data-lucide="plus" size="18"></i> Simpan Infaq</button>
+    </form>
+
+    <div class="no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <h4 style="font-size: 14px; font-weight: 700;">Rekapitulasi Infaq</h4>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-primary" onclick="loadAllMembersSummary()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="refresh-cw" size="14"></i> Refresh</button>
+        <button class="btn-success" onclick="window.print()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="printer" size="14"></i> Cetak PDF</button>
+      </div>
+    </div>
+
+    <!-- AREA REKAPITULASI BISA DICETAK -->
+    <div id="print-area" class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>ID Anggota</th>
+            <th>Nama Anggota</th>
+            <th>Total Infaq</th>
+          </tr>
+        </thead>
+        <tbody id="dash-admin-rekap-table"></tbody>
+      </table>
+    </div>
+
+    <!-- Tabel Daftar Transaksi Masuk untuk Hapus Inputan -->
+    <div class="no-print" style="margin-top: 24px;">
+      <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">Dikelola / Hapus Inputan Salah</h4>
+      <div class="table-container" style="max-height: 250px; overflow-y: auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>ID Anggota</th>
+              <th>Nominal</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="dash-admin-trans-table"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <button class="btn-danger no-print" onclick="logout()"><i data-lucide="log-out" size="16"></i> Keluar Panel</button>
+  </div>
+
+</div>
+
+<!-- FOOTER DI PALING BAWAH HALAMAN -->
+<div class="page-footer">
+  Kurniapedia | 2026
+</div>
+
+<script>
+  // Inisialisasi Lucide Icons
+  lucide.createIcons();
+
+  const SUPABASE_URL = "https://oouzppxbakkiwwttkbet.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vdXpwcHhiYWtraXd3dHRrYmV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNDc4NDAsImV4cCI6MjEwNDYyMzg0MH0.RkUC2MYGFTgcrXzNrHZCMj-ch9Bg-TFWEiGvf1fWD40";
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  let currMember = null;
+  let currAdmin = null;
+
+  document.getElementById('at-tanggal').value = new Date().toISOString().split('T')[0];
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedMember = localStorage.getItem('infaq_member');
+    const savedAdmin = localStorage.getItem('infaq_admin');
+
+    if (savedMember) {
+      currMember = JSON.parse(savedMember);
+      showMemberDash();
+    } else if (savedAdmin) {
+      currAdmin = JSON.parse(savedAdmin);
+      showAdminDash();
+    } else {
+      showSection('home');
+    }
+  });
+
+  function hideAll() {
+    ['sec-home', 'sec-login-a', 'sec-reg-a', 'sec-dash-a', 'sec-login-admin', 'sec-create-c', 'sec-dash-admin'].forEach(id => {
+      document.getElementById(id).style.display = 'none';
+    });
+  }
+
+  function showSection(sec) {
+    hideAll();
+    document.getElementById('sec-' + sec).style.display = 'block';
+    lucide.createIcons();
+  }
+
+  function logout() {
+    localStorage.removeItem('infaq_member');
+    localStorage.removeItem('infaq_admin');
+    currMember = null;
+    currAdmin = null;
+    showSection('home');
+  }
+
+  function toggleEditProfile() {
+    const content = document.getElementById('edit-profile-content');
+    const icon = document.getElementById('edit-profile-icon');
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      icon.style.transform = 'rotate(0deg)';
+    } else {
+      content.style.display = 'block';
+      icon.style.transform = 'rotate(180deg)';
+    }
+    lucide.createIcons();
+  }
+
+  // 1. BUAT GRUP
+  document.getElementById('form-create-c').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const code = 'GRP-' + Math.floor(1000 + Math.random() * 9000);
+    const { data, error } = await supabaseClient.from('grup').insert([{
+      kode_grup: code,
+      nama_sekolah: document.getElementById('cc-sekolah').value,
+      nama_grup: document.getElementById('cc-kelas').value,
+      nama_admin: document.getElementById('cc-admin').value,
+      pin_admin: document.getElementById('cc-pin').value
+    }]);
+
+    if (error) return alert("Gagal membuat grup: " + error.message);
+    document.getElementById('cc-code-display').innerText = code;
+    document.getElementById('cc-result').style.display = 'block';
+  });
+
+  // 2. DAFTAR ANGGOTA
+  document.getElementById('form-reg-a').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const targetVal = Number(document.getElementById('ra-target').value) || 100000;
+    
+    const { data, error } = await supabaseClient.from('anggota').insert([{
+      kode_grup: document.getElementById('ra-code').value,
+      nama_anggota: document.getElementById('ra-nama').value,
+      id_anggota: document.getElementById('ra-id').value,
+      pin_anggota: document.getElementById('ra-pin').value,
+      target_infaq: targetVal
+    }]);
+
+    if (error) return alert("Pendaftaran gagal: " + error.message);
+    alert("Registrasi Berhasil! Silakan Login.");
+    showSection('login-a');
+  });
+
+  // 3. LOGIN ANGGOTA
+  document.getElementById('form-login-a').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const kode = document.getElementById('la-code').value;
+    const idAnggota = document.getElementById('la-id').value;
+    const pin = document.getElementById('la-pin').value;
+
+    const { data, error } = await supabaseClient.from('anggota')
+      .select('*')
+      .eq('kode_grup', kode)
+      .eq('id_anggota', idAnggota)
+      .eq('pin_anggota', pin)
+      .single();
+
+    if (error || !data) return alert("Login gagal! Periksa Kode Grup, ID Anggota, dan PIN Anda.");
+    
+    const { data: groupData } = await supabaseClient.from('grup')
+      .select('nama_grup')
+      .eq('kode_grup', kode)
+      .single();
+
+    currMember = data;
+    currMember.nama_grup = groupData ? groupData.nama_grup : 'Grup';
+    
+    localStorage.setItem('infaq_member', JSON.stringify(currMember));
+    showMemberDash();
+  });
+
+  function showMemberDash() {
+    document.getElementById('dash-a-nama').innerText = currMember.nama_anggota;
+    document.getElementById('dash-a-group-name').innerText = "Grup " + (currMember.nama_grup || '-');
+    document.getElementById('dash-a-code').innerText = currMember.kode_grup;
+    document.getElementById('dash-a-id').innerText = currMember.id_anggota;
+    
+    document.getElementById('ea-code').value = currMember.kode_grup;
+    document.getElementById('ea-id').value = currMember.id_anggota;
+    document.getElementById('ea-nama').value = currMember.nama_anggota;
+    document.getElementById('ea-pin').value = '';
+    document.getElementById('edit-profile-content').style.display = 'none';
+    document.getElementById('edit-profile-icon').style.transform = 'rotate(0deg)';
+
+    const targetInfaq = currMember.target_infaq || 100000;
+    document.getElementById('dash-a-target-input').value = targetInfaq;
+    
+    loadMyInfaq();
+    showSection('dash-a');
+  }
+
+  // UPDATE PROFIL ANGGOTA (PERBAIKAN PROSES EDIT ID ANGGOTA)
+  document.getElementById('form-edit-a').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const newCode = document.getElementById('ea-code').value.trim();
+    const newId = document.getElementById('ea-id').value.trim();
+    const newNama = document.getElementById('ea-nama').value.trim();
+    const newPin = document.getElementById('ea-pin').value.trim();
+
+    // Verifikasi keberadaan grup baru
+    const { data: gCheck } = await supabaseClient.from('grup').select('kode_grup, nama_grup').eq('kode_grup', newCode).single();
+    if (!gCheck) return alert("Kode Grup baru tidak ditemukan/tidak valid di sistem.");
+
+    const oldCode = currMember.kode_grup;
+    const oldId = currMember.id_anggota;
+
+    // 1. Apabila ID atau Kode Grup berubah, perbarui riwayat transaksi pada tabel 'infaq' terlebih dahulu
+    if (newCode !== oldCode || newId !== oldId) {
+      const { error: errInfaq } = await supabaseClient.from('infaq')
+        .update({ kode_grup: newCode, id_anggota: newId })
+        .eq('kode_grup', oldCode)
+        .eq('id_anggota', oldId);
+
+      if (errInfaq) return alert("Gagal memperbarui relasi data infaq: " + errInfaq.message);
+    }
+
+    // 2. Perbarui data pada tabel 'anggota'
+    const updatePayload = {
+      kode_grup: newCode,
+      id_anggota: newId,
+      nama_anggota: newNama
+    };
+    if (newPin !== "") {
+      updatePayload.pin_anggota = newPin;
+    }
+
+    const { error: errMember } = await supabaseClient.from('anggota')
+      .update(updatePayload)
+      .eq('kode_grup', oldCode)
+      .eq('id_anggota', oldId);
+
+    if (errMember) {
+      // Rollback riwayat transaksi jika tabel anggota gagal diperbarui
+      if (newCode !== oldCode || newId !== oldId) {
+        await supabaseClient.from('infaq')
+          .update({ kode_grup: oldCode, id_anggota: oldId })
+          .eq('kode_grup', newCode)
+          .eq('id_anggota', newId);
+      }
+      return alert("Gagal memperbarui profil: " + errMember.message);
+    }
+
+    // 3. Simpan perubahan ke local state
+    currMember.kode_grup = newCode;
+    currMember.id_anggota = newId;
+    currMember.nama_anggota = newNama;
+    currMember.nama_grup = gCheck.nama_grup;
+    if (newPin !== "") currMember.pin_anggota = newPin;
+
+    localStorage.setItem('infaq_member', JSON.stringify(currMember));
+    alert("Profil berhasil diperbarui!");
+    showMemberDash();
+  });
+
+  async function updateTargetInfaq() {
+    const newTarget = Number(document.getElementById('dash-a-target-input').value);
+    if (!newTarget || newTarget <= 0) return alert("Masukkan nominal target yang valid.");
+
+    currMember.target_infaq = newTarget;
+    localStorage.setItem('infaq_member', JSON.stringify(currMember));
+
+    await supabaseClient.from('anggota')
+      .update({ target_infaq: newTarget })
+      .eq('kode_grup', currMember.kode_grup)
+      .eq('id_anggota', currMember.id_anggota);
+
+    alert("Target infaq berhasil diperbarui!");
+    loadMyInfaq();
+  }
+
+  async function loadMyInfaq() {
+    const { data, error } = await supabaseClient.from('infaq')
+      .select('*')
+      .eq('kode_grup', currMember.kode_grup)
+      .eq('id_anggota', currMember.id_anggota)
+      .order('tanggal', { ascending: false });
+
+    const tbody = document.getElementById('dash-a-table');
+    tbody.innerHTML = '';
+    
+    let total = 0;
+    if (data && data.length > 0) {
+      data.forEach(t => {
+        total += Number(t.nominal);
+        tbody.innerHTML += `<tr><td>${t.tanggal}</td><td><strong style="color: var(--accent-emerald);">Rp ${Number(t.nominal).toLocaleString('id-ID')}</strong></td><td>${t.catatan || '-'}</td></tr>`;
+      });
+    } else {
+      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color: var(--text-muted); padding: 18px;">Belum ada riwayat infaq</td></tr>';
+    }
+
+    const currentTarget = currMember.target_infaq || 100000;
+    document.getElementById('dash-a-total').innerText = total.toLocaleString('id-ID');
+    document.getElementById('dash-a-target-text').innerText = "Rp " + currentTarget.toLocaleString('id-ID');
+    
+    const progressPercent = Math.min((total / currentTarget) * 100, 100).toFixed(1);
+    document.getElementById('dash-a-bar').style.width = progressPercent + '%';
+    document.getElementById('dash-a-percent').innerText = progressPercent + '%';
+  }
+
+  // 4. LOGIN ADMIN
+  document.getElementById('form-login-admin').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const kode = document.getElementById('ladmin-code').value;
+    const pin = document.getElementById('ladmin-pin').value;
+
+    const { data, error } = await supabaseClient.from('grup')
+      .select('*')
+      .eq('kode_grup', kode)
+      .eq('pin_admin', pin)
+      .single();
+
+    if (error || !data) return alert("Login admin gagal!");
+    currAdmin = data;
+    localStorage.setItem('infaq_admin', JSON.stringify(currAdmin));
+    showAdminDash();
+  });
+
+  function showAdminDash() {
+    document.getElementById('dash-admin-title').innerText = "Panel Admin: " + currAdmin.nama_grup;
+    document.getElementById('dash-admin-sekolah').innerText = currAdmin.nama_sekolah;
+    document.getElementById('dash-admin-code').innerText = currAdmin.kode_grup;
+    loadMembersForAdmin();
+    loadAllMembersSummary();
+    loadAdminTransactions();
+    showSection('dash-admin');
+  }
+
+  async function loadMembersForAdmin() {
+    const select = document.getElementById('at-anggota');
+    select.innerHTML = '<option value="">-- Memuat anggota... --</option>';
+
+    const { data, error } = await supabaseClient.from('anggota')
+      .select('*')
+      .eq('kode_grup', currAdmin.kode_grup);
+
+    if (data && data.length > 0) {
+      select.innerHTML = '<option value="">-- Pilih Anggota --</option>';
+      data.forEach(a => {
+        select.innerHTML += `<option value="${a.id_anggota}">${a.nama_anggota} (${a.id_anggota})</option>`;
+      });
+    } else {
+      select.innerHTML = '<option value="">-- Belum Ada Anggota --</option>';
+    }
+  }
+
+  // 5. INPUT TRANSAKSI INFAQ BY ADMIN
+  document.getElementById('form-add-infaq').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const idAnggota = document.getElementById('at-anggota').value;
+    const tanggal = document.getElementById('at-tanggal').value;
+    const nominal = Number(document.getElementById('at-nominal').value);
+    const catatan = document.getElementById('at-catatan').value;
+
+    if (!idAnggota) return alert("Pilih anggota terlebih dahulu.");
+
+    const { error } = await supabaseClient.from('infaq').insert([{
+      kode_grup: currAdmin.kode_grup,
+      id_anggota: idAnggota,
+      tanggal: tanggal,
+      nominal: nominal,
+      catatan: catatan
+    }]);
+
+    if (error) return alert("Gagal menyimpan infaq: " + error.message);
+
+    alert("Infaq berhasil disimpan!");
+    document.getElementById('at-nominal').value = '';
+    document.getElementById('at-catatan').value = '';
+    loadAllMembersSummary();
+    loadAdminTransactions();
+  });
+
+  async function loadAllMembersSummary() {
+    const { data: members } = await supabaseClient.from('anggota')
+      .select('*')
+      .eq('kode_grup', currAdmin.kode_grup);
+
+    const { data: infaqs } = await supabaseClient.from('infaq')
+      .select('*')
+      .eq('kode_grup', currAdmin.kode_grup);
+
+    const tbody = document.getElementById('dash-admin-rekap-table');
+    tbody.innerHTML = '';
+
+    if (members && members.length > 0) {
+      members.forEach((m, index) => {
+        let totalM = 0;
+        if (infaqs) {
+          infaqs.filter(i => i.id_anggota === m.id_anggota).forEach(i => {
+            totalM += Number(i.nominal);
+          });
+        }
+        tbody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${m.id_anggota}</td>
+            <td><strong>${m.nama_anggota}</strong></td>
+            <td><strong style="color: var(--accent-emerald);">Rp ${totalM.toLocaleString('id-ID')}</strong></td>
+          </tr>
+        `;
+      });
+    } else {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 18px;">Belum ada anggota terdaftar</td></tr>';
+    }
+  }
+
+  async function loadAdminTransactions() {
+    const { data, error } = await supabaseClient.from('infaq')
+      .select('*')
+      .eq('kode_grup', currAdmin.kode_grup)
+      .order('tanggal', { ascending: false });
+
+    const tbody = document.getElementById('dash-admin-trans-table');
+    tbody.innerHTML = '';
+
+    if (data && data.length > 0) {
+      data.forEach(item => {
+        const transId = item.id; 
+        tbody.innerHTML += `
+          <tr>
+            <td>${item.tanggal}</td>
+            <td>${item.id_anggota}</td>
+            <td>Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
+            <td>
+              <button class="btn-icon-del" onclick="deleteTransaction(${transId})">
+                <i data-lucide="trash-2" size="12"></i> Hapus
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+      lucide.createIcons();
+    } else {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 14px;">Belum ada riwayat transaksi</td></tr>';
+    }
+  }
+
+  async function deleteTransaction(transId) {
+    if (!confirm("Apakah Anda yakin ingin menghapus data inputan infaq ini?")) return;
+
+    const { error } = await supabaseClient.from('infaq')
+      .delete()
+      .eq('id', transId);
+
+    if (error) return alert("Gagal menghapus transaksi: " + error.message);
+
+    alert("Data transaksi berhasil dihapus!");
+    loadAllMembersSummary();
+    loadAdminTransactions();
+  }
+</script>
+</body>
+</html>
+      min-height: 100vh;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient Glowing Orbs */
+    .glow-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+    .glow-orb-1 {
+      width: 400px;
+      height: 400px;
+      background: #4f46e5;
+      top: -100px;
+      left: -100px;
+    }
+    .glow-orb-2 {
+      width: 350px;
+      height: 350px;
+      background: #10b981;
+      bottom: -100px;
+      right: -100px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 520px;
+      position: relative;
+      z-index: 10;
+      margin-bottom: 20px;
+    }
+
+    /* Footer Copyright di Paling Bawah */
+    .page-footer {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      opacity: 0.7;
+      letter-spacing: 0.5px;
+      margin-top: 10px;
+    }
+
+    /* Header Brand */
+    .brand-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2));
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: 18px;
+      margin-bottom: 12px;
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.25);
+      color: var(--accent-emerald);
+    }
+    .main-title {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .main-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Glassmorphism Card Style */
+    .card {
+      background: var(--glass-card);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .btn-back {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      color: var(--text-muted);
+      font-weight: 600;
+      cursor: pointer;
+      padding: 8px 14px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .btn-back:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Menu Grid Layout */
+    .menu-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .menu-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      padding: 18px 20px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .menu-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 4px; height: 100%;
+      background: linear-gradient(180deg, var(--accent-emerald), var(--accent-cyan));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .menu-card:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(16, 185, 129, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    .menu-card:hover::before {
+      opacity: 1;
+    }
+    .menu-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-cyan);
+      flex-shrink: 0;
+    }
+    .menu-content { flex: 1; }
+    .menu-card h4 {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .menu-card p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .menu-arrow {
+      color: var(--text-muted);
+      transition: transform 0.2s, color 0.2s;
+    }
+    .menu-card:hover .menu-arrow {
+      transform: translateX(4px);
+      color: #fff;
+    }
+
+    /* Forms & Inputs */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+      font-size: 14px;
+      outline: none;
+      transition: all 0.2s ease;
+      background: rgba(0, 0, 0, 0.25);
+      color: #fff;
+    }
+    input::placeholder { color: #475569; }
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 16px;
+    }
+    select option {
+      background: #0f172a;
+      color: #fff;
+    }
+    input:focus, select:focus {
+      border-color: var(--accent-emerald);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    /* Buttons */
+    button {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    }
+    .btn-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
+    .btn-success:hover {
+      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+    .btn-warning {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+    }
+    .btn-warning:hover {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+    }
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      margin-top: 16px;
+    }
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+    .btn-icon-del {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      width: auto;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-icon-del:hover {
+      background: rgba(239, 68, 68, 0.3);
+    }
+
+    /* Dashboard Header & Cards */
+    .user-header {
+      border-bottom: 1px solid var(--glass-border);
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+    }
+    .user-info h3 {
+      font-size: 22px;
+      color: #fff;
+      font-weight: 800;
+    }
+    .user-info p.group-title {
+      font-size: 13px;
+      color: var(--accent-cyan);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .user-badges {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .badge {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid var(--glass-border);
+    }
+    .badge strong { color: #fff; }
+
+    /* Stat Cards */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--glass-border);
+      padding: 16px;
+      border-radius: 16px;
+    }
+    .stat-card .stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .stat-card .stat-value {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    /* Progress Bar */
+    .progress-section {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--glass-border);
+      padding: 18px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+    }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .progress-bg {
+      background: rgba(0, 0, 0, 0.3);
+      height: 12px;
+      border-radius: 20px;
+      overflow: hidden;
+      padding: 2px;
+      border: 1px solid var(--glass-border);
+    }
+    .progress-fill {
+      background: linear-gradient(90deg, var(--accent-emerald) 0%, var(--accent-cyan) 100%);
+      height: 100%;
+      width: 0%;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    }
+
+    /* Action Box */
+    .target-box {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--glass-border);
+      padding: 16px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+    }
+    .target-box-flex {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .target-box-flex input { background: rgba(0,0,0,0.2); }
+    .target-box-flex button { width: auto; min-width: 100px; }
+
+    /* Collapsible Edit Profil Styles */
+    .collapsible-header {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .collapsible-header:hover {
+      color: var(--accent-emerald);
+    }
+    .collapsible-content {
+      display: none;
+      margin-top: 14px;
+      border-top: 1px solid var(--glass-border);
+      padding-top: 14px;
+    }
+
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+      border-radius: 16px;
+      border: 1px solid var(--glass-border);
+      background: rgba(0, 0, 0, 0.2);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+    th {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 14px 16px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--glass-border);
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      color: #e2e8f0;
+    }
+    tr:last-child td { border-bottom: none; }
+
+    .code-box {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px dashed var(--accent-emerald);
+      padding: 18px;
+      border-radius: 16px;
+      text-align: center;
+      color: var(--accent-emerald);
+      margin-top: 16px;
+    }
+
     /* Print Styles Overrides */
     @media print {
       body {
