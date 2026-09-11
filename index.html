@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>INFAQU - Kurniapedia</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Library html2pdf.js untuk Fitur Save As PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <!-- Google Fonts & Lucide Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -505,58 +507,26 @@
       margin-top: 16px;
     }
 
-    /* CSS PERBAIKAN TOTAL UNTUK CETAK PDF */
-    @media print {
-      body {
-        background: #ffffff !important;
-        color: #000000 !important;
-        padding: 0 !important;
-        margin: 0 !important;
-      }
-      .glow-orb, .btn-back, .no-print, button, form, .target-box, .page-footer, .brand-header {
-        display: none !important;
-      }
-      .container {
-        max-width: 100% !important;
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-      }
-      #sec-dash-admin, #sec-dash-admin .card, .card {
-        display: block !important;
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        padding: 0 !important;
-        margin: 0 !important;
-      }
-      .user-header {
-        border-bottom: 2px solid #000 !important;
-        color: #000 !important;
-        margin-bottom: 15px !important;
-      }
-      .user-header h3, .user-header p, .user-header span {
-        color: #000 !important;
-      }
-      #print-area, .table-container {
-        display: block !important;
-        border: none !important;
-        background: transparent !important;
-        overflow: visible !important;
-      }
-      table {
-        border-collapse: collapse !important;
-        width: 100% !important;
-        color: #000 !important;
-      }
-      th, td {
-        border: 1px solid #000 !important;
-        color: #000 !important;
-        padding: 8px 12px !important;
-      }
-      th {
-        background: #f1f5f9 !important;
-      }
+    /* TEMPLATE STYLING KHUSUS UNTUK HASIL EXPORT PDF */
+    .pdf-export-style {
+      background: #ffffff !important;
+      color: #1e293b !important;
+      padding: 24px !important;
+      border-radius: 0 !important;
+    }
+    .pdf-export-style table {
+      width: 100% !important;
+      border-collapse: collapse !important;
+    }
+    .pdf-export-style th, .pdf-export-style td {
+      border: 1px solid #cbd5e1 !important;
+      padding: 10px 14px !important;
+      color: #0f172a !important;
+    }
+    .pdf-export-style th {
+      background-color: #f1f5f9 !important;
+      color: #334155 !important;
+      font-weight: 700 !important;
     }
   </style>
 </head>
@@ -811,7 +781,7 @@
       <p class="group-title">Instansi: <span id="dash-admin-sekolah" style="color: #fff;">-</span> | Kode Grup: <span id="dash-admin-code" style="color: var(--accent-emerald);">-</span></p>
     </div>
 
-    <form id="form-add-infaq" class="no-print" style="margin-bottom: 24px;">
+    <form id="form-add-infaq" style="margin-bottom: 24px;">
       <h4 style="margin-bottom: 14px; font-size: 14px;">Input Transaksi Infaq</h4>
       <div class="form-group">
         <label>Pilih Anggota</label>
@@ -832,31 +802,39 @@
       <button type="submit" class="btn-success"><i data-lucide="plus" size="18"></i> Simpan Infaq</button>
     </form>
 
-    <div class="no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
       <h4 style="font-size: 14px; font-weight: 700;">Rekapitulasi Infaq</h4>
       <div style="display: flex; gap: 8px;">
         <button class="btn-primary" onclick="loadAllMembersSummary()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="refresh-cw" size="14"></i> Refresh</button>
-        <button class="btn-success" onclick="printPdfData()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="printer" size="14"></i> Cetak PDF</button>
+        <button class="btn-success" id="btn-export-pdf" onclick="saveAsPdf()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="download" size="14"></i> Save as PDF</button>
       </div>
     </div>
 
-    <!-- AREA REKAPITULASI DENGAN CSS KHUSUS PRINT -->
-    <div id="print-area" class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>ID Anggota</th>
-            <th>Nama Anggota</th>
-            <th>Total Infaq</th>
-          </tr>
-        </thead>
-        <tbody id="dash-admin-rekap-table"></tbody>
-      </table>
+    <!-- AREA UNTUK TARGET EXPORT PDF -->
+    <div id="print-area">
+      <!-- Kop Header Tambahan Khusus File PDF -->
+      <div id="pdf-header" style="display: none; border-bottom: 2px solid #0f172a; padding-bottom: 12px; margin-bottom: 16px;">
+        <h2 style="font-size: 18px; font-weight: 800; color: #0f172a; margin: 0;">LAPORAN REKAPITULASI INFAQ</h2>
+        <p style="font-size: 12px; color: #475569; margin-top: 4px;" id="pdf-header-sub">Grup: - | Instansi: -</p>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>ID Anggota</th>
+              <th>Nama Anggota</th>
+              <th>Total Infaq</th>
+            </tr>
+          </thead>
+          <tbody id="dash-admin-rekap-table"></tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Tabel Daftar Transaksi Masuk untuk Hapus Inputan -->
-    <div class="no-print" style="margin-top: 24px;">
+    <div style="margin-top: 24px;">
       <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">Dikelola / Hapus Inputan Salah</h4>
       <div class="table-container" style="max-height: 250px; overflow-y: auto;">
         <table>
@@ -873,7 +851,7 @@
       </div>
     </div>
 
-    <button class="btn-danger no-print" onclick="logout()"><i data-lucide="log-out" size="16"></i> Keluar Panel</button>
+    <button class="btn-danger" onclick="logout()"><i data-lucide="log-out" size="16"></i> Keluar Panel</button>
   </div>
 
 </div>
@@ -1027,7 +1005,7 @@
     showSection('dash-a');
   }
 
-  // UPDATE PROFIL ANGGOTA (SISTEM UPSERT UNTUK MENGATASI FOREIGN KEY ERROR)
+  // UPDATE PROFIL ANGGOTA (SISTEM UPSERT TERUJI)
   document.getElementById('form-edit-a').addEventListener('submit', async (e) => {
     e.preventDefault();
     const newCode = document.getElementById('ea-code').value.trim();
@@ -1035,7 +1013,6 @@
     const newNama = document.getElementById('ea-nama').value.trim();
     const newPin = document.getElementById('ea-pin').value.trim();
 
-    // Verifikasi keberadaan grup baru
     const { data: gCheck } = await supabaseClient.from('grup').select('kode_grup, nama_grup').eq('kode_grup', newCode).single();
     if (!gCheck) return alert("Kode Grup baru tidak ditemukan/tidak valid di sistem.");
 
@@ -1044,7 +1021,6 @@
     const isIdOrGroupChanged = (newCode !== oldCode || newId !== oldId);
 
     if (isIdOrGroupChanged) {
-      // 1. Buat data profil baru terlebih dahulu di tabel 'anggota' agar foreign key constraint terpenuhi
       const newMemberData = {
         kode_grup: newCode,
         id_anggota: newId,
@@ -1056,23 +1032,19 @@
       const { error: errInsert } = await supabaseClient.from('anggota').insert([newMemberData]);
       if (errInsert) return alert("Gagal memperbarui ID (ID Baru mungkin sudah dipakai): " + errInsert.message);
 
-      // 2. Alihkan seluruh riwayat infaq dari ID lama ke ID baru
       const { error: errInfaq } = await supabaseClient.from('infaq')
         .update({ kode_grup: newCode, id_anggota: newId })
         .eq('kode_grup', oldCode)
         .eq('id_anggota', oldId);
 
       if (errInfaq) {
-        // Rollback pembuatan akun baru jika gagal update transaksi
         await supabaseClient.from('anggota').delete().eq('kode_grup', newCode).eq('id_anggota', newId);
         return alert("Gagal memindahkan data riwayat transaksi: " + errInfaq.message);
       }
 
-      // 3. Hapus entitas profil lama di tabel 'anggota'
       await supabaseClient.from('anggota').delete().eq('kode_grup', oldCode).eq('id_anggota', oldId);
 
     } else {
-      // Jika ID tidak berubah, langsung lakukan update standar
       const updatePayload = { nama_anggota: newNama };
       if (newPin !== "") updatePayload.pin_anggota = newPin;
 
@@ -1084,7 +1056,6 @@
       if (errUpdate) return alert("Gagal memperbarui profil: " + errUpdate.message);
     }
 
-    // Update state aplikasi lokal
     currMember.kode_grup = newCode;
     currMember.id_anggota = newId;
     currMember.nama_anggota = newNama;
@@ -1248,12 +1219,41 @@
     }
   }
 
-  // PERBAIKAN CETAK PDF MANDIRI
-  async function printPdfData() {
-    await loadAllMembersSummary();
-    setTimeout(() => {
-      window.print();
-    }, 200);
+  // FUNGSI UNGGULAN: SAVE AS PDF MANDIRI
+  async function saveAsPdf() {
+    const btn = document.getElementById('btn-export-pdf');
+    const printElement = document.getElementById('print-area');
+    const pdfHeader = document.getElementById('pdf-header');
+    
+    // Siapkan Tampilan Header khusus File PDF
+    document.getElementById('pdf-header-sub').innerText = `Grup: ${currAdmin.nama_grup} | Instansi: ${currAdmin.nama_sekolah} | Kode: ${currAdmin.kode_grup}`;
+    pdfHeader.style.display = 'block';
+    
+    // Ubah tema visual sejenak ke gaya dokumen putih bersih
+    printElement.classList.add('pdf-export-style');
+    btn.disabled = true;
+    btn.innerText = "Mengunduh...";
+
+    const opt = {
+      margin:       10,
+      filename:     `Rekap_Infaq_${currAdmin.kode_grup}.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, logging: false },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    try {
+      await html2pdf().set(opt).from(printElement).save();
+    } catch (err) {
+      alert("Gagal mengunduh PDF: " + err.message);
+    } finally {
+      // Kembalikan antarmuka ke tema semula setelah PDF terunduh
+      pdfHeader.style.display = 'none';
+      printElement.classList.remove('pdf-export-style');
+      btn.disabled = false;
+      btn.innerHTML = '<i data-lucide="download" size="14"></i> Save as PDF';
+      lucide.createIcons();
+    }
   }
 
   async function loadAdminTransactions() {
@@ -1303,4 +1303,3 @@
 </script>
 </body>
 </html>
-
