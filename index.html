@@ -563,7 +563,7 @@
         <div class="menu-icon"><i data-lucide="user-plus"></i></div>
         <div class="menu-content">
           <h4>Daftar Anggota Baru</h4>
-          <p>Registrasi mandiri dengan Kode Grup</p>
+          <p>Daftar mandiri dengan Kode Grup</p>
         </div>
         <i data-lucide="chevron-right" class="menu-arrow"></i>
       </div>
@@ -598,14 +598,14 @@
         <input type="text" id="la-code" placeholder="Contoh: GRP-1234" required>
       </div>
       <div class="form-group">
-        <label>ID Anggota</label>
+        <label>ID</label>
         <input type="text" id="la-id" placeholder="ID Anggota Anda" required>
       </div>
       <div class="form-group">
-        <label>PIN Anggota</label>
+        <label>PIN</label>
         <input type="password" id="la-pin" placeholder="••••" required>
       </div>
-      <button type="submit" class="btn-primary"><i data-lucide="log-in" size="18"></i> Masuk Sekarang</button>
+      <button type="submit" class="btn-primary"><i data-lucide="log-in" size="18"></i> Login</button>
     </form>
   </div>
 
@@ -634,7 +634,7 @@
         <label>Target Infaq Pribadi (Rp)</label>
         <input type="number" id="ra-target" placeholder="100000" value="100000">
       </div>
-      <button type="submit" class="btn-success"><i data-lucide="user-check" size="18"></i> Selesaikan Registrasi</button>
+      <button type="submit" class="btn-success"><i data-lucide="user-check" size="18"></i> Daftar</button>
     </form>
   </div>
 
@@ -751,22 +751,22 @@
     <h3 style="margin-bottom: 20px; font-weight: 800;">Buat Grup Baru</h3>
     <form id="form-create-c">
       <div class="form-group">
-        <label>Nama Instansi / Yayasan</label>
-        <input type="text" id="cc-sekolah" placeholder="PT Baiti Jannati" required>
+        <label>Nama Instansi</label>
+        <input type="text" id="cc-sekolah" placeholder="Baiti Jannati" required>
       </div>
       <div class="form-group">
-        <label>Nama Grup / Kelompok</label>
+        <label>Nama Grup</label>
         <input type="text" id="cc-kelas" placeholder="Perindu Surga" required>
       </div>
       <div class="form-group">
-        <label>Nama Admin/Pengelola</label>
-        <input type="text" id="cc-admin" placeholder="Nama Penanggung Jawab" required>
+        <label>Nama Admin</label>
+        <input type="text" id="cc-admin" placeholder="Sholih/Sholihah" required>
       </div>
       <div class="form-group">
         <label>Buat PIN Admin</label>
         <input type="password" id="cc-pin" placeholder="••••" required>
       </div>
-      <button type="submit" class="btn-success"><i data-lucide="plus-circle" size="18"></i> Buat Grup Sekarang</button>
+      <button type="submit" class="btn-success"><i data-lucide="plus-circle" size="18"></i> Buat Grup</button>
     </form>
     <div id="cc-result" style="display:none;" class="code-box">
       <p style="font-size: 12px; font-weight: 600; text-transform: uppercase;">Kode Grup Anda Berhasil Dibuat:</p>
@@ -794,7 +794,7 @@
     </div>
 
     <form id="form-add-infaq" style="margin-bottom: 24px;">
-      <h4 style="margin-bottom: 14px; font-size: 14px;">Input Transaksi Infaq</h4>
+      <h4 style="margin-bottom: 14px; font-size: 14px;">Input Infaq</h4>
       <div class="form-group">
         <label>Pilih Anggota</label>
         <select id="at-anggota" required></select>
@@ -809,7 +809,7 @@
       </div>
       <div class="form-group">
         <label>Catatan</label>
-        <input type="text" id="at-catatan" placeholder="Infaq Harian / Subuh / Bulanan">
+        <input type="text" id="at-catatan" placeholder="Infaq Harian / Pekanan / Bulanan">
       </div>
       <button type="submit" class="btn-success"><i data-lucide="plus" size="18"></i> Simpan Infaq</button>
     </form>
@@ -818,7 +818,7 @@
       <h4 style="font-size: 14px; font-weight: 700;">Rekapitulasi Infaq</h4>
       <div style="display: flex; gap: 8px;">
         <button class="btn-primary" onclick="refreshAdminData()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="refresh-cw" size="14"></i> Refresh</button>
-        <button class="btn-success" id="btn-export-pdf" onclick="saveAsPdf()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="download" size="14"></i> Save as PDF</button>
+        <button class="btn-success" id="btn-export-pdf" onclick="saveAsPdf()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="download" size="14"></i> Save PDF</button>
       </div>
     </div>
 
@@ -863,7 +863,7 @@
       </div>
     </div>
 
-    <button class="btn-danger" onclick="logout()"><i data-lucide="log-out" size="16"></i> Keluar Panel</button>
+    <button class="btn-danger" onclick="logout()"><i data-lucide="log-out" size="16"></i> Keluar</button>
   </div>
 
 </div>
@@ -965,7 +965,7 @@
     }]);
 
     if (error) return alert("Pendaftaran gagal: " + error.message);
-    alert("Registrasi Berhasil! Silakan Login.");
+    alert("Pendaftaran Berhasil! Silakan Login.");
     showSection('login-a');
   });
 
