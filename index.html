@@ -421,7 +421,7 @@
       border: 1px solid var(--glass-border);
       padding: 16px;
       border-radius: 16px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
     .target-box-flex {
       display: flex;
@@ -667,6 +667,21 @@
       </div>
     </div>
 
+    <!-- Riwayat Infaq (Dipindah ke bawah progress bar) -->
+    <h4 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 700;">Riwayat Infaq</h4>
+    <div class="table-container" style="margin-bottom: 20px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Tanggal</th>
+            <th>Nominal</th>
+            <th>Catatan</th>
+          </tr>
+        </thead>
+        <tbody id="dash-a-table"></tbody>
+      </table>
+    </div>
+
     <!-- Edit Profil Anggota Box (Collapsible) -->
     <div class="target-box">
       <div class="collapsible-header" onclick="toggleEditProfile()">
@@ -703,20 +718,6 @@
         <input type="number" id="dash-a-target-input" placeholder="Nominal Rp...">
         <button type="button" class="btn-primary" onclick="updateTargetInfaq()">Simpan</button>
       </div>
-    </div>
-
-    <h4 style="margin: 20px 0 12px 0; font-size: 14px; font-weight: 700;">Riwayat Infaq</h4>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Tanggal</th>
-            <th>Nominal</th>
-            <th>Catatan</th>
-          </tr>
-        </thead>
-        <tbody id="dash-a-table"></tbody>
-      </table>
     </div>
 
     <button class="btn-danger" onclick="logout()"><i data-lucide="log-out" size="16"></i> Keluar Akun</button>
