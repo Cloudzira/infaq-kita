@@ -431,6 +431,26 @@
     .target-box-flex input { background: rgba(0,0,0,0.2); }
     .target-box-flex button { width: auto; min-width: 100px; }
 
+    /* Collapsible Edit Profil Styles */
+    .collapsible-header {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .collapsible-header:hover {
+      color: var(--accent-emerald);
+    }
+    .collapsible-content {
+      display: none;
+      margin-top: 14px;
+      border-top: 1px solid var(--glass-border);
+      padding-top: 14px;
+    }
+
     /* Tables */
     .table-container {
       overflow-x: auto;
@@ -647,28 +667,33 @@
       </div>
     </div>
 
-    <!-- Edit Profil Anggota Box -->
+    <!-- Edit Profil Anggota Box (Collapsible) -->
     <div class="target-box">
-      <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; color: #fff;"><i data-lucide="user-pen" size="14"></i> Edit Profil / Data Akun</h4>
-      <form id="form-edit-a">
-        <div class="form-group" style="margin-bottom: 10px;">
-          <label>Kode Grup</label>
-          <input type="text" id="ea-code" required>
-        </div>
-        <div class="form-group" style="margin-bottom: 10px;">
-          <label>ID Anggota</label>
-          <input type="text" id="ea-id" required>
-        </div>
-        <div class="form-group" style="margin-bottom: 10px;">
-          <label>Nama Lengkap</label>
-          <input type="text" id="ea-nama" required>
-        </div>
-        <div class="form-group" style="margin-bottom: 12px;">
-          <label>PIN Baru (Opsional)</label>
-          <input type="password" id="ea-pin" placeholder="Kosongkan jika tidak diubah">
-        </div>
-        <button type="submit" class="btn-warning" style="padding: 10px;"><i data-lucide="save" size="16"></i> Simpan Perubahan Profil</button>
-      </form>
+      <div class="collapsible-header" onclick="toggleEditProfile()">
+        <span><i data-lucide="user-pen" size="14" style="vertical-align: middle; margin-right: 4px;"></i> Edit Profil / Data Akun</span>
+        <i data-lucide="chevron-down" id="edit-profile-icon" size="16"></i>
+      </div>
+      <div id="edit-profile-content" class="collapsible-content">
+        <form id="form-edit-a">
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label>Kode Grup</label>
+            <input type="text" id="ea-code" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label>ID Anggota</label>
+            <input type="text" id="ea-id" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label>Nama Lengkap</label>
+            <input type="text" id="ea-nama" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label>PIN Baru (Opsional)</label>
+            <input type="password" id="ea-pin" placeholder="Kosongkan jika tidak diubah">
+          </div>
+          <button type="submit" class="btn-warning" style="padding: 10px;"><i data-lucide="save" size="16"></i> Simpan Perubahan Profil</button>
+        </form>
+      </div>
     </div>
 
     <!-- Atur Target Infaq Box -->
@@ -864,6 +889,20 @@
     showSection('home');
   }
 
+  // Fungsi Toggle Edit Profil (Collapsible)
+  function toggleEditProfile() {
+    const content = document.getElementById('edit-profile-content');
+    const icon = document.getElementById('edit-profile-icon');
+    if (content.style.display === 'block') {
+      content.style.display = 'none';
+      icon.style.transform = 'rotate(0deg)';
+    } else {
+      content.style.display = 'block';
+      icon.style.transform = 'rotate(180deg)';
+    }
+    lucide.createIcons();
+  }
+
   // 1. BUAT GRUP
   document.getElementById('form-create-c').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -933,11 +972,13 @@
     document.getElementById('dash-a-code').innerText = currMember.kode_grup;
     document.getElementById('dash-a-id').innerText = currMember.id_anggota;
     
-    // Set form edit values
+    // Set form edit values & pastikan tertutup kembali
     document.getElementById('ea-code').value = currMember.kode_grup;
     document.getElementById('ea-id').value = currMember.id_anggota;
     document.getElementById('ea-nama').value = currMember.nama_anggota;
     document.getElementById('ea-pin').value = '';
+    document.getElementById('edit-profile-content').style.display = 'none';
+    document.getElementById('edit-profile-icon').style.transform = 'rotate(0deg)';
 
     const targetInfaq = currMember.target_infaq || 100000;
     document.getElementById('dash-a-target-input').value = targetInfaq;
@@ -991,7 +1032,7 @@
 
     localStorage.setItem('infaq_member', JSON.stringify(currMember));
     alert("Profil berhasil diperbarui!");
-    showMemberDash();
+    showMemberDash(); // Mereset tampilan dashboard dan otomatis menyembunyikan form edit profil
   });
 
   async function updateTargetInfaq() {
@@ -1157,9 +1198,6 @@
 
     if (data && data.length > 0) {
       data.forEach(item => {
-        // Asumsi tabel infaq memiliki kolom primary key 'id' atau kita gunakan filter id unik jika ada, 
-        // namun jika struktur supabase menggunakan row id bawaan (biasanya kolom 'id' bertipe serial/uuid):
-        // Jika kolom primary key tabel infaq bernama 'id', kita bisa hapus via .eq('id', item.id)
         const transId = item.id; 
         tbody.innerHTML += `
           <tr>
