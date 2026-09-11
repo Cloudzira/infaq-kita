@@ -506,56 +506,6 @@
       color: var(--accent-emerald);
       margin-top: 16px;
     }
-
-    /* STYLING WADAH EXPORT PDF (OFF-SCREEN VISIBLE) */
-    #pdf-export-container {
-      position: absolute;
-      top: 0;
-      left: -9999px;
-      width: 750px;
-      background: #ffffff !important;
-      color: #0f172a !important;
-      padding: 35px;
-      font-family: 'Plus Jakarta Sans', Arial, sans-serif;
-      box-sizing: border-box;
-      display: block !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-    }
-    #pdf-export-container h2 {
-      font-size: 18px;
-      font-weight: 800;
-      color: #0f172a;
-      margin-bottom: 4px;
-      text-transform: uppercase;
-    }
-    #pdf-export-container p {
-      font-size: 11px;
-      color: #475569;
-      margin-bottom: 18px;
-    }
-    #pdf-export-container table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    #pdf-export-container th, #pdf-export-container td {
-      border: 1px solid #cbd5e1;
-      padding: 8px 10px;
-      font-size: 11px;
-      text-align: left;
-      color: #1e293b;
-    }
-    #pdf-export-container th {
-      background-color: #f1f5f9;
-      font-weight: 700;
-      color: #334155;
-    }
-    #pdf-export-container tfoot td {
-      background-color: #f8fafc;
-      font-weight: 800;
-      color: #0f172a;
-    }
   </style>
 </head>
 <body>
@@ -891,32 +841,6 @@
 <!-- FOOTER -->
 <div class="page-footer">
   Kurniapedia | 2026
-</div>
-
-<!-- CONTAINER KHUSUS UNTUK GENERATE PDF -->
-<div id="pdf-export-container">
-  <h2>LAPORAN REKAPITULASI PROGRES INFAQ ANGGOTA</h2>
-  <p id="pdf-meta-info">Grup: - | Instansi: - | Kode Grup: - | Periode: -</p>
-
-  <table>
-    <thead>
-      <tr>
-        <th style="width: 6%; text-align: center;">No</th>
-        <th style="width: 18%;">ID Anggota</th>
-        <th style="width: 28%;">Nama Anggota</th>
-        <th style="width: 24%;">Infaq Bulan Ini</th>
-        <th style="width: 24%;">Total Infaq (Akumulasi)</th>
-      </tr>
-    </thead>
-    <tbody id="pdf-table-body"></tbody>
-    <tfoot>
-      <tr>
-        <td colspan="3" style="text-align: right; font-weight: 800;">GRAND TOTAL:</td>
-        <td id="pdf-grand-monthly" style="font-weight: 800;">Rp 0</td>
-        <td id="pdf-grand-total" style="font-weight: 800;">Rp 0</td>
-      </tr>
-    </tfoot>
-  </table>
 </div>
 
 <script>
@@ -1322,7 +1246,7 @@
     }
   }
 
-  // FUNGSI EKSPOR DAN CETAK PDF TERPERBAIKI SEPENUHNYA
+  // FUNGSI EKSPOR PDF TERPERBAIKI DENGAN RENDER DYNAMIC DOM CONTAINER
   async function saveAsPdf() {
     const btn = document.getElementById('btn-export-pdf');
     btn.disabled = true;
@@ -1334,26 +1258,21 @@
       const currentMonth = now.getMonth();
       const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
-      document.getElementById('pdf-meta-info').innerText = 
-        `Grup: ${currAdmin.nama_grup} | Instansi: ${currAdmin.nama_sekolah} | Kode Grup: ${currAdmin.kode_grup} | Periode Cetak: ${namaBulan[currentMonth]} ${currentYear}`;
-
-      // Ambil Seluruh Data Anggota
+      // 1. Fetch Data dari Supabase
       const { data: members, error: errM } = await supabaseClient.from('anggota')
         .select('*')
         .eq('kode_grup', currAdmin.kode_grup);
 
-      // Ambil Seluruh Transaksi Infaq
       const { data: infaqs, error: errI } = await supabaseClient.from('infaq')
         .select('*')
         .eq('kode_grup', currAdmin.kode_grup);
 
-      if (errM || errI) throw new Error("Gagal mengunduh data riwayat dari database.");
+      if (errM || errI) throw new Error("Gagal mengambil data riwayat dari server.");
 
-      const pdfTbody = document.getElementById('pdf-table-body');
-      pdfTbody.innerHTML = '';
-
+      // 2. Susun Baris Tabel Rekap
       let grandMonthly = 0;
       let grandTotal = 0;
+      let tableRowsHtml = '';
 
       if (members && members.length > 0) {
         members.forEach((m, idx) => {
@@ -1377,45 +1296,86 @@
           grandMonthly += monthlyInfaq;
           grandTotal += totalInfaq;
 
-          pdfTbody.innerHTML += `
-            <tr>
-              <td style="text-align: center;">${idx + 1}</td>
-              <td>${m.id_anggota}</td>
-              <td><strong>${m.nama_anggota}</strong></td>
-              <td>Rp ${monthlyInfaq.toLocaleString('id-ID')}</td>
-              <td><strong>Rp ${totalInfaq.toLocaleString('id-ID')}</strong></td>
+          tableRowsHtml += `
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+              <td style="padding: 8px 10px; text-align: center; border: 1px solid #cbd5e1;">${idx + 1}</td>
+              <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">${m.id_anggota}</td>
+              <td style="padding: 8px 10px; border: 1px solid #cbd5e1;"><strong>${m.nama_anggota}</strong></td>
+              <td style="padding: 8px 10px; border: 1px solid #cbd5e1;">Rp ${monthlyInfaq.toLocaleString('id-ID')}</td>
+              <td style="padding: 8px 10px; border: 1px solid #cbd5e1;"><strong>Rp ${totalInfaq.toLocaleString('id-ID')}</strong></td>
             </tr>
           `;
         });
-
-        document.getElementById('pdf-grand-monthly').innerText = "Rp " + grandMonthly.toLocaleString('id-ID');
-        document.getElementById('pdf-grand-total').innerText = "Rp " + grandTotal.toLocaleString('id-ID');
-
       } else {
-        pdfTbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Tidak ada data anggota terdaftar</td></tr>';
+        tableRowsHtml = '<tr><td colspan="5" style="text-align:center; padding: 12px; border: 1px solid #cbd5e1;">Tidak ada data anggota terdaftar</td></tr>';
       }
 
-      // Berikan jeda waktu 200ms agar DOM selesai dikalkulasi dan di-render penuh
-      await new Promise(resolve => setTimeout(resolve, 200));
+      // 3. Buat Elemen DOM Sementara secara Eksplisit
+      const pdfWrapper = document.createElement('div');
+      pdfWrapper.id = 'dynamic-pdf-render-wrapper';
+      pdfWrapper.style.position = 'fixed';
+      pdfWrapper.style.top = '0';
+      pdfWrapper.style.left = '0';
+      pdfWrapper.style.width = '750px';
+      pdfWrapper.style.backgroundColor = '#ffffff';
+      pdfWrapper.style.color = '#0f172a';
+      pdfWrapper.style.padding = '30px';
+      pdfWrapper.style.zIndex = '-99999';
+      pdfWrapper.style.fontFamily = 'Arial, sans-serif';
+      pdfWrapper.style.boxSizing = 'border-box';
 
-      const element = document.getElementById('pdf-export-container');
+      pdfWrapper.innerHTML = `
+        <div style="border-bottom: 2px solid #0f172a; padding-bottom: 10px; margin-bottom: 15px;">
+          <h2 style="font-size: 18px; font-weight: 800; color: #0f172a; margin: 0 0 4px 0; text-transform: uppercase;">LAPORAN REKAPITULASI PROGRES INFAQ ANGGOTA</h2>
+          <p style="font-size: 11px; color: #475569; margin: 0;">Grup: <strong>${currAdmin.nama_grup}</strong> | Instansi: <strong>${currAdmin.nama_sekolah}</strong> | Kode Grup: <strong>${currAdmin.kode_grup}</strong> | Periode: <strong>${namaBulan[currentMonth]} ${currentYear}</strong></p>
+        </div>
 
+        <table style="width: 100%; border-collapse: collapse; font-size: 11px; color: #1e293b;">
+          <thead>
+            <tr style="background-color: #f1f5f9;">
+              <th style="padding: 8px 10px; border: 1px solid #cbd5e1; text-align: center; width: 6%;">No</th>
+              <th style="padding: 8px 10px; border: 1px solid #cbd5e1; text-align: left; width: 18%;">ID Anggota</th>
+              <th style="padding: 8px 10px; border: 1px solid #cbd5e1; text-align: left; width: 28%;">Nama Anggota</th>
+              <th style="padding: 8px 10px; border: 1px solid #cbd5e1; text-align: left; width: 24%;">Infaq Bulan Ini</th>
+              <th style="padding: 8px 10px; border: 1px solid #cbd5e1; text-align: left; width: 24%;">Total Infaq (Akumulasi)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tableRowsHtml}
+          </tbody>
+          <tfoot>
+            <tr style="background-color: #f8fafc; font-weight: 800;">
+              <td colspan="3" style="padding: 8px 10px; text-align: right; border: 1px solid #cbd5e1;">GRAND TOTAL:</td>
+              <td style="padding: 8px 10px; border: 1px solid #cbd5e1; color: #0284c7;">Rp ${grandMonthly.toLocaleString('id-ID')}</td>
+              <td style="padding: 8px 10px; border: 1px solid #cbd5e1; color: #16a34a;">Rp ${grandTotal.toLocaleString('id-ID')}</td>
+            </tr>
+          </tfoot>
+        </table>
+      `;
+
+      document.body.appendChild(pdfWrapper);
+
+      // 4. Berikan micro-delay 100ms
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      // 5. Konversi PDF
       const opt = {
-        margin:       8,
+        margin:       10,
         filename:     `Rekap_Infaq_${currAdmin.kode_grup}_${namaBulan[currentMonth]}_${currentYear}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { 
-          scale: 2, 
-          useCORS: true, 
-          logging: false
-        },
+        html2canvas:  { scale: 2, useCORS: true, logging: false },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
-      await html2pdf().set(opt).from(element).save();
+      await html2pdf().set(opt).from(pdfWrapper).save();
+
+      // 6. Hapus Wadah Sementara dari DOM
+      document.body.removeChild(pdfWrapper);
 
     } catch (err) {
       alert("Proses pencetakan PDF gagal: " + err.message);
+      const existing = document.getElementById('dynamic-pdf-render-wrapper');
+      if (existing) document.body.removeChild(existing);
     } finally {
       btn.disabled = false;
       btn.innerHTML = '<i data-lucide="download" size="14"></i> Save PDF';
