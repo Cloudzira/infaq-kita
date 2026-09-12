@@ -4,17 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>INFAQU - Kurniapedia</title>
+
+  <!-- 1. EKsternal Library (Supabase, SheetJS, SweetAlert2, Google Fonts & Lucide Icons) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- Library SheetJS untuk Export Spreadsheet / Excel -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <!-- SweetAlert2 CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-  <!-- Google Fonts & Lucide Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
 
+  <!-- 2. STYLING (CSS) -->
   <style>
     :root {
       --bg-gradient: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 60%, #030712 100%);
@@ -49,7 +49,7 @@
       position: relative;
     }
 
-    /* Ambient Glowing Orbs */
+    /* Efek Latar Belakang (Glowing Orbs) */
     .glow-orb {
       position: fixed;
       border-radius: 50%;
@@ -58,20 +58,8 @@
       z-index: 0;
       opacity: 0.4;
     }
-    .glow-orb-1 {
-      width: 400px;
-      height: 400px;
-      background: #4f46e5;
-      top: -100px;
-      left: -100px;
-    }
-    .glow-orb-2 {
-      width: 350px;
-      height: 350px;
-      background: #10b981;
-      bottom: -100px;
-      right: -100px;
-    }
+    .glow-orb-1 { width: 400px; height: 400px; background: #4f46e5; top: -100px; left: -100px; }
+    .glow-orb-2 { width: 350px; height: 350px; background: #10b981; bottom: -100px; right: -100px; }
 
     .container {
       width: 100%;
@@ -81,7 +69,6 @@
       margin-bottom: 20px;
     }
 
-    /* Footer Copyright */
     .page-footer {
       position: relative;
       z-index: 10;
@@ -93,7 +80,7 @@
       margin-top: 10px;
     }
 
-    /* Header Brand */
+    /* Header & Logo Brand */
     .brand-header {
       text-align: center;
       margin-bottom: 28px;
@@ -125,7 +112,7 @@
       margin-top: 4px;
     }
 
-    /* Glassmorphism Card Style */
+    /* Kartu Glassmorphism */
     .card {
       background: var(--glass-card);
       backdrop-filter: blur(20px);
@@ -163,7 +150,7 @@
       border-color: rgba(255, 255, 255, 0.2);
     }
 
-    /* Menu Grid Layout */
+    /* Menu Utama (Grid Layout) */
     .menu-grid {
       display: flex;
       flex-direction: column;
@@ -196,45 +183,24 @@
       border-color: rgba(16, 185, 129, 0.3);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
-    .menu-card:hover::before {
-      opacity: 1;
-    }
+    .menu-card:hover::before { opacity: 1; }
     .menu-icon {
-      width: 42px;
-      height: 42px;
+      width: 42px; height: 42px;
       border-radius: 12px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--glass-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       color: var(--accent-cyan);
       flex-shrink: 0;
     }
     .menu-content { flex: 1; }
-    .menu-card h4 {
-      color: #fff;
-      font-size: 15px;
-      font-weight: 700;
-      margin-bottom: 2px;
-    }
-    .menu-card p {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-    .menu-arrow {
-      color: var(--text-muted);
-      transition: transform 0.2s, color 0.2s;
-    }
-    .menu-card:hover .menu-arrow {
-      transform: translateX(4px);
-      color: #fff;
-    }
+    .menu-card h4 { color: #fff; font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+    .menu-card p { font-size: 12px; color: var(--text-muted); }
+    .menu-arrow { color: var(--text-muted); transition: transform 0.2s, color 0.2s; }
+    .menu-card:hover .menu-arrow { transform: translateX(4px); color: #fff; }
 
-    /* Forms & Inputs */
-    .form-group {
-      margin-bottom: 16px;
-    }
+    /* Form & Input */
+    .form-group { margin-bottom: 16px; }
     label {
       font-size: 12px;
       font-weight: 600;
@@ -263,17 +229,14 @@
       background-position: right 14px center;
       background-size: 16px;
     }
-    select option {
-      background: #0f172a;
-      color: #fff;
-    }
+    select option { background: #0f172a; color: #fff; }
     input:focus, select:focus {
       border-color: var(--accent-emerald);
       box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
       background: rgba(0, 0, 0, 0.4);
     }
 
-    /* Buttons */
+    /* Tombol-tombol Aksi */
     button {
       width: 100%;
       padding: 13px;
@@ -288,85 +251,32 @@
       justify-content: center;
       gap: 8px;
     }
-    .btn-primary {
-      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-      color: white;
-      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
-    }
-    .btn-primary:hover {
-      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
-    }
-    .btn-success {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: white;
-      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-    }
-    .btn-success:hover {
-      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
-      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-    }
-    .btn-warning {
-      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-      color: white;
-      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
-    }
-    .btn-warning:hover {
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
-    }
-    .btn-danger {
-      background: rgba(239, 68, 68, 0.1);
-      color: #ef4444;
-      border: 1px solid rgba(239, 68, 68, 0.2);
-      margin-top: 16px;
-    }
-    .btn-danger:hover {
-      background: rgba(239, 68, 68, 0.2);
-      border-color: rgba(239, 68, 68, 0.4);
-    }
+    .btn-primary { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3); }
+    .btn-primary:hover { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+    .btn-success { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
+    .btn-success:hover { background: linear-gradient(135deg, #34d399 0%, #10b981 100%); }
+    .btn-warning { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
+    .btn-warning:hover { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); }
+    .btn-danger { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); margin-top: 16px; }
+    .btn-danger:hover { background: rgba(239, 68, 68, 0.2); }
 
-    /* Icon-only Action Buttons (Icon-Only UI/UX Upgrade) */
-    .btn-icon-del {
-      background: rgba(239, 68, 68, 0.12);
-      color: #ef4444;
-      border: 1px solid rgba(239, 68, 68, 0.25);
+    /* Tombol Ikon Kecil (Edit & Hapus) */
+    .btn-icon-del, .btn-icon-edit {
       padding: 6px;
       border-radius: 8px;
-      width: 32px;
-      height: 32px;
+      width: 32px; height: 32px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       transition: all 0.2s;
     }
-    .btn-icon-del:hover {
-      background: rgba(239, 68, 68, 0.25);
-      color: #fff;
-      transform: scale(1.05);
-    }
-    .btn-icon-edit {
-      background: rgba(245, 158, 11, 0.12);
-      color: #f59e0b;
-      border: 1px solid rgba(245, 158, 11, 0.25);
-      padding: 6px;
-      border-radius: 8px;
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
-    .btn-icon-edit:hover {
-      background: rgba(245, 158, 11, 0.25);
-      color: #fff;
-      transform: scale(1.05);
-    }
+    .btn-icon-del { background: rgba(239, 68, 68, 0.12); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.25); }
+    .btn-icon-del:hover { background: rgba(239, 68, 68, 0.25); color: #fff; transform: scale(1.05); }
+    .btn-icon-edit { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.25); }
+    .btn-icon-edit:hover { background: rgba(245, 158, 11, 0.25); color: #fff; transform: scale(1.05); }
 
-    /* Badge Admin Toggle Style */
+    /* Badge Admin Toggle */
     .badge-admin-toggle {
       background: rgba(99, 102, 241, 0.15);
       color: #818cf8;
@@ -381,22 +291,13 @@
       gap: 4px;
       transition: all 0.2s;
     }
-    .badge-admin-toggle:hover {
-      background: rgba(99, 102, 241, 0.3);
-      color: #fff;
-    }
     .badge-admin-toggle.is-admin {
       background: rgba(16, 185, 129, 0.15);
       color: var(--accent-emerald);
       border-color: rgba(16, 185, 129, 0.3);
     }
-    .badge-admin-toggle.is-admin:hover {
-      background: rgba(239, 68, 68, 0.15);
-      color: #ef4444;
-      border-color: rgba(239, 68, 68, 0.3);
-    }
 
-    /* Dashboard Header & Cards */
+    /* Dashboard Profil Header & Pita Medali */
     .user-header {
       border-bottom: 1px solid var(--glass-border);
       padding-bottom: 16px;
@@ -406,35 +307,12 @@
       align-items: flex-start;
       gap: 12px;
     }
-    .user-info h3 {
-      font-size: 22px;
-      color: #fff;
-      font-weight: 800;
-    }
-    .user-info p.group-title {
-      font-size: 13px;
-      color: var(--accent-cyan);
-      font-weight: 600;
-      margin-top: 2px;
-    }
-    .user-badges {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-    .badge {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text-muted);
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 600;
-      border: 1px solid var(--glass-border);
-    }
+    .user-info h3 { font-size: 22px; color: #fff; font-weight: 800; }
+    .user-info p.group-title { font-size: 13px; color: var(--accent-cyan); font-weight: 600; margin-top: 2px; }
+    .user-badges { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+    .badge { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; border: 1px solid var(--glass-border); }
     .badge strong { color: #fff; }
 
-    /* Medal Ribbon Styling */
     .medal-ribbon-container {
       display: flex;
       flex-direction: column;
@@ -447,1831 +325,1012 @@
       text-align: center;
       flex-shrink: 0;
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    @keyframes popIn {
-      0% { transform: scale(0.8); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    .medal-icon-wrapper {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 4px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.3);
-    }
-    .medal-text {
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+    .medal-icon-wrapper { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 4px; }
+    .medal-text { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
 
-    /* Medal Variations */
-    .medal-rank-1 .medal-icon-wrapper {
-      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-      color: #fff;
-      border: 1px solid rgba(251, 191, 36, 0.5);
-    }
-    .medal-rank-1 .medal-text {
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+    /* Variasi Warna Medali Juara */
+    .medal-rank-1 .medal-icon-wrapper { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; }
+    .medal-rank-2 .medal-icon-wrapper { background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%); color: #fff; }
+    .medal-rank-3 .medal-icon-wrapper { background: linear-gradient(135deg, #b45309 0%, #78350f 100%); color: #fff; }
+    .medal-rank-other .medal-icon-wrapper { background: rgba(255, 255, 255, 0.08); color: var(--text-muted); }
 
-    .medal-rank-2 .medal-icon-wrapper {
-      background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
-      color: #fff;
-      border: 1px solid rgba(226, 232, 240, 0.5);
-    }
-    .medal-rank-2 .medal-text {
-      background: linear-gradient(135deg, #f1f5f9 0%, #94a3b8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+    /* Statistik & Progress Bar */
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .stat-card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); padding: 16px; border-radius: 16px; }
+    .stat-card .stat-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 6px; display: block; }
+    .stat-card .stat-value { font-size: 18px; font-weight: 800; }
 
-    .medal-rank-3 .medal-icon-wrapper {
-      background: linear-gradient(135deg, #b45309 0%, #78350f 100%);
-      color: #fff;
-      border: 1px solid rgba(217, 119, 6, 0.5);
-    }
-    .medal-rank-3 .medal-text {
-      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+    .progress-section { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); padding: 18px; border-radius: 16px; margin-bottom: 20px; }
+    .progress-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 10px; }
+    .progress-bg { background: rgba(0, 0, 0, 0.3); height: 12px; border-radius: 20px; overflow: hidden; padding: 2px; border: 1px solid var(--glass-border); }
+    .progress-fill { background: linear-gradient(90deg, var(--accent-emerald) 0%, var(--accent-cyan) 100%); height: 100%; width: 0%; transition: width 0.8s; border-radius: 20px; }
 
-    .medal-rank-other .medal-icon-wrapper {
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--text-muted);
-      border: 1px solid var(--glass-border);
-    }
-    .medal-rank-other .medal-text {
-      color: var(--text-muted);
-    }
-
-    /* Stat Cards */
-    .stat-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-    .stat-card {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--glass-border);
-      padding: 16px;
-      border-radius: 16px;
-    }
-    .stat-card .stat-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 600;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-      display: block;
-    }
-    .stat-card .stat-value {
-      font-size: 18px;
-      font-weight: 800;
-    }
-
-    /* Progress Bar */
-    .progress-section {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--glass-border);
-      padding: 18px;
-      border-radius: 16px;
-      margin-bottom: 20px;
-    }
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-    .progress-bg {
-      background: rgba(0, 0, 0, 0.3);
-      height: 12px;
-      border-radius: 20px;
-      overflow: hidden;
-      padding: 2px;
-      border: 1px solid var(--glass-border);
-    }
-    .progress-fill {
-      background: linear-gradient(90deg, var(--accent-emerald) 0%, var(--accent-cyan) 100%);
-      height: 100%;
-      width: 0%;
-      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      border-radius: 20px;
-      box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
-    }
-
-    /* Action Box */
-    .target-box {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--glass-border);
-      padding: 16px;
-      border-radius: 16px;
-      margin-bottom: 20px;
-    }
-    .target-box-flex {
-      display: flex;
-      gap: 10px;
-      margin-top: 8px;
-    }
+    .target-box { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); padding: 16px; border-radius: 16px; margin-bottom: 20px; }
+    .target-box-flex { display: flex; gap: 10px; margin-top: 8px; }
     .target-box-flex input { background: rgba(0,0,0,0.2); }
     .target-box-flex button { width: auto; min-width: 100px; }
 
-    /* Collapsible Edit Profil Styles */
-    .collapsible-header {
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-      font-weight: 700;
-      color: #fff;
-    }
-    .collapsible-header:hover {
-      color: var(--accent-emerald);
-    }
-    .collapsible-content {
-      display: none;
-      margin-top: 14px;
-      border-top: 1px solid var(--glass-border);
-      padding-top: 14px;
-    }
+    /* Collapse / Dropdown Accordion */
+    .collapsible-header { cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 700; color: #fff; }
+    .collapsible-content { display: none; margin-top: 14px; border-top: 1px solid var(--glass-border); paddingTop: 14px; }
 
-    /* Tables */
-    .table-container {
-      overflow-x: auto;
-      border-radius: 16px;
-      border: 1px solid var(--glass-border);
-      background: rgba(0, 0, 0, 0.2);
-    }
+    /* Tabel & Scrollbar */
+    .table-container { overflow-x: auto; border-radius: 16px; border: 1px solid var(--glass-border); background: rgba(0, 0, 0, 0.2); }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
+    th { position: sticky; top: 0; background: #0f172a !important; padding: 10px 12px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--glass-border); text-transform: uppercase; font-size: 11px; }
+    td { padding: 10px 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); color: #e2e8f0; vertical-align: middle; }
 
-    .table-container::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    .table-container::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 10px;
-    }
-    .table-container::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 10px;
-    }
-    .table-container::-webkit-scrollbar-thumb:hover {
-      background: var(--accent-emerald);
-    }
+    .code-box { background: rgba(16, 185, 129, 0.08); border: 1px dashed var(--accent-emerald); padding: 18px; border-radius: 16px; text-align: center; color: var(--accent-emerald); margin-top: 16px; }
 
-    th {
-      position: sticky;
-      top: 0;
-      z-index: 2;
-      background: #0f172a !important;
-      padding: 10px 12px;
-      font-weight: 700;
-      color: var(--text-muted);
-      border-bottom: 1px solid var(--glass-border);
-      text-transform: uppercase;
-      font-size: 11px;
-      letter-spacing: 0.5px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-      line-height: 1.3;
-      text-align: left;
-    }
-    td {
-      padding: 10px 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-      color: #e2e8f0;
-      vertical-align: middle;
-    }
-    tr:last-child td { border-bottom: none; }
-
-    .code-box {
-      background: rgba(16, 185, 129, 0.08);
-      border: 1px dashed var(--accent-emerald);
-      padding: 18px;
-      border-radius: 16px;
-      text-align: center;
-      color: var(--accent-emerald);
-      margin-top: 16px;
-    }
-
-    /* Custom SweetAlert2 Dark Glassmorphism Theme */
+    /* Kostum Popup SweetAlert2 */
     .colored-toast.swal2-popup {
       background: rgba(15, 23, 42, 0.85) !important;
       backdrop-filter: blur(20px) !important;
-      -webkit-backdrop-filter: blur(20px) !important;
       border: 1px solid rgba(255, 255, 255, 0.1) !important;
       border-radius: 24px !important;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6) !important;
       color: #f8fafc !important;
-      font-family: 'Plus Jakarta Sans', sans-serif !important;
-    }
-    .colored-toast .swal2-title {
-      color: #ffffff !important;
-      font-size: 20px !important;
-      font-weight: 800 !important;
-      letter-spacing: -0.5px !important;
-    }
-    .colored-toast .swal2-html-container {
-      color: #94a3b8 !important;
-      font-size: 13px !important;
-    }
-    .colored-toast .swal2-input {
-      background: rgba(0, 0, 0, 0.3) !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
-      color: #fff !important;
-      border-radius: 12px !important;
-      font-size: 14px !important;
-      box-shadow: none !important;
-    }
-    .colored-toast .swal2-input:focus {
-      border-color: #10b981 !important;
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15) !important;
-    }
-    .colored-toast .swal2-styled.swal2-confirm {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
-      border-radius: 12px !important;
-      font-weight: 700 !important;
-      font-size: 13px !important;
-      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3) !important;
-    }
-    .colored-toast .swal2-styled.swal2-cancel {
-      background: rgba(239, 68, 68, 0.15) !important;
-      color: #ef4444 !important;
-      border: 1px solid rgba(239, 68, 68, 0.3) !important;
-      border-radius: 12px !important;
-      font-weight: 700 !important;
-      font-size: 13px !important;
-    }
-    .colored-toast .swal2-styled.swal2-cancel:hover {
-      background: rgba(239, 68, 68, 0.3) !important;
-      color: #fff !important;
     }
   </style>
 </head>
 <body>
 
-<!-- Background Glow Effects -->
-<div class="glow-orb glow-orb-1"></div>
-<div class="glow-orb glow-orb-2"></div>
+  <!-- Efek Bulatan Cahaya Latar Belakang -->
+  <div class="glow-orb glow-orb-1"></div>
+  <div class="glow-orb glow-orb-2"></div>
 
-<div class="container">
+  <div class="container">
 
-  <!-- BRAND HEADER -->
-  <div class="brand-header">
-    <div class="brand-logo">
-      <i data-lucide="heart-handshake" size="28"></i>
-    </div>
-    <h1 class="main-title">INFAQU</h1>
-    <p class="main-subtitle">Sistem Manajemen & Transparansi Infaq Digital</p>
-  </div>
-
-  <!-- HALAMAN UTAMA (MENU) -->
-  <div id="sec-home">
-    <div class="menu-grid">
-      <div class="menu-card" onclick="showSection('login-a')">
-        <div class="menu-icon"><i data-lucide="user"></i></div>
-        <div class="menu-content">
-          <h4>Login Anggota</h4>
-          <p>Cek progress dan atur target pencapaian pribadi</p>
-        </div>
-        <i data-lucide="chevron-right" class="menu-arrow"></i>
+    <!-- BRAND HEADER -->
+    <div class="brand-header">
+      <div class="brand-logo">
+        <i data-lucide="heart-handshake" size="28"></i>
       </div>
-
-      <div class="menu-card" onclick="showSection('reg-a')">
-        <div class="menu-icon"><i data-lucide="user-plus"></i></div>
-        <div class="menu-content">
-          <h4>Daftar Anggota Baru</h4>
-          <p>Daftar mandiri dengan Kode Grup</p>
-        </div>
-        <i data-lucide="chevron-right" class="menu-arrow"></i>
-      </div>
-
-      <div class="menu-card" onclick="showSection('login-admin')">
-        <div class="menu-icon"><i data-lucide="shield-check"></i></div>
-        <div class="menu-content">
-          <h4>Login Admin</h4>
-          <p>Input infaq dan rekapitulasi data</p>
-        </div>
-        <i data-lucide="chevron-right" class="menu-arrow"></i>
-      </div>
-
-      <div class="menu-card" onclick="showSection('create-c')">
-        <div class="menu-icon"><i data-lucide="folder-plus"></i></div>
-        <div class="menu-content">
-          <h4>Buat Grup Baru</h4>
-          <p>Daftarkan instansi / Grup untuk dapatkan Kode Grup</p>
-        </div>
-        <i data-lucide="chevron-right" class="menu-arrow"></i>
-      </div>
-    </div>
-  </div>
-
-  <!-- FORM LOGIN ANGGOTA -->
-  <div id="sec-login-a" class="card" style="display:none;">
-    <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
-    <h3 style="margin-bottom: 20px; font-weight: 800;">Login Anggota</h3>
-    <form id="form-login-a">
-      <div class="form-group">
-        <label>Kode Grup</label>
-        <input type="text" id="la-code" placeholder="Contoh: GRP-1234" required>
-      </div>
-      <div class="form-group">
-        <label>ID</label>
-        <input type="text" id="la-id" placeholder="ID Anggota Anda" required>
-      </div>
-      <div class="form-group">
-        <label>PIN</label>
-        <input type="password" id="la-pin" placeholder="••••" required>
-      </div>
-      <button type="submit" class="btn-primary"><i data-lucide="log-in" size="18"></i> Login</button>
-    </form>
-  </div>
-
-  <!-- FORM DAFTAR ANGGOTA -->
-  <div id="sec-reg-a" class="card" style="display:none;">
-    <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
-    <h3 style="margin-bottom: 20px; font-weight: 800;">Pendaftaran Anggota</h3>
-    <form id="form-reg-a">
-      <div class="form-group">
-        <label>Kode Grup</label>
-        <input type="text" id="ra-code" placeholder="Contoh: GRP-1234" required>
-      </div>
-      <div class="form-group">
-        <label>Nama Lengkap</label>
-        <input type="text" id="ra-nama" placeholder="Nama Lengkap" required>
-      </div>
-      <div class="form-group">
-        <label>ID Anggota</label>
-        <input type="text" id="ra-id" placeholder="Contoh: fulan10" required>
-      </div>
-      <div class="form-group">
-        <label>Buat PIN</label>
-        <input type="password" id="ra-pin" placeholder="••••" required>
-      </div>
-      <div class="form-group">
-        <label>Target Infaq Pribadi (Rp)</label>
-        <input type="number" id="ra-target" placeholder="100000" value="100000">
-      </div>
-      <button type="submit" class="btn-success"><i data-lucide="user-check" size="18"></i> Daftar</button>
-    </form>
-  </div>
-
-  <!-- DASHBOARD ANGGOTA -->
-  <div id="sec-dash-a" class="card" style="display:none;">
-    <div class="user-header">
-      <div class="user-info">
-        <h3 id="dash-a-nama">Nama Anggota</h3>
-        <p class="group-title" id="dash-a-group-name">Grup: -</p>
-        <div class="user-badges">
-          <span class="badge">Kode: <strong id="dash-a-code">-</strong></span>
-          <span class="badge">ID: <strong id="dash-a-id">-</strong></span>
-          <span class="badge" id="dash-a-role-badge" style="display:none; background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.3);">Admin</span>
-        </div>
-      </div>
-      <!-- PITA MEDALI PERINGKAT -->
-      <div id="dash-a-medal-box" class="medal-ribbon-container medal-rank-other">
-        <div class="medal-icon-wrapper">
-          <i data-lucide="award" size="16"></i>
-        </div>
-        <span class="medal-text" id="dash-a-medal-text">JUARA -</span>
-      </div>
+      <h1 class="main-title">INFAQU</h1>
+      <p class="main-subtitle">Sistem Manajemen & Transparansi Infaq Digital</p>
     </div>
 
-    <div class="stat-grid">
-      <div class="stat-card">
-        <span class="stat-label">Total Infaq</span>
-        <div class="stat-value" style="color: var(--accent-emerald);">Rp <span id="dash-a-total">0</span></div>
-      </div>
-      <div class="stat-card">
-        <span class="stat-label">Target Infaq</span>
-        <div class="stat-value" id="dash-a-target-text" style="color: #fff;">Rp 0</div>
-      </div>
-    </div>
-
-    <div class="progress-section">
-      <div class="progress-header">
-        <span style="color: var(--text-muted);">Pencapaian Target</span>
-        <span id="dash-a-percent" style="color: var(--accent-emerald);">0%</span>
-      </div>
-      <div class="progress-bg">
-        <div id="dash-a-bar" class="progress-fill"></div>
-      </div>
-    </div>
-
-    <!-- Riwayat Infaq -->
-    <h4 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 700;">RIWAYAT INFAQ</h4>
-    <div class="table-container" style="margin-bottom: 20px;">
-      <table>
-        <thead>
-          <tr>
-            <th>Tanggal</th>
-            <th>Nominal</th>
-            <th>Catatan</th>
-          </tr>
-        </thead>
-        <tbody id="dash-a-table"></tbody>
-      </table>
-    </div>
-
-    <!-- Edit Profil Anggota Box -->
-    <div class="target-box">
-      <div class="collapsible-header" onclick="toggleEditProfile()">
-        <span><i data-lucide="user-pen" size="14" style="vertical-align: middle; margin-right: 4px;"></i> EDIT DATA AKUN</span>
-        <i data-lucide="chevron-down" id="edit-profile-icon" size="16"></i>
-      </div>
-      <div id="edit-profile-content" class="collapsible-content">
-        <form id="form-edit-a">
-          <div class="form-group" style="margin-bottom: 10px;">
-            <label>Kode Grup</label>
-            <input type="text" id="ea-code" required>
+    <!-- ================= 1. HALAMAN UTAMA (MENU) ================= -->
+    <div id="sec-home">
+      <div class="menu-grid">
+        <div class="menu-card" onclick="showSection('login-a')">
+          <div class="menu-icon"><i data-lucide="user"></i></div>
+          <div class="menu-content">
+            <h4>Login Anggota</h4>
+            <p>Cek progress dan atur target pencapaian pribadi</p>
           </div>
-          <div class="form-group" style="margin-bottom: 10px;">
-            <label>ID Anggota</label>
-            <input type="text" id="ea-id" required>
+          <i data-lucide="chevron-right" class="menu-arrow"></i>
+        </div>
+
+        <div class="menu-card" onclick="showSection('reg-a')">
+          <div class="menu-icon"><i data-lucide="user-plus"></i></div>
+          <div class="menu-content">
+            <h4>Daftar Anggota Baru</h4>
+            <p>Daftar mandiri dengan Kode Grup</p>
           </div>
-          <div class="form-group" style="margin-bottom: 10px;">
-            <label>Nama Lengkap</label>
-            <input type="text" id="ea-nama" required>
+          <i data-lucide="chevron-right" class="menu-arrow"></i>
+        </div>
+
+        <div class="menu-card" onclick="showSection('login-admin')">
+          <div class="menu-icon"><i data-lucide="shield-check"></i></div>
+          <div class="menu-content">
+            <h4>Login Admin</h4>
+            <p>Input infaq dan rekapitulasi data</p>
           </div>
-          <div class="form-group" style="margin-bottom: 12px;">
-            <label>PIN Baru (Opsional)</label>
-            <input type="password" id="ea-pin" placeholder="Kosongkan jika tidak diubah">
+          <i data-lucide="chevron-right" class="menu-arrow"></i>
+        </div>
+
+        <div class="menu-card" onclick="showSection('create-c')">
+          <div class="menu-icon"><i data-lucide="folder-plus"></i></div>
+          <div class="menu-content">
+            <h4>Buat Grup Baru</h4>
+            <p>Daftarkan instansi / Grup untuk dapatkan Kode Grup</p>
           </div>
-          <button type="submit" class="btn-warning" style="padding: 10px;"><i data-lucide="save" size="16"></i> Simpan Perubahan</button>
-        </form>
+          <i data-lucide="chevron-right" class="menu-arrow"></i>
+        </div>
       </div>
     </div>
 
-    <!-- Atur Target Infaq Box -->
-    <div class="target-box">
-      <label>Target Infaq Pribadi</label>
-      <div class="target-box-flex">
-        <input type="number" id="dash-a-target-input" placeholder="Nominal Rp...">
-        <button type="button" class="btn-primary" onclick="updateTargetInfaq()">Simpan</button>
-      </div>
-    </div>
-
-    <!-- FITUR KHUSUS ADMIN DI HALAMAN ANGGOTA -->
-    <div id="member-admin-panel" style="display: none; background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.2); padding: 20px; border-radius: 16px; margin-bottom: 16px;">
-      <h4 style="margin-bottom: 14px; font-size: 14px; color: #818cf8; display: flex; align-items: center; gap: 6px;">
-        <i data-lucide="shield-check" size="16"></i> PANEL ADMIN GRUP
-      </h4>
-
-      <!-- Statistik Bulanan & Tahunan Grup -->
-      <div class="stat-grid" style="margin-bottom: 16px;">
-        <div class="stat-card" style="background: rgba(0,0,0,0.2);">
-          <span class="stat-label">Infaq Bulan Ini</span>
-          <div class="stat-value" style="color: var(--accent-cyan);">Rp <span id="dash-member-admin-monthly">0</span></div>
-        </div>
-        <div class="stat-card" style="background: rgba(0,0,0,0.2);">
-          <span class="stat-label">Infaq Tahun Ini</span>
-          <div class="stat-value" style="color: var(--accent-emerald);">Rp <span id="dash-member-admin-yearly">0</span></div>
-        </div>
-      </div>
-
-      <!-- Form Input Infaq untuk Anggota -->
-      <form id="form-member-add-infaq" style="margin-bottom: 20px;">
+    <!-- ================= 2. FORM LOGIN ANGGOTA ================= -->
+    <div id="sec-login-a" class="card" style="display:none;">
+      <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
+      <h3 style="margin-bottom: 20px; font-weight: 800;">Login Anggota</h3>
+      <form id="form-login-a">
         <div class="form-group">
-          <label>Pilih Anggota</label>
-          <select id="m-at-anggota" required></select>
+          <label>Kode Grup</label>
+          <input type="text" id="la-code" placeholder="Contoh: GRP-1234" required>
         </div>
         <div class="form-group">
-          <label>Tanggal Input</label>
-          <input type="date" id="m-at-tanggal" required>
+          <label>ID</label>
+          <input type="text" id="la-id" placeholder="ID Anggota Anda" required>
         </div>
         <div class="form-group">
-          <label>Nominal (Rp)</label>
-          <input type="number" id="m-at-nominal" placeholder="50000" required>
+          <label>PIN</label>
+          <input type="password" id="la-pin" placeholder="••••" required>
         </div>
-        <div class="form-group">
-          <label>Catatan</label>
-          <input type="text" id="m-at-catatan" placeholder="Infaq Harian / Pekanan / Bulanan">
-        </div>
-        <button type="submit" class="btn-success" style="padding: 10px;"><i data-lucide="plus" size="16"></i> Simpan Infaq</button>
+        <button type="submit" class="btn-primary"><i data-lucide="log-in" size="18"></i> Login</button>
       </form>
+    </div>
 
-      <!-- Kelola Input (Tabel Transaksi Grup untuk Admin Anggota) -->
-      <div>
+    <!-- ================= 3. FORM PENDAFTARAN ANGGOTA ================= -->
+    <div id="sec-reg-a" class="card" style="display:none;">
+      <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
+      <h3 style="margin-bottom: 20px; font-weight: 800;">Pendaftaran Anggota</h3>
+      <form id="form-reg-a">
+        <div class="form-group">
+          <label>Kode Grup</label>
+          <input type="text" id="ra-code" placeholder="Contoh: GRP-1234" required>
+        </div>
+        <div class="form-group">
+          <label>Nama Lengkap</label>
+          <input type="text" id="ra-nama" placeholder="Nama Lengkap" required>
+        </div>
+        <div class="form-group">
+          <label>ID Anggota</label>
+          <input type="text" id="ra-id" placeholder="Contoh: fulan10" required>
+        </div>
+        <div class="form-group">
+          <label>Buat PIN</label>
+          <input type="password" id="ra-pin" placeholder="••••" required>
+        </div>
+        <div class="form-group">
+          <label>Target Infaq Pribadi (Rp)</label>
+          <input type="number" id="ra-target" placeholder="100000" value="100000">
+        </div>
+        <button type="submit" class="btn-success"><i data-lucide="user-check" size="18"></i> Daftar</button>
+      </form>
+    </div>
+
+    <!-- ================= 4. DASHBOARD ANGGOTA ================= -->
+    <div id="sec-dash-a" class="card" style="display:none;">
+      <div class="user-header">
+        <div class="user-info">
+          <h3 id="dash-a-nama">Nama Anggota</h3>
+          <p class="group-title" id="dash-a-group-name">Grup: -</p>
+          <div class="user-badges">
+            <span class="badge">Kode: <strong id="dash-a-code">-</strong></span>
+            <span class="badge">ID: <strong id="dash-a-id">-</strong></span>
+            <span class="badge" id="dash-a-role-badge" style="display:none; background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald);">Admin</span>
+          </div>
+        </div>
+        <!-- Pita Medali Peringkat -->
+        <div id="dash-a-medal-box" class="medal-ribbon-container medal-rank-other">
+          <div class="medal-icon-wrapper"><i data-lucide="award" size="16"></i></div>
+          <span class="medal-text" id="dash-a-medal-text">JUARA -</span>
+        </div>
+      </div>
+
+      <!-- Informasi Statistik Anggota -->
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-label">Total Infaq</span>
+          <div class="stat-value" style="color: var(--accent-emerald);">Rp <span id="dash-a-total">0</span></div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Target Infaq</span>
+          <div class="stat-value" id="dash-a-target-text" style="color: #fff;">Rp 0</div>
+        </div>
+      </div>
+
+      <!-- Bar Progres Pencapaian -->
+      <div class="progress-section">
+        <div class="progress-header">
+          <span style="color: var(--text-muted);">Pencapaian Target</span>
+          <span id="dash-a-percent" style="color: var(--accent-emerald);">0%</span>
+        </div>
+        <div class="progress-bg">
+          <div id="dash-a-bar" class="progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Tabel Riwayat Infaq Pribadi -->
+      <h4 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 700;">RIWAYAT INFAQ</h4>
+      <div class="table-container" style="margin-bottom: 20px;">
+        <table>
+          <thead>
+            <tr><th>Tanggal</th><th>Nominal</th><th>Catatan</th></tr>
+          </thead>
+          <tbody id="dash-a-table"></tbody>
+        </table>
+      </div>
+
+      <!-- Menu Edit Profil Akun -->
+      <div class="target-box">
+        <div class="collapsible-header" onclick="toggleEditProfile()">
+          <span><i data-lucide="user-pen" size="14"></i> EDIT DATA AKUN</span>
+          <i data-lucide="chevron-down" id="edit-profile-icon" size="16"></i>
+        </div>
+        <div id="edit-profile-content" class="collapsible-content">
+          <form id="form-edit-a">
+            <div class="form-group"><label>Kode Grup</label><input type="text" id="ea-code" required></div>
+            <div class="form-group"><label>ID Anggota</label><input type="text" id="ea-id" required></div>
+            <div class="form-group"><label>Nama Lengkap</label><input type="text" id="ea-nama" required></div>
+            <div class="form-group"><label>PIN Baru (Opsional)</label><input type="password" id="ea-pin" placeholder="Kosongkan jika tidak diubah"></div>
+            <button type="submit" class="btn-warning" style="padding: 10px;"><i data-lucide="save" size="16"></i> Simpan Perubahan</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Pengaturan Target Pribadi -->
+      <div class="target-box">
+        <label>Target Infaq Pribadi</label>
+        <div class="target-box-flex">
+          <input type="number" id="dash-a-target-input" placeholder="Nominal Rp...">
+          <button type="button" class="btn-primary" onclick="updateTargetInfaq()">Simpan</button>
+        </div>
+      </div>
+
+      <!-- Panel Khusus Admin di Halaman Anggota (Jika Anggota berstatus Admin Grup) -->
+      <div id="member-admin-panel" style="display: none; background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.2); padding: 20px; border-radius: 16px; margin-bottom: 16px;">
+        <h4 style="margin-bottom: 14px; font-size: 14px; color: #818cf8;"><i data-lucide="shield-check" size="16"></i> PANEL ADMIN GRUP</h4>
+        
+        <div class="stat-grid" style="margin-bottom: 16px;">
+          <div class="stat-card" style="background: rgba(0,0,0,0.2);">
+            <span class="stat-label">Infaq Bulan Ini</span>
+            <div class="stat-value" style="color: var(--accent-cyan);">Rp <span id="dash-member-admin-monthly">0</span></div>
+          </div>
+          <div class="stat-card" style="background: rgba(0,0,0,0.2);">
+            <span class="stat-label">Infaq Tahun Ini</span>
+            <div class="stat-value" style="color: var(--accent-emerald);">Rp <span id="dash-member-admin-yearly">0</span></div>
+          </div>
+        </div>
+
+        <form id="form-member-add-infaq" style="margin-bottom: 20px;">
+          <div class="form-group"><label>Pilih Anggota</label><select id="m-at-anggota" required></select></div>
+          <div class="form-group"><label>Tanggal Input</label><input type="date" id="m-at-tanggal" required></div>
+          <div class="form-group"><label>Nominal (Rp)</label><input type="number" id="m-at-nominal" placeholder="50000" required></div>
+          <div class="form-group"><label>Catatan</label><input type="text" id="m-at-catatan" placeholder="Keterangan"></div>
+          <button type="submit" class="btn-success" style="padding: 10px;"><i data-lucide="plus" size="16"></i> Simpan Infaq</button>
+        </form>
+
         <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 10px; color: #818cf8;">KELOLA INPUT</h4>
         <div class="table-container" style="max-height: 300px; overflow-y: auto;">
           <table>
-            <thead>
-              <tr>
-                <th>Tanggal</th>
-                <th>ID</th>
-                <th>Nama</th>
-                <th>Nominal</th>
-                <th style="text-align: center;">Aksi</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Tanggal</th><th>ID</th><th>Nama</th><th>Nominal</th><th style="text-align: center;">Aksi</th></tr></thead>
             <tbody id="dash-member-admin-trans-table"></tbody>
           </table>
         </div>
       </div>
+
+      <button class="btn-danger" onclick="logout()"><i data-lucide="log-out" size="16"></i> Keluar Akun</button>
     </div>
 
-    <button class="btn-danger" onclick="logout()"><i data-lucide="log-out" size="16"></i> Keluar Akun</button>
-  </div>
-
-  <!-- FORM LOGIN ADMIN -->
-  <div id="sec-login-admin" class="card" style="display:none;">
-    <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
-    <h3 style="margin-bottom: 20px; font-weight: 800;">Login Admin</h3>
-    <form id="form-login-admin">
-      <div class="form-group">
-        <label>Kode Grup</label>
-        <input type="text" id="ladmin-code" placeholder="Contoh: GRP-1234" required>
-      </div>
-      <div class="form-group">
-        <label>ID / PIN Admin</label>
-        <input type="password" id="ladmin-pin" placeholder="PIN Admin" required>
-      </div>
-      <button type="submit" class="btn-primary"><i data-lucide="shield" size="18"></i> Masuk Panel Admin</button>
-    </form>
-  </div>
-
-  <!-- FORM BUAT GRUP -->
-  <div id="sec-create-c" class="card" style="display:none;">
-    <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
-    <h3 style="margin-bottom: 20px; font-weight: 800;">Buat Grup Baru</h3>
-    <form id="form-create-c">
-      <div class="form-group">
-        <label>Nama Instansi</label>
-        <input type="text" id="cc-sekolah" placeholder="Baiti Jannati" required>
-      </div>
-      <div class="form-group">
-        <label>Nama Grup</label>
-        <input type="text" id="cc-kelas" placeholder="Perindu Surga" required>
-      </div>
-      <div class="form-group">
-        <label>Nama Admin</label>
-        <input type="text" id="cc-admin" placeholder="Sholih/Sholihah" required>
-      </div>
-      <div class="form-group">
-        <label>Buat PIN Admin</label>
-        <input type="password" id="cc-pin" placeholder="••••" required>
-      </div>
-      <button type="submit" class="btn-success"><i data-lucide="plus-circle" size="18"></i> Buat Grup</button>
-    </form>
-    <div id="cc-result" style="display:none;" class="code-box">
-      <p style="font-size: 12px; font-weight: 600; text-transform: uppercase;">Kode Grup Anda Berhasil Dibuat:</p>
-      <span id="cc-code-display" style="font-size: 28px; font-weight: 800; letter-spacing: 2px;">-</span>
+    <!-- ================= 5. FORM LOGIN ADMIN ================= -->
+    <div id="sec-login-admin" class="card" style="display:none;">
+      <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
+      <h3 style="margin-bottom: 20px; font-weight: 800;">Login Admin</h3>
+      <form id="form-login-admin">
+        <div class="form-group"><label>Kode Grup</label><input type="text" id="ladmin-code" placeholder="Contoh: GRP-1234" required></div>
+        <div class="form-group"><label>PIN Admin</label><input type="password" id="ladmin-pin" placeholder="PIN Admin" required></div>
+        <button type="submit" class="btn-primary"><i data-lucide="shield" size="18"></i> Masuk Panel Admin</button>
+      </form>
     </div>
-  </div>
 
-  <!-- DASHBOARD ADMIN UTAMA -->
-  <div id="sec-dash-admin" class="card" style="display: none;">
-    <div class="user-header">
-      <div class="user-info">
-        <h3 id="dash-admin-title">Panel Admin</h3>
-        <p class="group-title">Instansi <span id="dash-admin-sekolah" style="color: #fff;">-</span> | Kode Grup <span id="dash-admin-code" style="color: var(--accent-emerald);">-</span></p>
+    <!-- ================= 6. FORM BUAT GRUP BARU ================= -->
+    <div id="sec-create-c" class="card" style="display:none;">
+      <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
+      <h3 style="margin-bottom: 20px; font-weight: 800;">Buat Grup Baru</h3>
+      <form id="form-create-c">
+        <div class="form-group"><label>Nama Instansi</label><input type="text" id="cc-sekolah" placeholder="Nama Instansi/Sekolah" required></div>
+        <div class="form-group"><label>Nama Grup</label><input type="text" id="cc-kelas" placeholder="Nama Grup/Kelas" required></div>
+        <div class="form-group"><label>Nama Admin</label><input type="text" id="cc-admin" placeholder="Nama Penanggung Jawab" required></div>
+        <div class="form-group"><label>Buat PIN Admin</label><input type="password" id="cc-pin" placeholder="••••" required></div>
+        <button type="submit" class="btn-success"><i data-lucide="plus-circle" size="18"></i> Buat Grup</button>
+      </form>
+      <div id="cc-result" style="display:none;" class="code-box">
+        <p style="font-size: 12px; font-weight: 600;">Kode Grup Anda Berhasil Dibuat:</p>
+        <span id="cc-code-display" style="font-size: 28px; font-weight: 800; letter-spacing: 2px;">-</span>
       </div>
     </div>
 
-    <!-- STATISTIK BULANAN & TAHUNAN ADMIN -->
-    <div class="stat-grid">
-      <div class="stat-card">
-        <span class="stat-label">Infaq Bulan Ini</span>
-        <div class="stat-value" style="color: var(--accent-cyan);">Rp <span id="dash-admin-monthly">0</span></div>
+    <!-- ================= 7. DASHBOARD ADMIN UTAMA ================= -->
+    <div id="sec-dash-admin" class="card" style="display: none;">
+      <div class="user-header">
+        <div class="user-info">
+          <h3 id="dash-admin-title">Panel Admin</h3>
+          <p class="group-title">Instansi <span id="dash-admin-sekolah" style="color: #fff;">-</span> | Kode <span id="dash-admin-code" style="color: var(--accent-emerald);">-</span></p>
+        </div>
       </div>
-      <div class="stat-card">
-        <span class="stat-label">Infaq Tahun Ini</span>
-        <div class="stat-value" style="color: var(--accent-emerald);">Rp <span id="dash-admin-yearly">0</span></div>
-      </div>
-    </div>
 
-    <form id="form-add-infaq" style="margin-bottom: 24px;">
-      <h4 style="margin-bottom: 14px; font-size: 14px;">INPUT INFAQ</h4>
-      <div class="form-group">
-        <label>Pilih Anggota</label>
-        <select id="at-anggota" required></select>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-label">Infaq Bulan Ini</span>
+          <div class="stat-value" style="color: var(--accent-cyan);">Rp <span id="dash-admin-monthly">0</span></div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Infaq Tahun Ini</span>
+          <div class="stat-value" style="color: var(--accent-emerald);">Rp <span id="dash-admin-yearly">0</span></div>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Tanggal Input</label>
-        <input type="date" id="at-tanggal" required>
-      </div>
-      <div class="form-group">
-        <label>Nominal (Rp)</label>
-        <input type="number" id="at-nominal" placeholder="50000" required>
-      </div>
-      <div class="form-group">
-        <label>Catatan</label>
-        <input type="text" id="at-catatan" placeholder="Infaq Harian / Pekanan / Bulanan">
-      </div>
-      <button type="submit" class="btn-success"><i data-lucide="plus" size="18"></i> Simpan Infaq</button>
-    </form>
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-      <h4 style="font-size: 14px; font-weight: 700;">REKAP INFAQ</h4>
-      <div style="display: flex; gap: 8px;">
-        <button class="btn-primary" onclick="refreshAdminData()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="refresh-cw" size="12"></i> Refresh</button>
-        <button class="btn-success" id="btn-export-excel" onclick="exportToSpreadsheet()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="file-spreadsheet" size="12"></i> Export</button>
+      <!-- Form Input Infaq (Oleh Admin) -->
+      <form id="form-add-infaq" style="margin-bottom: 24px;">
+        <h4 style="margin-bottom: 14px; font-size: 14px;">INPUT INFAQ</h4>
+        <div class="form-group"><label>Pilih Anggota</label><select id="at-anggota" required></select></div>
+        <div class="form-group"><label>Tanggal Input</label><input type="date" id="at-tanggal" required></div>
+        <div class="form-group"><label>Nominal (Rp)</label><input type="number" id="at-nominal" placeholder="50000" required></div>
+        <div class="form-group"><label>Catatan</label><input type="text" id="at-catatan" placeholder="Keterangan"></div>
+        <button type="submit" class="btn-success"><i data-lucide="plus" size="18"></i> Simpan Infaq</button>
+      </form>
+
+      <!-- Tabel Rekapitulasi Anggota -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h4 style="font-size: 14px; font-weight: 700;">REKAP INFAQ</h4>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-primary" onclick="refreshAdminData()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="refresh-cw" size="12"></i> Refresh</button>
+          <button class="btn-success" id="btn-export-excel" onclick="exportToSpreadsheet()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="file-spreadsheet" size="12"></i> Export</button>
+        </div>
       </div>
-    </div>
 
-    <!-- AREA REKAPITULASI -->
-    <div class="table-container" style="max-height: 400px; overflow-y: auto; margin-bottom: 24px;">
-      <table>
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>ID / Nama</th>
-            <th>Total Infaq</th>
-          </tr>
-        </thead>
-        <tbody id="dash-admin-rekap-table"></tbody>
-      </table>
-    </div>
-
-    <!-- Tabel Daftar Transaksi Masuk -->
-    <div style="margin-bottom: 24px;">
-      <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">Kelola Input</h4>
-      <div class="table-container" style="max-height: 400px; overflow-y: auto;">
+      <div class="table-container" style="max-height: 400px; overflow-y: auto; margin-bottom: 24px;">
         <table>
-          <thead>
-            <tr>
-              <th>Tanggal</th>
-              <th>ID</th>
-              <th>Nama</th>
-              <th>Nominal</th>
-              <th style="text-align: center;">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="dash-admin-trans-table"></tbody>
+          <thead><tr><th>No</th><th>ID / Nama</th><th>Bulan Ini</th><th>Total Infaq</th></tr></thead>
+          <tbody id="dash-admin-rekap-table"></tbody>
         </table>
       </div>
-    </div>
 
-    <!-- Tabel Manajemen Admin Tersendiri -->
-    <div style="margin-bottom: 24px;">
-      <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">MANAJEMEN ADMIN</h4>
-      <div class="table-container" style="max-height: 400px; overflow-y: auto;">
-        <table>
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>ID / Nama</th>
-              <th>Akses Admin</th>
-              <th style="text-align: center;">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="dash-admin-management-table"></tbody>
-        </table>
+      <!-- Tabel Kelola Transaksi Masuk -->
+      <div style="margin-bottom: 24px;">
+        <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">Kelola Input</h4>
+        <div class="table-container" style="max-height: 400px; overflow-y: auto;">
+          <table>
+            <thead><tr><th>Tanggal</th><th>ID</th><th>Nama</th><th>Nominal</th><th style="text-align: center;">Aksi</th></tr></thead>
+            <tbody id="dash-admin-trans-table"></tbody>
+          </table>
+        </div>
       </div>
+
+      <!-- Tabel Manajemen Hak Akses Admin -->
+      <div style="margin-bottom: 24px;">
+        <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">MANAJEMEN ADMIN</h4>
+        <div class="table-container" style="max-height: 400px; overflow-y: auto;">
+          <table>
+            <thead><tr><th>No</th><th>ID / Nama</th><th>Akses Admin</th><th style="text-align: center;">Aksi</th></tr></thead>
+            <tbody id="dash-admin-management-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <button class="btn-danger" onclick="logout()"><i data-lucide="log-out" size="16"></i> Keluar</button>
     </div>
 
-    <button class="btn-danger" onclick="logout()"><i data-lucide="log-out" size="16"></i> Keluar</button>
   </div>
 
-</div>
+  <div class="page-footer">Kurniapedia | 2026</div>
 
-<!-- FOOTER -->
-<div class="page-footer">
-  Kurniapedia | 2026
-</div>
+  <!-- SweetAlert2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
-<!-- SweetAlert2 JS -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+  <!-- ================= 3. SCRIPT (LOGIKA APLIKASI) ================= -->
+  <script>
+    // Inisialisasi ikon Lucide
+    lucide.createIcons();
 
-<script>
-  lucide.createIcons();
+    // Konfigurasi Database Supabase
+    const SUPABASE_URL = "https://oouzppxbakkiwwttkbet.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vdXpwcHhiYWtraXd3dHRrYmV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNDc4NDAsImV4cCI6MjEwNDYyMzg0MH0.RkUC2MYGFTgcrXzNrHZCMj-ch9Bg-TFWEiGvf1fWD40";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  const SUPABASE_URL = "https://oouzppxbakkiwwttkbet.supabase.co";
-  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vdXpwcHhiYWtraXd3dHRrYmV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNDc4NDAsImV4cCI6MjEwNDYyMzg0MH0.RkUC2MYGFTgcrXzNrHZCMj-ch9Bg-TFWEiGvf1fWD40";
-  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    let currMember = null;
+    let currAdmin = null;
 
-  let currMember = null;
-  let currAdmin = null;
-
-  function formatDateIndo(dateStr) {
-    if (!dateStr) return '-';
-    const parts = dateStr.split('-');
-    if (parts.length === 3) {
-      return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    // Fungsi Format Tanggal Indonesia (DD/MM/YYYY)
+    function formatDateIndo(dateStr) {
+      if (!dateStr) return '-';
+      const parts = dateStr.split('-');
+      if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+      return dateStr;
     }
-    return dateStr;
-  }
 
-  const todayStr = new Date().toISOString().split('T')[0];
-  document.getElementById('at-tanggal').value = todayStr;
-  document.getElementById('m-at-tanggal').value = todayStr;
+    // Set tanggal otomatis ke hari ini pada input tanggal
+    const todayStr = new Date().toISOString().split('T')[0];
+    document.getElementById('at-tanggal').value = todayStr;
+    document.getElementById('m-at-tanggal').value = todayStr;
 
-  window.addEventListener('DOMContentLoaded', async () => {
-    const savedMember = localStorage.getItem('infaq_member');
-    const savedAdmin = localStorage.getItem('infaq_admin');
+    // Cek sesi login saat halaman dimuat
+    window.addEventListener('DOMContentLoaded', async () => {
+      const savedMember = localStorage.getItem('infaq_member');
+      const savedAdmin = localStorage.getItem('infaq_admin');
 
-    if (savedMember) {
-      currMember = JSON.parse(savedMember);
-      await showMemberDash();
-    } else if (savedAdmin) {
-      currAdmin = JSON.parse(savedAdmin);
-      await showAdminDash();
-    } else {
+      if (savedMember) {
+        currMember = JSON.parse(savedMember);
+        await showMemberDash();
+      } else if (savedAdmin) {
+        currAdmin = JSON.parse(savedAdmin);
+        await showAdminDash();
+      } else {
+        showSection('home');
+      }
+    });
+
+    // Fungsi Sembunyikan Semua Bagian (Section)
+    function hideAll() {
+      ['sec-home', 'sec-login-a', 'sec-reg-a', 'sec-dash-a', 'sec-login-admin', 'sec-create-c', 'sec-dash-admin'].forEach(id => {
+        document.getElementById(id).style.display = 'none';
+      });
+    }
+
+    // Fungsi Tampilkan Bagian Tertentu
+    function showSection(sec) {
+      hideAll();
+      document.getElementById('sec-' + sec).style.display = 'block';
+      lucide.createIcons();
+    }
+
+    // Fungsi Logout / Keluar Akun
+    function logout() {
+      localStorage.removeItem('infaq_member');
+      localStorage.removeItem('infaq_admin');
+      currMember = null;
+      currAdmin = null;
       showSection('home');
     }
-  });
 
-  function hideAll() {
-    ['sec-home', 'sec-login-a', 'sec-reg-a', 'sec-dash-a', 'sec-login-admin', 'sec-create-c', 'sec-dash-admin'].forEach(id => {
-      document.getElementById(id).style.display = 'none';
-    });
-  }
-
-  function showSection(sec) {
-    hideAll();
-    document.getElementById('sec-' + sec).style.display = 'block';
-    lucide.createIcons();
-  }
-
-  function logout() {
-    localStorage.removeItem('infaq_member');
-    localStorage.removeItem('infaq_admin');
-    currMember = null;
-    currAdmin = null;
-    showSection('home');
-  }
-
-  function toggleEditProfile() {
-    const content = document.getElementById('edit-profile-content');
-    const icon = document.getElementById('edit-profile-icon');
-    if (content.style.display === 'block') {
-      content.style.display = 'none';
-      icon.style.transform = 'rotate(0deg)';
-    } else {
-      content.style.display = 'block';
-      icon.style.transform = 'rotate(180deg)';
-    }
-    lucide.createIcons();
-  }
-
-  // 1. BUAT GRUP
-  document.getElementById('form-create-c').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const code = 'GRP-' + Math.floor(1000 + Math.random() * 9000);
-    const { data, error } = await supabaseClient.from('grup').insert([{
-      kode_grup: code,
-      nama_sekolah: document.getElementById('cc-sekolah').value,
-      nama_grup: document.getElementById('cc-kelas').value,
-      nama_admin: document.getElementById('cc-admin').value,
-      pin_admin: document.getElementById('cc-pin').value
-    }]);
-
-    if (error) {
-      Swal.fire({
-        title: 'INFAQU',
-        text: 'Gagal membuat grup: ' + error.message,
-        icon: 'error',
-        customClass: { popup: 'colored-toast' }
-      });
-      return;
-    }
-    document.getElementById('cc-code-display').innerText = code;
-    document.getElementById('cc-result').style.display = 'block';
-  });
-
-  // 2. DAFTAR ANGGOTA
-  document.getElementById('form-reg-a').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const targetVal = Number(document.getElementById('ra-target').value) || 100000;
-    
-    const { data, error } = await supabaseClient.from('anggota').insert([{
-      kode_grup: document.getElementById('ra-code').value,
-      nama_anggota: document.getElementById('ra-nama').value,
-      id_anggota: document.getElementById('ra-id').value,
-      pin_anggota: document.getElementById('ra-pin').value,
-      target_infaq: targetVal,
-      is_admin: false
-    }]);
-
-    if (error) {
-      Swal.fire({
-        title: 'INFAQU',
-        text: 'Pendaftaran gagal: ' + error.message,
-        icon: 'error',
-        customClass: { popup: 'colored-toast' }
-      });
-      return;
-    }
-
-    Swal.fire({
-      title: 'INFAQU',
-      text: 'Pendaftaran Berhasil! Silakan Login.',
-      icon: 'success',
-      customClass: { popup: 'colored-toast' }
-    });
-    showSection('login-a');
-  });
-
-  // 3. LOGIN ANGGOTA
-  document.getElementById('form-login-a').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const kode = document.getElementById('la-code').value;
-    const idAnggota = document.getElementById('la-id').value;
-    const pin = document.getElementById('la-pin').value;
-
-    const { data, error } = await supabaseClient.from('anggota')
-      .select('*')
-      .eq('kode_grup', kode)
-      .eq('id_anggota', idAnggota)
-      .eq('pin_anggota', pin)
-      .single();
-
-    if (error || !data) {
-      Swal.fire({
-        title: 'INFAQU',
-        text: 'Login gagal! Periksa Kode Grup, ID Anggota, dan PIN Anda.',
-        icon: 'error',
-        customClass: { popup: 'colored-toast' }
-      });
-      return;
-    }
-    
-    const { data: groupData } = await supabaseClient.from('grup')
-      .select('nama_grup')
-      .eq('kode_grup', kode)
-      .single();
-
-    currMember = data;
-    currMember.nama_grup = groupData ? groupData.nama_grup : 'Grup';
-    
-    localStorage.setItem('infaq_member', JSON.stringify(currMember));
-    await showMemberDash();
-  });
-
-  async function showMemberDash() {
-    document.getElementById('dash-a-nama').innerText = currMember.nama_anggota;
-    document.getElementById('dash-a-group-name').innerText = "Grup " + (currMember.nama_grup || '-');
-    document.getElementById('dash-a-code').innerText = currMember.kode_grup;
-    document.getElementById('dash-a-id').innerText = currMember.id_anggota;
-    
-    const roleBadge = document.getElementById('dash-a-role-badge');
-    const memberAdminPanel = document.getElementById('member-admin-panel');
-
-    if (currMember.is_admin === true) {
-      roleBadge.style.display = 'inline-block';
-      memberAdminPanel.style.display = 'block';
-      await loadMembersForMemberAdmin();
-      await loadMemberAdminStats();
-      await loadMemberAdminTransactions();
-    } else {
-      roleBadge.style.display = 'none';
-      memberAdminPanel.style.display = 'none';
-    }
-
-    document.getElementById('ea-code').value = currMember.kode_grup;
-    document.getElementById('ea-id').value = currMember.id_anggota;
-    document.getElementById('ea-nama').value = currMember.nama_anggota;
-    document.getElementById('ea-pin').value = '';
-    document.getElementById('edit-profile-content').style.display = 'none';
-    document.getElementById('edit-profile-icon').style.transform = 'rotate(0deg)';
-
-    const targetInfaq = currMember.target_infaq || 100000;
-    document.getElementById('dash-a-target-input').value = targetInfaq;
-    
-    await loadMyInfaq();
-    await updateMemberRankRibbon();
-    showSection('dash-a');
-  }
-
-  // HITUNG & TAMPILKAN PITA MEDALI PERINGKAT ANGGOTA
-  async function updateMemberRankRibbon() {
-    const { data: members } = await supabaseClient.from('anggota')
-      .select('id_anggota')
-      .eq('kode_grup', currMember.kode_grup);
-
-    const { data: infaqs } = await supabaseClient.from('infaq')
-      .select('id_anggota, nominal')
-      .eq('kode_grup', currMember.kode_grup);
-
-    if (!members) return;
-
-    const totals = members.map(m => {
-      let sum = 0;
-      if (infaqs) {
-        infaqs.filter(i => i.id_anggota === m.id_anggota).forEach(i => {
-          sum += Number(i.nominal) || 0;
-        });
-      }
-      return { id_anggota: m.id_anggota, total: sum };
-    });
-
-    totals.sort((a, b) => b.total - a.total);
-
-    const rankIndex = totals.findIndex(t => t.id_anggota === currMember.id_anggota);
-    const rank = rankIndex !== -1 ? rankIndex + 1 : totals.length + 1;
-
-    const medalBox = document.getElementById('dash-a-medal-box');
-    const medalText = document.getElementById('dash-a-medal-text');
-
-    medalBox.className = 'medal-ribbon-container';
-
-    if (rank === 1) {
-      medalBox.classList.add('medal-rank-1');
-      medalText.innerText = 'Juara 1';
-    } else if (rank === 2) {
-      medalBox.classList.add('medal-rank-2');
-      medalText.innerText = 'Juara 2';
-    } else if (rank === 3) {
-      medalBox.classList.add('medal-rank-3');
-      medalText.innerText = 'Juara 3';
-    } else {
-      medalBox.classList.add('medal-rank-other');
-      medalText.innerText = `Juara ${rank}`;
-    }
-    lucide.createIcons();
-  }
-
-  async function loadMembersForMemberAdmin() {
-    const select = document.getElementById('m-at-anggota');
-    select.innerHTML = '<option value="">-- Memuat anggota... --</option>';
-
-    const { data } = await supabaseClient.from('anggota')
-      .select('*')
-      .eq('kode_grup', currMember.kode_grup);
-
-    if (data && data.length > 0) {
-      data.sort((a, b) => a.nama_anggota.localeCompare(b.nama_anggota, 'id', { sensitivity: 'base' }));
-      select.innerHTML = '<option value="">-- Pilih Anggota --</option>';
-      data.forEach(a => {
-        select.innerHTML += `<option value="${a.id_anggota}">${a.nama_anggota} (${a.id_anggota})</option>`;
-      });
-    } else {
-      select.innerHTML = '<option value="">-- Belum Ada Anggota --</option>';
-    }
-  }
-
-  async function loadMemberAdminStats() {
-    const { data: infaqs } = await supabaseClient.from('infaq')
-      .select('nominal, tanggal')
-      .eq('kode_grup', currMember.kode_grup);
-
-    if (!infaqs) return;
-
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth();
-
-    let totalMonthly = 0;
-    let totalYearly = 0;
-
-    infaqs.forEach(item => {
-      if (!item.tanggal) return;
-      const tDate = new Date(item.tanggal);
-      const year = tDate.getFullYear();
-      const month = tDate.getMonth();
-      const nominal = Number(item.nominal) || 0;
-
-      if (year === currentYear) {
-        totalYearly += nominal;
-        if (month === currentMonth) {
-          totalMonthly += nominal;
-        }
-      }
-    });
-
-    document.getElementById('dash-member-admin-monthly').innerText = totalMonthly.toLocaleString('id-ID');
-    document.getElementById('dash-member-admin-yearly').innerText = totalYearly.toLocaleString('id-ID');
-  }
-
-  async function loadMemberAdminTransactions() {
-    const { data: infaqs } = await supabaseClient.from('infaq')
-      .select('*')
-      .eq('kode_grup', currMember.kode_grup)
-      .order('tanggal', { ascending: false });
-
-    const { data: members } = await supabaseClient.from('anggota')
-      .select('id_anggota, nama_anggota')
-      .eq('kode_grup', currMember.kode_grup);
-
-    const memberNameMap = {};
-    if (members) {
-      members.forEach(m => {
-        memberNameMap[m.id_anggota] = m.nama_anggota;
-      });
-    }
-
-    const tbody = document.getElementById('dash-member-admin-trans-table');
-    tbody.innerHTML = '';
-
-    if (infaqs && infaqs.length > 0) {
-      infaqs.forEach(item => {
-        const memberName = memberNameMap[item.id_anggota] || '-';
-        tbody.innerHTML += `
-          <tr>
-            <td>${formatDateIndo(item.tanggal)}</td>
-            <td style="color: var(--text-muted);">${item.id_anggota}</td>
-            <td><strong>${memberName}</strong></td>
-            <td>Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
-            <td style="text-align: center;">
-              <div style="display: flex; gap: 6px; justify-content: center;">
-                <button class="btn-icon-edit" title="Edit" onclick="editTransaction(${item.id}, ${item.nominal})">
-                  <i data-lucide="pencil" size="14"></i>
-                </button>
-                <button class="btn-icon-del" title="Hapus" onclick="deleteTransaction(${item.id})">
-                  <i data-lucide="trash-2" size="14"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-        `;
-      });
-      lucide.createIcons();
-    } else {
-      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted); padding: 12px;">Belum ada riwayat transaksi</td></tr>';
-    }
-  }
-
-  document.getElementById('form-member-add-infaq').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const idAnggota = document.getElementById('m-at-anggota').value;
-    const tanggal = document.getElementById('m-at-tanggal').value;
-    const nominal = Number(document.getElementById('m-at-nominal').value);
-    const catatan = document.getElementById('m-at-catatan').value;
-
-    if (!idAnggota) {
-      Swal.fire({
-        title: 'INFAQU',
-        text: 'Pilih anggota terlebih dahulu.',
-        icon: 'warning',
-        customClass: { popup: 'colored-toast' }
-      });
-      return;
-    }
-
-    const { error } = await supabaseClient.from('infaq').insert([{
-      kode_grup: currMember.kode_grup,
-      id_anggota: idAnggota,
-      tanggal: tanggal,
-      nominal: nominal,
-      catatan: catatan
-    }]);
-
-    if (error) {
-      Swal.fire({
-        title: 'INFAQU',
-        text: 'Gagal menyimpan infaq: ' + error.message,
-        icon: 'error',
-        customClass: { popup: 'colored-toast' }
-      });
-      return;
-    }
-
-    Swal.fire({
-      title: 'INFAQU',
-      text: 'Infaq berhasil disimpan!',
-      icon: 'success',
-      customClass: { popup: 'colored-toast' }
-    });
-    document.getElementById('m-at-nominal').value = '';
-    document.getElementById('m-at-catatan').value = '';
-    await loadMemberAdminStats();
-    await loadMemberAdminTransactions();
-    await loadMyInfaq();
-    await updateMemberRankRibbon();
-  });
-
-  document.getElementById('form-edit-a').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const newCode = document.getElementById('ea-code').value.trim();
-    const newId = document.getElementById('ea-id').value.trim();
-    const newNama = document.getElementById('ea-nama').value.trim();
-    const newPin = document.getElementById('ea-pin').value.trim();
-
-    const { data: gCheck } = await supabaseClient.from('grup').select('kode_grup, nama_grup').eq('kode_grup', newCode).single();
-    if (!gCheck) {
-      Swal.fire({
-        title: 'INFAQU',
-        text: 'Kode Grup baru tidak ditemukan/tidak valid di sistem.',
-        icon: 'error',
-        customClass: { popup: 'colored-toast' }
-      });
-      return;
-    }
-
-    const oldCode = currMember.kode_grup;
-    const oldId = currMember.id_anggota;
-    const isIdOrGroupChanged = (newCode !== oldCode || newId !== oldId);
-
-    if (isIdOrGroupChanged) {
-      const newMemberData = {
-        kode_grup: newCode,
-        id_anggota: newId,
-        nama_anggota: newNama,
-        pin_anggota: (newPin !== "") ? newPin : currMember.pin_anggota,
-        target_infaq: currMember.target_infaq || 100000,
-        is_admin: currMember.is_admin || false
-      };
-
-      const { error: errInsert } = await supabaseClient.from('anggota').insert([newMemberData]);
-      if (errInsert) {
-        Swal.fire({
-          title: 'INFAQU',
-          text: 'Gagal memperbarui ID (ID Baru mungkin sudah dipakai): ' + errInsert.message,
-          icon: 'error',
-          customClass: { popup: 'colored-toast' }
-        });
-        return;
-      }
-
-      const { error: errInfaq } = await supabaseClient.from('infaq')
-        .update({ kode_grup: newCode, id_anggota: newId })
-        .eq('kode_grup', oldCode)
-        .eq('id_anggota', oldId);
-
-      if (errInfaq) {
-        await supabaseClient.from('anggota').delete().eq('kode_grup', newCode).eq('id_anggota', newId);
-        Swal.fire({
-          title: 'INFAQU',
-          text: 'Gagal memindahkan data riwayat transaksi: ' + errInfaq.message,
-          icon: 'error',
-          customClass: { popup: 'colored-toast' }
-        });
-        return;
-      }
-
-      await supabaseClient.from('anggota').delete().eq('kode_grup', oldCode).eq('id_anggota', oldId);
-
-    } else {
-      const updatePayload = { nama_anggota: newNama };
-      if (newPin !== "") updatePayload.pin_anggota = newPin;
-
-      const { error: errUpdate } = await supabaseClient.from('anggota')
-        .update(updatePayload)
-        .eq('kode_grup', oldCode)
-        .eq('id_anggota', oldId);
-
-      if (errUpdate) {
-        Swal.fire({
-          title: 'INFAQU',
-          text: 'Gagal memperbarui profil: ' + errUpdate.message,
-          icon: 'error',
-          customClass: { popup: 'colored-toast' }
-        });
-        return;
-      }
-    }
-
-    currMember.kode_grup = newCode;
-    currMember.id_anggota = newId;
-    currMember.nama_anggota = newNama;
-    currMember.nama_grup = gCheck.nama_grup;
-    if (newPin !== "") currMember.pin_anggota = newPin;
-
-    localStorage.setItem('infaq_member', JSON.stringify(currMember));
-    Swal.fire({
-      title: 'INFAQU',
-      text: 'Profil berhasil diperbarui!',
-      icon: 'success',
-      customClass: { popup: 'colored-toast' }
-    });
-    await showMemberDash();
-  });
-
-  async function updateTargetInfaq() {
-    const newTarget = Number(document.getElementById('dash-a-target-input').value);
-    if (!newTarget || newTarget <= 0) {
-      Swal.fire({
-        title: 'INFAQU',
-        text: 'Masukkan nominal target yang valid.',
-        icon: 'warning',
-        customClass: { popup: 'colored-toast' }
-      });
-      return;
-    }
-
-    currMember.target_infaq = newTarget;
-    localStorage.setItem('infaq_member', JSON.stringify(currMember));
-
-    await supabaseClient.from('anggota')
-      .update({ target_infaq: newTarget })
-      .eq('kode_grup', currMember.kode_grup)
-      .eq('id_anggota', currMember.id_anggota);
-
-    Swal.fire({
-      title: 'INFAQU',
-      text: 'Target infaq berhasil diperbarui!',
-      icon: 'success',
-      customClass: { popup: 'colored-toast' }
-    });
-    await loadMyInfaq();
-  }
-
-  async function loadMyInfaq() {
-    const { data, error } = await supabaseClient.from('infaq')
-      .select('*')
-      .eq('kode_grup', currMember.kode_grup)
-      .eq('id_anggota', currMember.id_anggota)
-      .order('tanggal', { ascending: false });
-
-    const tbody = document.getElementById('dash-a-table');
-    tbody.innerHTML = '';
-    
-    let total = 0;
-    if (data && data.length > 0) {
-      data.forEach(t => {
-        total += Number(t.nominal);
-        tbody.innerHTML += `<tr><td>${formatDateIndo(t.tanggal)}</td><td><strong style="color: var(--accent-emerald);">Rp ${Number(t.nominal).toLocaleString('id-ID')}</strong></td><td>${t.catatan || '-'}</td></tr>`;
-      });
-    } else {
-      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color: var(--text-muted); padding: 18px;">Belum ada riwayat infaq</td></tr>';
-    }
-
-    const currentTarget = currMember.target_infaq || 100000;
-    document.getElementById('dash-a-total').innerText = total.toLocaleString('id-ID');
-    document.getElementById('dash-a-target-text').innerText = "Rp " + currentTarget.toLocaleString('id-ID');
-    
-    const progressPercent = Math.min((total / currentTarget) * 100, 100).toFixed(1);
-    document.getElementById('dash-a-bar').style.width = progressPercent + '%';
-    document.getElementById('dash-a-percent').innerText = progressPercent + '%';
-  }
-
-  // 4. LOGIN ADMIN UTAMA
-  document.getElementById('form-login-admin').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const kode = document.getElementById('ladmin-code').value;
-    const pinInput = document.getElementById('ladmin-pin').value;
-
-    const { data: groupData } = await supabaseClient.from('grup')
-      .select('*')
-      .eq('kode_grup', kode)
-      .eq('pin_admin', pinInput)
-      .single();
-
-    if (groupData) {
-      currAdmin = groupData;
-      localStorage.setItem('infaq_admin', JSON.stringify(currAdmin));
-      await showAdminDash();
-      return;
-    }
-
-    Swal.fire({
-      title: 'INFAQU',
-      text: 'Login admin gagal! PIN salah.',
-      icon: 'error',
-      customClass: { popup: 'colored-toast' }
-    });
-  });
-
-  async function showAdminDash() {
-    document.getElementById('dash-admin-title').innerText = "Panel Admin " + (currAdmin.nama_grup || '');
-    document.getElementById('dash-admin-sekolah').innerText = currAdmin.nama_sekolah || '-';
-    document.getElementById('dash-admin-code').innerText = currAdmin.kode_grup;
-    await loadMembersForAdmin();
-    await refreshAdminData();
-    showSection('dash-admin');
-  }
-
-  async function refreshAdminData() {
-    await Promise.all([
-      loadAllMembersSummary(),
-      loadAdminTransactions(),
-      loadAdminStats()
-    ]);
-  }
-
-  async function loadAdminStats() {
-    const { data: infaqs, error } = await supabaseClient.from('infaq')
-      .select('nominal, tanggal')
-      .eq('kode_grup', currAdmin.kode_grup);
-
-    if (error || !infaqs) return;
-
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth();
-
-    let totalMonthly = 0;
-    let totalYearly = 0;
-
-    infaqs.forEach(item => {
-      if (!item.tanggal) return;
-      const tDate = new Date(item.tanggal);
-      const year = tDate.getFullYear();
-      const month = tDate.getMonth();
-      const nominal = Number(item.nominal) || 0;
-
-      if (year === currentYear) {
-        totalYearly += nominal;
-        if (month === currentMonth) {
-          totalMonthly += nominal;
-        }
-      }
-    });
-
-    document.getElementById('dash-admin-monthly').innerText = totalMonthly.toLocaleString('id-ID');
-    document.getElementById('dash-admin-yearly').innerText = totalYearly.toLocaleString('id-ID');
-  }
-
-  async function loadMembersForAdmin() {
-    const select = document.getElementById('at-anggota');
-    select.innerHTML = '<option value="">-- Memuat anggota... --</option>';
-
-    const { data } = await supabaseClient.from('anggota')
-      .select('*')
-      .eq('kode_grup', currAdmin.kode_grup);
-
-    if (data && data.length > 0) {
-      data.sort((a, b) => a.nama_anggota.localeCompare(b.nama_anggota, 'id', { sensitivity: 'base' }));
-      select.innerHTML = '<option value="">-- Pilih Anggota --</option>';
-      data.forEach(a => {
-        select.innerHTML += `<option value="${a.id_anggota}">${a.nama_anggota} (${a.id_anggota})</option>`;
-      });
-    } else {
-      select.innerHTML = '<option value="">-- Belum Ada Anggota --</option>';
-    }
-  }
-
-  document.getElementById('form-add-infaq').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const idAnggota = document.getElementById('at-anggota').value;
-    const tanggal = document.getElementById('at-tanggal').value;
-    const nominal = Number(document.getElementById('at-nominal').value);
-    const catatan = document.getElementById('at-catatan').value;
-
-    if (!idAnggota) {
-      Swal.fire({
-        title: 'INFAQU',
-        text: 'Pilih anggota terlebih dahulu.',
-        icon: 'warning',
-        customClass: { popup: 'colored-toast' }
-      });
-      return;
-    }
-
-    const { error } = await supabaseClient.from('infaq').insert([{
-      kode_grup: currAdmin.kode_grup,
-      id_anggota: idAnggota,
-      tanggal: tanggal,
-      nominal: nominal,
-      catatan: catatan
-    }]);
-
-    if (error) {
-      Swal.fire({
-        title: 'INFAQU',
-        text: 'Gagal menyimpan infaq: ' + error.message,
-        icon: 'error',
-        customClass: { popup: 'colored-toast' }
-      });
-      return;
-    }
-
-    Swal.fire({
-      title: 'INFAQU',
-      text: 'Infaq berhasil disimpan!',
-      icon: 'success',
-      customClass: { popup: 'colored-toast' }
-    });
-    document.getElementById('at-nominal').value = '';
-    document.getElementById('at-catatan').value = '';
-    await refreshAdminData();
-  });
-
-  async function loadAllMembersSummary() {
-    const { data: members } = await supabaseClient.from('anggota')
-      .select('*')
-      .eq('kode_grup', currAdmin.kode_grup);
-
-    const { data: infaqs } = await supabaseClient.from('infaq')
-      .select('*')
-      .eq('kode_grup', currAdmin.kode_grup);
-
-    const rekapTbody = document.getElementById('dash-admin-rekap-table');
-    const mgmtTbody = document.getElementById('dash-admin-management-table');
-    
-    rekapTbody.innerHTML = '';
-    mgmtTbody.innerHTML = '';
-
-    if (members && members.length > 0) {
-      members.sort((a, b) => a.nama_anggota.localeCompare(b.nama_anggota, 'id', { sensitivity: 'base' }));
-
-      members.forEach((m, index) => {
-        let totalM = 0;
-        if (infaqs) {
-          infaqs.filter(i => i.id_anggota === m.id_anggota).forEach(i => {
-            totalM += Number(i.nominal);
-          });
-        }
-        
-        const isAdmin = m.is_admin === true;
-        const adminBadgeClass = isAdmin ? "badge-admin-toggle is-admin" : "badge-admin-toggle";
-        const adminBadgeText = isAdmin ? '<i data-lucide="shield-check" size="12"></i> Admin' : '<i data-lucide="shield" size="12"></i> Jadikan Admin';
-
-        rekapTbody.innerHTML += `
-          <tr>
-            <td>${index + 1}</td>
-            <td>
-              <strong>${m.nama_anggota}</strong><br>
-              <span style="font-size:10px; color:var(--text-muted);">${m.id_anggota}</span>
-            </td>
-            <td><strong style="color: var(--accent-emerald);">Rp ${totalM.toLocaleString('id-ID')}</strong></td>
-          </tr>
-        `;
-
-        mgmtTbody.innerHTML += `
-          <tr>
-            <td>${index + 1}</td>
-            <td>
-              <strong>${m.nama_anggota}</strong><br>
-              <span style="font-size:10px; color:var(--text-muted);">${m.id_anggota}</span>
-            </td>
-            <td>
-              <button class="${adminBadgeClass}" onclick="toggleAdminStatus('${m.id_anggota}', ${isAdmin})">
-                ${adminBadgeText}
-              </button>
-            </td>
-            <td style="text-align: center;">
-              <button class="btn-icon-del" title="Hapus" onclick="deleteMember('${m.id_anggota}', '${m.nama_anggota}')">
-                <i data-lucide="trash-2" size="14"></i>
-              </button>
-            </td>
-          </tr>
-        `;
-      });
-      lucide.createIcons();
-    } else {
-      rekapTbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color: var(--text-muted); padding: 12px;">Belum ada anggota terdaftar</td></tr>';
-      mgmtTbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 12px;">Belum ada anggota terdaftar</td></tr>';
-    }
-  }
-
-  async function toggleAdminStatus(idAnggota, currentStatus) {
-    const actionText = currentStatus ? "mencabut akses admin dari" : "menjadikan admin untuk";
-    
-    Swal.fire({
-      title: 'INFAQU',
-      text: `Apakah Anda yakin ingin ${actionText} anggota dengan ID: ${idAnggota}?`,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Ya',
-      cancelButtonText: 'Batal',
-      customClass: { popup: 'colored-toast' }
-    }).then(async (res) => {
-      if (res.isConfirmed) {
-        const newStatus = !currentStatus;
-        const { error } = await supabaseClient.from('anggota')
-          .update({ is_admin: newStatus })
-          .eq('kode_grup', currAdmin.kode_grup)
-          .eq('id_anggota', idAnggota);
-
-        if (error) {
-          Swal.fire({
-            title: 'INFAQU',
-            text: 'Gagal memperbarui status admin: ' + error.message,
-            icon: 'error',
-            customClass: { popup: 'colored-toast' }
-          });
-          return;
-        }
-
-        Swal.fire({
-          title: 'INFAQU',
-          text: 'Status hak akses admin berhasil diperbarui!',
-          icon: 'success',
-          customClass: { popup: 'colored-toast' }
-        });
-        await refreshAdminData();
-      }
-    });
-  }
-
-  async function deleteMember(idAnggota, namaAnggota) {
-    Swal.fire({
-      title: 'INFAQU',
-      text: `Apakah Anda yakin ingin menghapus anggota "${namaAnggota}" (${idAnggota})? Tindakan ini juga akan menghapus seluruh riwayat infaq milik anggota tersebut.`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Hapus',
-      cancelButtonText: 'Batal',
-      customClass: { popup: 'colored-toast' }
-    }).then(async (res) => {
-      if (res.isConfirmed) {
-        await supabaseClient.from('infaq')
-          .delete()
-          .eq('kode_grup', currAdmin.kode_grup)
-          .eq('id_anggota', idAnggota);
-
-        const { error } = await supabaseClient.from('anggota')
-          .delete()
-          .eq('kode_grup', currAdmin.kode_grup)
-          .eq('id_anggota', idAnggota);
-
-        if (error) {
-          Swal.fire({
-            title: 'INFAQU',
-            text: 'Gagal menghapus anggota: ' + error.message,
-            icon: 'error',
-            customClass: { popup: 'colored-toast' }
-          });
-          return;
-        }
-
-        Swal.fire({
-          title: 'INFAQU',
-          text: 'Anggota dan riwayat infaq terkait berhasil dihapus!',
-          icon: 'success',
-          customClass: { popup: 'colored-toast' }
-        });
-        await refreshAdminData();
-        await loadMembersForAdmin();
-      }
-    });
-  }
-
-  async function exportToSpreadsheet() {
-    const btn = document.getElementById('btn-export-excel');
-    btn.disabled = true;
-    btn.innerText = "Mengekspor...";
-
-    try {
-      const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-
-      const { data: members, error: errM } = await supabaseClient.from('anggota')
-        .select('*')
-        .eq('kode_grup', currAdmin.kode_grup);
-
-      const { data: infaqs, error: errI } = await supabaseClient.from('infaq')
-        .select('*')
-        .eq('kode_grup', currAdmin.kode_grup);
-
-      if (errM || errI) throw new Error("Gagal mengambil data dari database server.");
-
-      const uniqueMonthsMap = new Map();
-      if (infaqs) {
-        infaqs.forEach(i => {
-          if (i.tanggal) {
-            const parts = i.tanggal.split('-');
-            if (parts.length >= 2) {
-              const yearMonthKey = `${parts[0]}-${parts[1]}`;
-              if (!uniqueMonthsMap.has(yearMonthKey)) {
-                const year = parseInt(parts[0], 10);
-                const monthIndex = parseInt(parts[1], 10) - 1;
-                const label = `${namaBulan[monthIndex]} ${year}`;
-                uniqueMonthsMap.set(yearMonthKey, { key: yearMonthKey, label: label });
-              }
-            }
-          }
-        });
-      }
-
-      const sortedMonths = Array.from(uniqueMonthsMap.values()).sort((a, b) => a.key.localeCompare(b.key));
-
-      if (sortedMonths.length === 0) {
-        const now = new Date();
-        const yKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-        sortedMonths.push({ key: yKey, label: `${namaBulan[now.getMonth()]} ${now.getFullYear()}` });
-      }
-
-      const headerRow = ["No", "ID Anggota", "Nama Anggota", "Status Admin"];
-      sortedMonths.forEach(m => {
-        headerRow.push(m.label);
-      });
-      headerRow.push("Total Akumulasi (Rp)");
-
-      const sheetData = [
-        ["LAPORAN REKAPITULASI PROGRES INFAQ ANGGOTA PER BULAN"],
-        [`Grup: ${currAdmin.nama_grup || '-'}`, `Instansi: ${currAdmin.nama_sekolah || '-'}`, `Kode Grup: ${currAdmin.kode_grup}`],
-        [],
-        headerRow
-      ];
-
-      const grandTotalByMonth = new Array(sortedMonths.length).fill(0);
-      let grandTotalOverall = 0;
-
-      if (members && members.length > 0) {
-        members.sort((a, b) => a.nama_anggota.localeCompare(b.nama_anggota, 'id', { sensitivity: 'base' }));
-
-        members.forEach((m, idx) => {
-          const rowData = [
-            idx + 1,
-            m.id_anggota,
-            m.nama_anggota,
-            m.is_admin ? "Admin" : "Anggota"
-          ];
-
-          let memberTotal = 0;
-
-          sortedMonths.forEach((sm, mIdx) => {
-            let monthlySum = 0;
-            if (infaqs) {
-              infaqs.filter(i => i.id_anggota === m.id_anggota).forEach(i => {
-                if (i.tanggal && i.tanggal.startsWith(sm.key)) {
-                  monthlySum += Number(i.nominal) || 0;
-                }
-              });
-            }
-            rowData.push(monthlySum);
-            memberTotal += monthlySum;
-            grandTotalByMonth[mIdx] += monthlySum;
-          });
-
-          rowData.push(memberTotal);
-          grandTotalOverall += memberTotal;
-
-          sheetData.push(rowData);
-        });
+    // Fungsi Dropdown Edit Profil
+    function toggleEditProfile() {
+      const content = document.getElementById('edit-profile-content');
+      const icon = document.getElementById('edit-profile-icon');
+      if (content.style.display === 'block') {
+        content.style.display = 'none';
+        icon.style.transform = 'rotate(0deg)';
       } else {
-        const emptyRow = ["-", "-", "Belum Ada Anggota Terdaftar", "-"];
-        sortedMonths.forEach(() => emptyRow.push(0));
-        emptyRow.push(0);
-        sheetData.push(emptyRow);
+        content.style.display = 'block';
+        icon.style.transform = 'rotate(180deg)';
+      }
+      lucide.createIcons();
+    }
+
+    // --- PROSES 1: BUAT GRUP BARU ---
+    document.getElementById('form-create-c').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const code = 'GRP-' + Math.floor(1000 + Math.random() * 9000);
+      const { error } = await supabaseClient.from('grup').insert([{
+        kode_grup: code,
+        nama_sekolah: document.getElementById('cc-sekolah').value,
+        nama_grup: document.getElementById('cc-kelas').value,
+        nama_admin: document.getElementById('cc-admin').value,
+        pin_admin: document.getElementById('cc-pin').value
+      }]);
+
+      if (error) {
+        Swal.fire({ title: 'INFAQU', text: 'Gagal membuat grup: ' + error.message, icon: 'error', customClass: { popup: 'colored-toast' } });
+        return;
+      }
+      document.getElementById('cc-code-display').innerText = code;
+      document.getElementById('cc-result').style.display = 'block';
+    });
+
+    // --- PROSES 2: PENDAFTARAN ANGGOTA ---
+    document.getElementById('form-reg-a').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const targetVal = Number(document.getElementById('ra-target').value) || 100000;
+      
+      const { error } = await supabaseClient.from('anggota').insert([{
+        kode_grup: document.getElementById('ra-code').value,
+        nama_anggota: document.getElementById('ra-nama').value,
+        id_anggota: document.getElementById('ra-id').value,
+        pin_anggota: document.getElementById('ra-pin').value,
+        target_infaq: targetVal,
+        is_admin: false
+      }]);
+
+      if (error) {
+        Swal.fire({ title: 'INFAQU', text: 'Pendaftaran gagal: ' + error.message, icon: 'error', customClass: { popup: 'colored-toast' } });
+        return;
       }
 
-      const totalRow = ["", "", "GRAND TOTAL:", ""];
-      grandTotalByMonth.forEach(val => totalRow.push(val));
-      totalRow.push(grandTotalOverall);
-      sheetData.push([]);
-      sheetData.push(totalRow);
+      Swal.fire({ title: 'INFAQU', text: 'Pendaftaran Berhasil! Silakan Login.', icon: 'success', customClass: { popup: 'colored-toast' } });
+      showSection('login-a');
+    });
 
-      const worksheet = XLSX.utils.aoa_to_sheet(sheetData);
-      const colWidths = [{ wch: 6 }, { wch: 16 }, { wch: 28 }, { wch: 15 }];
-      sortedMonths.forEach(() => colWidths.push({ wch: 20 }));
-      colWidths.push({ wch: 24 });
-      worksheet['!cols'] = colWidths;
+    // --- PROSES 3: LOGIN ANGGOTA ---
+    document.getElementById('form-login-a').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const kode = document.getElementById('la-code').value;
+      const idAnggota = document.getElementById('la-id').value;
+      const pin = document.getElementById('la-pin').value;
 
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Rekap Bulanan");
+      const { data, error } = await supabaseClient.from('anggota')
+        .select('*').eq('kode_grup', kode).eq('id_anggota', idAnggota).eq('pin_anggota', pin).single();
 
-      const fileName = `Rekap_Infaq_Bulanan_${currAdmin.kode_grup}.xlsx`;
-      XLSX.writeFile(workbook, fileName);
+      if (error || !data) {
+        Swal.fire({ title: 'INFAQU', text: 'Login gagal! Periksa kembali data Anda.', icon: 'error', customClass: { popup: 'colored-toast' } });
+        return;
+      }
+      
+      const { data: groupData } = await supabaseClient.from('grup').select('nama_grup').eq('kode_grup', kode).single();
 
-    } catch (err) {
-      Swal.fire({
-        title: 'INFAQU',
-        text: 'Proses Export Spreadsheet Gagal: ' + err.message,
-        icon: 'error',
-        customClass: { popup: 'colored-toast' }
+      currMember = data;
+      currMember.nama_grup = groupData ? groupData.nama_grup : 'Grup';
+      
+      localStorage.setItem('infaq_member', JSON.stringify(currMember));
+      await showMemberDash();
+    });
+
+    // Tampilkan Dashboard Anggota
+    async function showMemberDash() {
+      document.getElementById('dash-a-nama').innerText = currMember.nama_anggota;
+      document.getElementById('dash-a-group-name').innerText = "Grup " + (currMember.nama_grup || '-');
+      document.getElementById('dash-a-code').innerText = currMember.kode_grup;
+      document.getElementById('dash-a-id').innerText = currMember.id_anggota;
+      
+      const roleBadge = document.getElementById('dash-a-role-badge');
+      const memberAdminPanel = document.getElementById('member-admin-panel');
+
+      if (currMember.is_admin === true) {
+        roleBadge.style.display = 'inline-block';
+        memberAdminPanel.style.display = 'block';
+        await loadMembersForMemberAdmin();
+        await loadMemberAdminStats();
+        await loadMemberAdminTransactions();
+      } else {
+        roleBadge.style.display = 'none';
+        memberAdminPanel.style.display = 'none';
+      }
+
+      document.getElementById('ea-code').value = currMember.kode_grup;
+      document.getElementById('ea-id').value = currMember.id_anggota;
+      document.getElementById('ea-nama').value = currMember.nama_anggota;
+      document.getElementById('ea-pin').value = '';
+
+      const targetInfaq = currMember.target_infaq || 100000;
+      document.getElementById('dash-a-target-input').value = targetInfaq;
+      
+      await loadMyInfaq();
+      await updateMemberRankRibbon();
+      showSection('dash-a');
+    }
+
+    // Hitung Peringkat & Tampilkan Pita Medali Anggota
+    async function updateMemberRankRibbon() {
+      const { data: members } = await supabaseClient.from('anggota').select('id_anggota').eq('kode_grup', currMember.kode_grup);
+      const { data: infaqs } = await supabaseClient.from('infaq').select('id_anggota, nominal').eq('kode_grup', currMember.kode_grup);
+      if (!members) return;
+
+      const totals = members.map(m => {
+        let sum = 0;
+        if (infaqs) {
+          infaqs.filter(i => i.id_anggota === m.id_anggota).forEach(i => sum += Number(i.nominal) || 0);
+        }
+        return { id_anggota: m.id_anggota, total: sum };
       });
-    } finally {
-      btn.disabled = false;
-      btn.innerHTML = '<i data-lucide="file-spreadsheet" size="14"></i> Export';
+
+      totals.sort((a, b) => b.total - a.total);
+      const rankIndex = totals.findIndex(t => t.id_anggota === currMember.id_anggota);
+      const rank = rankIndex !== -1 ? rankIndex + 1 : totals.length + 1;
+
+      const medalBox = document.getElementById('dash-a-medal-box');
+      const medalText = document.getElementById('dash-a-medal-text');
+      medalBox.className = 'medal-ribbon-container';
+
+      if (rank === 1) { medalBox.classList.add('medal-rank-1'); medalText.innerText = 'Juara 1'; }
+      else if (rank === 2) { medalBox.classList.add('medal-rank-2'); medalText.innerText = 'Juara 2'; }
+      else if (rank === 3) { medalBox.classList.add('medal-rank-3'); medalText.innerText = 'Juara 3'; }
+      else { medalBox.classList.add('medal-rank-other'); medalText.innerText = `Juara ${rank}`; }
       lucide.createIcons();
     }
-  }
 
-  async function loadAdminTransactions() {
-    const { data: infaqs } = await supabaseClient.from('infaq')
-      .select('*')
-      .eq('kode_grup', currAdmin.kode_grup)
-      .order('tanggal', { ascending: false });
-
-    const { data: members } = await supabaseClient.from('anggota')
-      .select('id_anggota, nama_anggota')
-      .eq('kode_grup', currAdmin.kode_grup);
-
-    const memberNameMap = {};
-    if (members) {
-      members.forEach(m => {
-        memberNameMap[m.id_anggota] = m.nama_anggota;
-      });
+    // Muat Anggota untuk Panel Khusus Admin Anggota
+    async function loadMembersForMemberAdmin() {
+      const select = document.getElementById('m-at-anggota');
+      const { data } = await supabaseClient.from('anggota').select('*').eq('kode_grup', currMember.kode_grup);
+      if (data && data.length > 0) {
+        data.sort((a, b) => a.nama_anggota.localeCompare(b.nama_anggota));
+        select.innerHTML = '<option value="">-- Pilih Anggota --</option>';
+        data.forEach(a => { select.innerHTML += `<option value="${a.id_anggota}">${a.nama_anggota} (${a.id_anggota})</option>`; });
+      }
     }
 
-    const tbody = document.getElementById('dash-admin-trans-table');
-    tbody.innerHTML = '';
+    async function loadMemberAdminStats() {
+      const { data: infaqs } = await supabaseClient.from('infaq').select('nominal, tanggal').eq('kode_grup', currMember.kode_grup);
+      if (!infaqs) return;
+      const now = new Date(), currentYear = now.getFullYear(), currentMonth = now.getMonth();
+      let totalMonthly = 0, totalYearly = 0;
 
-    if (infaqs && infaqs.length > 0) {
       infaqs.forEach(item => {
-        const memberName = memberNameMap[item.id_anggota] || '-';
-        tbody.innerHTML += `
-          <tr>
+        if (!item.tanggal) return;
+        const tDate = new Date(item.tanggal), nominal = Number(item.nominal) || 0;
+        if (tDate.getFullYear() === currentYear) {
+          totalYearly += nominal;
+          if (tDate.getMonth() === currentMonth) totalMonthly += nominal;
+        }
+      });
+      document.getElementById('dash-member-admin-monthly').innerText = totalMonthly.toLocaleString('id-ID');
+      document.getElementById('dash-member-admin-yearly').innerText = totalYearly.toLocaleString('id-ID');
+    }
+
+    async function loadMemberAdminTransactions() {
+      const { data: infaqs } = await supabaseClient.from('infaq').select('*').eq('kode_grup', currMember.kode_grup).order('tanggal', { ascending: false });
+      const { data: members } = await supabaseClient.from('anggota').select('id_anggota, nama_anggota').eq('kode_grup', currMember.kode_grup);
+      const memberNameMap = {};
+      if (members) members.forEach(m => memberNameMap[m.id_anggota] = m.nama_anggota);
+
+      const tbody = document.getElementById('dash-member-admin-trans-table');
+      tbody.innerHTML = '';
+      if (infaqs && infaqs.length > 0) {
+        infaqs.forEach(item => {
+          tbody.innerHTML += `<tr>
             <td>${formatDateIndo(item.tanggal)}</td>
-            <td style="color: var(--text-muted);">${item.id_anggota}</td>
-            <td><strong>${memberName}</strong></td>
+            <td>${item.id_anggota}</td>
+            <td><strong>${memberNameMap[item.id_anggota] || '-'}</strong></td>
             <td>Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
             <td style="text-align: center;">
-              <div style="display: flex; gap: 6px; justify-content: center;">
-                <button class="btn-icon-edit" title="Edit" onclick="editTransaction(${item.id}, ${item.nominal})">
-                  <i data-lucide="pencil" size="14"></i>
-                </button>
-                <button class="btn-icon-del" title="Hapus" onclick="deleteTransaction(${item.id})">
-                  <i data-lucide="trash-2" size="14"></i>
-                </button>
-              </div>
+              <button class="btn-icon-edit" onclick="editTransaction(${item.id}, ${item.nominal})"><i data-lucide="pencil" size="14"></i></button>
+              <button class="btn-icon-del" onclick="deleteTransaction(${item.id})"><i data-lucide="trash-2" size="14"></i></button>
             </td>
-          </tr>
-        `;
-      });
-      lucide.createIcons();
-    } else {
-      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted); padding: 12px;">Belum ada riwayat transaksi</td></tr>';
-    }
-  }
-
-  async function editTransaction(transId, currentNominal) {
-    const { value: newNominalStr } = await Swal.fire({
-      title: 'INFAQU',
-      text: 'Masukkan nominal infaq baru:',
-      input: 'text',
-      inputValue: currentNominal,
-      showCancelButton: true,
-      confirmButtonText: 'OK',
-      cancelButtonText: 'Cancel',
-      customClass: { popup: 'colored-toast' }
-    });
-
-    if (newNominalStr === undefined) return;
-
-    const newNominal = Number(newNominalStr);
-    if (isNaN(newNominal) || newNominal < 0) {
-      Swal.fire({
-        title: 'INFAQU',
-        text: 'Nominal yang dimasukkan tidak valid.',
-        icon: 'error',
-        customClass: { popup: 'colored-toast' }
-      });
-      return;
+          </tr>`;
+        });
+        lucide.createIcons();
+      } else {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">Belum ada riwayat transaksi</td></tr>';
+      }
     }
 
-    const { error } = await supabaseClient.from('infaq')
-      .update({ nominal: newNominal })
-      .eq('id', transId);
+    // Input Infaq dari Panel Anggota (Admin)
+    document.getElementById('form-member-add-infaq').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const { error } = await supabaseClient.from('infaq').insert([{
+        kode_grup: currMember.kode_grup,
+        id_anggota: document.getElementById('m-at-anggota').value,
+        tanggal: document.getElementById('m-at-tanggal').value,
+        nominal: Number(document.getElementById('m-at-nominal').value),
+        catatan: document.getElementById('m-at-catatan').value
+      }]);
 
-    if (error) {
-      Swal.fire({
-        title: 'INFAQU',
-        text: 'Gagal memperbarui nominal infaq: ' + error.message,
-        icon: 'error',
-        customClass: { popup: 'colored-toast' }
-      });
-      return;
-    }
-
-    Swal.fire({
-      title: 'INFAQU',
-      text: 'Nominal infaq berhasil diperbarui!',
-      icon: 'success',
-      customClass: { popup: 'colored-toast' }
-    });
-    
-    if (currAdmin) {
-      await refreshAdminData();
-    } else if (currMember && currMember.is_admin) {
+      if (error) {
+        Swal.fire({ title: 'INFAQU', text: 'Gagal: ' + error.message, icon: 'error', customClass: { popup: 'colored-toast' } });
+        return;
+      }
+      Swal.fire({ title: 'INFAQU', text: 'Infaq berhasil disimpan!', icon: 'success', customClass: { popup: 'colored-toast' } });
+      document.getElementById('m-at-nominal').value = '';
+      document.getElementById('m-at-catatan').value = '';
       await loadMemberAdminStats();
       await loadMemberAdminTransactions();
       await loadMyInfaq();
       await updateMemberRankRibbon();
+    });
+
+    // Simpan Perubahan Profil Anggota
+    document.getElementById('form-edit-a').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const newCode = document.getElementById('ea-code').value.trim();
+      const newId = document.getElementById('ea-id').value.trim();
+      const newNama = document.getElementById('ea-nama').value.trim();
+      const newPin = document.getElementById('ea-pin').value.trim();
+
+      const { data: gCheck } = await supabaseClient.from('grup').select('kode_grup, nama_grup').eq('kode_grup', newCode).single();
+      if (!gCheck) {
+        Swal.fire({ title: 'INFAQU', text: 'Kode Grup baru tidak valid.', icon: 'error', customClass: { popup: 'colored-toast' } });
+        return;
+      }
+
+      const oldCode = currMember.kode_grup, oldId = currMember.id_anggota;
+      if (newCode !== oldCode || newId !== oldId) {
+        await supabaseClient.from('anggota').insert([{
+          kode_grup: newCode, id_anggota: newId, nama_anggota: newNama,
+          pin_anggota: newPin !== "" ? newPin : currMember.pin_anggota,
+          target_infaq: currMember.target_infaq, is_admin: currMember.is_admin
+        }]);
+        await supabaseClient.from('infaq').update({ kode_grup: newCode, id_anggota: newId }).eq('kode_grup', oldCode).eq('id_anggota', oldId);
+        await supabaseClient.from('anggota').delete().eq('kode_grup', oldCode).eq('id_anggota', oldId);
+      } else {
+        const payload = { nama_anggota: newNama };
+        if (newPin !== "") payload.pin_anggota = newPin;
+        await supabaseClient.from('anggota').update(payload).eq('kode_grup', oldCode).eq('id_anggota', oldId);
+      }
+
+      currMember.kode_grup = newCode; currMember.id_anggota = newId; currMember.nama_anggota = newNama; currMember.nama_grup = gCheck.nama_grup;
+      if (newPin !== "") currMember.pin_anggota = newPin;
+      localStorage.setItem('infaq_member', JSON.stringify(currMember));
+
+      Swal.fire({ title: 'INFAQU', text: 'Profil berhasil diperbarui!', icon: 'success', customClass: { popup: 'colored-toast' } });
+      await showMemberDash();
+    });
+
+    async function updateTargetInfaq() {
+      const newTarget = Number(document.getElementById('dash-a-target-input').value);
+      if (!newTarget || newTarget <= 0) return;
+      currMember.target_infaq = newTarget;
+      localStorage.setItem('infaq_member', JSON.stringify(currMember));
+      await supabaseClient.from('anggota').update({ target_infaq: newTarget }).eq('kode_grup', currMember.kode_grup).eq('id_anggota', currMember.id_anggota);
+      Swal.fire({ title: 'INFAQU', text: 'Target infaq diperbarui!', icon: 'success', customClass: { popup: 'colored-toast' } });
+      await loadMyInfaq();
     }
-  }
 
-  async function deleteTransaction(transId) {
-    Swal.fire({
-      title: 'INFAQU',
-      text: 'Apakah Anda yakin ingin menghapus data inputan infaq ini?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Hapus',
-      cancelButtonText: 'Batal',
-      customClass: { popup: 'colored-toast' }
-    }).then(async (res) => {
-      if (res.isConfirmed) {
-        const { error } = await supabaseClient.from('infaq')
-          .delete()
-          .eq('id', transId);
+    async function loadMyInfaq() {
+      const { data } = await supabaseClient.from('infaq').select('*').eq('kode_grup', currMember.kode_grup).eq('id_anggota', currMember.id_anggota).order('tanggal', { ascending: false });
+      const tbody = document.getElementById('dash-a-table');
+      tbody.innerHTML = '';
+      let total = 0;
 
-        if (error) {
-          Swal.fire({
-            title: 'INFAQU',
-            text: 'Gagal menghapus transaksi: ' + error.message,
-            icon: 'error',
-            customClass: { popup: 'colored-toast' }
-          });
-          return;
-        }
-
-        Swal.fire({
-          title: 'INFAQU',
-          text: 'Data transaksi berhasil dihapus!',
-          icon: 'success',
-          customClass: { popup: 'colored-toast' }
+      if (data && data.length > 0) {
+        data.forEach(t => {
+          total += Number(t.nominal);
+          tbody.innerHTML += `<tr><td>${formatDateIndo(t.tanggal)}</td><td><strong style="color: var(--accent-emerald);">Rp ${Number(t.nominal).toLocaleString('id-ID')}</strong></td><td>${t.catatan || '-'}</td></tr>`;
         });
-        
-        if (currAdmin) {
-          await refreshAdminData();
-        } else if (currMember && currMember.is_admin) {
-          await loadMemberAdminStats();
-          await loadMemberAdminTransactions();
-          await loadMyInfaq();
-          await updateMemberRankRibbon();
-        }
+      } else {
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color: var::text-muted;">Belum ada riwayat infaq</td></tr>';
+      }
+
+      const target = currMember.target_infaq || 100000;
+      document.getElementById('dash-a-total').innerText = total.toLocaleString('id-ID');
+      document.getElementById('dash-a-target-text').innerText = "Rp " + target.toLocaleString('id-ID');
+      const percent = Math.min((total / target) * 100, 100).toFixed(1);
+      document.getElementById('dash-a-bar').style.width = percent + '%';
+      document.getElementById('dash-a-percent').innerText = percent + '%';
+    }
+
+    // --- PROSES 4: LOGIN & DASHBOARD ADMIN UTAMA ---
+    document.getElementById('form-login-admin').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const { data } = await supabaseClient.from('grup').select('*').eq('kode_grup', document.getElementById('ladmin-code').value).eq('pin_admin', document.getElementById('ladmin-pin').value).single();
+      if (data) {
+        currAdmin = data;
+        localStorage.setItem('infaq_admin', JSON.stringify(currAdmin));
+        await showAdminDash();
+      } else {
+        Swal.fire({ title: 'INFAQU', text: 'Login admin gagal! PIN salah.', icon: 'error', customClass: { popup: 'colored-toast' } });
       }
     });
-  }
-</script>
+
+    async function showAdminDash() {
+      document.getElementById('dash-admin-title').innerText = "Panel Admin " + (currAdmin.nama_grup || '');
+      document.getElementById('dash-admin-sekolah').innerText = currAdmin.nama_sekolah || '-';
+      document.getElementById('dash-admin-code').innerText = currAdmin.kode_grup;
+      await loadMembersForAdmin();
+      await refreshAdminData();
+      showSection('dash-admin');
+    }
+
+    async function refreshAdminData() {
+      await Promise.all([loadAllMembersSummary(), loadAdminTransactions(), loadAdminStats()]);
+    }
+
+    async function loadAdminStats() {
+      const { data: infaqs } = await supabaseClient.from('infaq').select('nominal, tanggal').eq('kode_grup', currAdmin.kode_grup);
+      if (!infaqs) return;
+      const now = new Date(), currentYear = now.getFullYear(), currentMonth = now.getMonth();
+      let totalMonthly = 0, totalYearly = 0;
+
+      infaqs.forEach(item => {
+        if (!item.tanggal) return;
+        const tDate = new Date(item.tanggal), nominal = Number(item.nominal) || 0;
+        if (tDate.getFullYear() === currentYear) {
+          totalYearly += nominal;
+          if (tDate.getMonth() === currentMonth) totalMonthly += nominal;
+        }
+      });
+      document.getElementById('dash-admin-monthly').innerText = totalMonthly.toLocaleString('id-ID');
+      document.getElementById('dash-admin-yearly').innerText = totalYearly.toLocaleString('id-ID');
+    }
+
+    async function loadMembersForAdmin() {
+      const select = document.getElementById('at-anggota');
+      const { data } = await supabaseClient.from('anggota').select('*').eq('kode_grup', currAdmin.kode_grup);
+      if (data && data.length > 0) {
+        data.sort((a, b) => a.nama_anggota.localeCompare(b.nama_anggota));
+        select.innerHTML = '<option value="">-- Pilih Anggota --</option>';
+        data.forEach(a => { select.innerHTML += `<option value="${a.id_anggota}">${a.nama_anggota} (${a.id_anggota})</option>`; });
+      }
+    }
+
+    document.getElementById('form-add-infaq').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const { error } = await supabaseClient.from('infaq').insert([{
+        kode_grup: currAdmin.kode_grup,
+        id_anggota: document.getElementById('at-anggota').value,
+        tanggal: document.getElementById('at-tanggal').value,
+        nominal: Number(document.getElementById('at-nominal').value),
+        catatan: document.getElementById('at-catatan').value
+      }]);
+
+      if (error) {
+        Swal.fire({ title: 'INFAQU', text: 'Gagal: ' + error.message, icon: 'error', customClass: { popup: 'colored-toast' } });
+        return;
+      }
+      Swal.fire({ title: 'INFAQU', text: 'Infaq berhasil disimpan!', icon: 'success', customClass: { popup: 'colored-toast' } });
+      document.getElementById('at-nominal').value = '';
+      document.getElementById('at-catatan').value = '';
+      await refreshAdminData();
+    });
+
+    async function loadAllMembersSummary() {
+      const { data: members } = await supabaseClient.from('anggota').select('*').eq('kode_grup', currAdmin.kode_grup);
+      const { data: infaqs } = await supabaseClient.from('infaq').select('*').eq('kode_grup', currAdmin.kode_grup);
+      const rekapTbody = document.getElementById('dash-admin-rekap-table');
+      const mgmtTbody = document.getElementById('dash-admin-management-table');
+      rekapTbody.innerHTML = ''; mgmtTbody.innerHTML = '';
+
+      const now = new Date(), currentYear = now.getFullYear(), currentMonth = now.getMonth();
+
+      if (members && members.length > 0) {
+        members.sort((a, b) => a.nama_anggota.localeCompare(b.nama_anggota));
+        members.forEach((m, index) => {
+          let totalM = 0, monthlyM = 0;
+          if (infaqs) {
+            infaqs.filter(i => i.id_anggota === m.id_anggota).forEach(i => {
+              const nom = Number(i.nominal) || 0;
+              totalM += nom;
+              if (i.tanggal && new Date(i.tanggal).getFullYear() === currentYear && new Date(i.tanggal).getMonth() === currentMonth) {
+                monthlyM += nom;
+              }
+            });
+          }
+
+          const isAdmin = m.is_admin === true;
+          rekapTbody.innerHTML += `<tr>
+            <td>${index + 1}</td>
+            <td><strong>${m.nama_anggota}</strong><br><span style="font-size:10px; color:var(--text-muted);">${m.id_anggota}</span></td>
+            <td><strong style="color: var(--accent-cyan);">Rp ${monthlyM.toLocaleString('id-ID')}</strong></td>
+            <td><strong style="color: var(--accent-emerald);">Rp ${totalM.toLocaleString('id-ID')}</strong></td>
+          </tr>`;
+
+          mgmtTbody.innerHTML += `<tr>
+            <td>${index + 1}</td>
+            <td><strong>${m.nama_anggota}</strong><br><span style="font-size:10px; color:var(--text-muted);">${m.id_anggota}</span></td>
+            <td><button class="badge-admin-toggle ${isAdmin ? 'is-admin' : ''}" onclick="toggleAdminStatus('${m.id_anggota}', ${isAdmin})">${isAdmin ? 'Admin' : 'Jadikan Admin'}</button></td>
+            <td style="text-align: center;"><button class="btn-icon-del" onclick="deleteMember('${m.id_anggota}', '${m.nama_anggota}')"><i data-lucide="trash-2" size="14"></i></button></td>
+          </tr>`;
+        });
+        lucide.createIcons();
+      }
+    }
+
+    async function toggleAdminStatus(idAnggota, currentStatus) {
+      const { isConfirmed } = await Swal.fire({
+        title: 'INFAQU', text: `Ubah status admin untuk ID: ${idAnggota}?`, icon: 'question', showCancelButton: true, customClass: { popup: 'colored-toast' }
+      });
+      if (isConfirmed) {
+        await supabaseClient.from('anggota').update({ is_admin: !currentStatus }).eq('kode_grup', currAdmin.kode_grup).eq('id_anggota', idAnggota);
+        await refreshAdminData();
+      }
+    }
+
+    async function deleteMember(idAnggota, namaAnggota) {
+      const { isConfirmed } = await Swal.fire({
+        title: 'INFAQU', text: `Hapus anggota "${namaAnggota}" beserta seluruh riwayat infaqnya?`, icon: 'warning', showCancelButton: true, confirmButtonText: 'Hapus', customClass: { popup: 'colored-toast' }
+      });
+      if (isConfirmed) {
+        await supabaseClient.from('infaq').delete().eq('kode_grup', currAdmin.kode_grup).eq('id_anggota', idAnggota);
+        await supabaseClient.from('anggota').delete().eq('kode_grup', currAdmin.kode_grup).eq('id_anggota', idAnggota);
+        await refreshAdminData();
+        await loadMembersForAdmin();
+      }
+    }
+
+    async function loadAdminTransactions() {
+      const { data: infaqs } = await supabaseClient.from('infaq').select('*').eq('kode_grup', currAdmin.kode_grup).order('tanggal', { ascending: false });
+      const { data: members } = await supabaseClient.from('anggota').select('id_anggota, nama_anggota').eq('kode_grup', currAdmin.kode_grup);
+      const memberNameMap = {};
+      if (members) members.forEach(m => memberNameMap[m.id_anggota] = m.nama_anggota);
+
+      const tbody = document.getElementById('dash-admin-trans-table');
+      tbody.innerHTML = '';
+      if (infaqs && infaqs.length > 0) {
+        infaqs.forEach(item => {
+          tbody.innerHTML += `<tr>
+            <td>${formatDateIndo(item.tanggal)}</td>
+            <td>${item.id_anggota}</td>
+            <td><strong>${memberNameMap[item.id_anggota] || '-'}</strong></td>
+            <td>Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
+            <td style="text-align: center;">
+              <button class="btn-icon-edit" onclick="editTransaction(${item.id}, ${item.nominal})"><i data-lucide="pencil" size="14"></i></button>
+              <button class="btn-icon-del" onclick="deleteTransaction(${item.id})"><i data-lucide="trash-2" size="14"></i></button>
+            </td>
+          </tr>`;
+        });
+        lucide.createIcons();
+      } else {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">Belum ada riwayat transaksi</td></tr>';
+      }
+    }
+
+    // Export Laporan ke Excel (Spreadsheet)
+    async function exportToSpreadsheet() {
+      const btn = document.getElementById('btn-export-excel');
+      btn.disabled = true; btn.innerText = "Mengekspor...";
+      try {
+        const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        const { data: members } = await supabaseClient.from('anggota').select('*').eq('kode_grup', currAdmin.kode_grup);
+        const { data: infaqs } = await supabaseClient.from('infaq').select('*').eq('kode_grup', currAdmin.kode_grup);
+
+        const uniqueMonthsMap = new Map();
+        if (infaqs) {
+          infaqs.forEach(i => {
+            if (i.tanggal) {
+              const parts = i.tanggal.split('-');
+              if (parts.length >= 2) {
+                const key = `${parts[0]}-${parts[1]}`;
+                if (!uniqueMonthsMap.has(key)) {
+                  uniqueMonthsMap.set(key, { key, label: `${namaBulan[parseInt(parts[1], 10) - 1]} ${parts[0]}` });
+                }
+              }
+            }
+          });
+        }
+        const sortedMonths = Array.from(uniqueMonthsMap.values()).sort((a, b) => a.key.localeCompare(b.key));
+        if (sortedMonths.length === 0) {
+          const now = new Date();
+          sortedMonths.push({ key: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`, label: `${namaBulan[now.getMonth()]} ${now.getFullYear()}` });
+        }
+
+        const headerRow = ["No", "ID Anggota", "Nama Anggota", "Status Admin"];
+        sortedMonths.forEach(m => headerRow.push(m.label));
+        headerRow.push("Total Akumulasi (Rp)");
+
+        const sheetData = [["LAPORAN REKAPITULASI INFAQ"], [`Grup: ${currAdmin.nama_grup}`, `Instansi: ${currAdmin.nama_sekolah}`], [], headerRow];
+        const grandTotalByMonth = new Array(sortedMonths.length).fill(0);
+        let grandTotalOverall = 0;
+
+        if (members) {
+          members.forEach((m, idx) => {
+            const rowData = [idx + 1, m.id_anggota, m.nama_anggota, m.is_admin ? "Admin" : "Anggota"];
+            let memberTotal = 0;
+            sortedMonths.forEach((sm, mIdx) => {
+              let monthlySum = 0;
+              if (infaqs) {
+                infaqs.filter(i => i.id_anggota === m.id_anggota && i.tanggal?.startsWith(sm.key)).forEach(i => monthlySum += Number(i.nominal) || 0);
+              }
+              rowData.push(monthlySum);
+              memberTotal += monthlySum;
+              grandTotalByMonth[mIdx] += monthlySum;
+            });
+            rowData.push(memberTotal);
+            grandTotalOverall += memberTotal;
+            sheetData.push(rowData);
+          });
+        }
+
+        const totalRow = ["", "", "GRAND TOTAL:", ""];
+        grandTotalByMonth.forEach(val => totalRow.push(val));
+        totalRow.push(grandTotalOverall);
+        sheetData.push([], totalRow);
+
+        const worksheet = XLSX.utils.aoa_to_sheet(sheetData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Rekap Bulanan");
+        XLSX.writeFile(workbook, `Rekap_Infaq_${currAdmin.kode_grup}.xlsx`);
+      } catch (err) {
+        Swal.fire({ title: 'INFAQU', text: 'Gagal Export: ' + err.message, icon: 'error', customClass: { popup: 'colored-toast' } });
+      } finally {
+        btn.disabled = false; btn.innerHTML = '<i data-lucide="file-spreadsheet" size="12"></i> Export';
+        lucide.createIcons();
+      }
+    }
+
+    // Edit Transaksi Infaq
+    async function editTransaction(transId, currentNominal) {
+      const { value: newNominalStr } = await Swal.fire({
+        title: 'INFAQU', text: 'Masukkan nominal infaq baru:', input: 'text', inputValue: currentNominal,
+        showCancelButton: true, customClass: { popup: 'colored-toast' }
+      });
+      if (newNominalStr === undefined) return;
+      const newNominal = Number(newNominalStr);
+      if (isNaN(newNominal) || newNominal < 0) return;
+
+      await supabaseClient.from('infaq').update({ nominal: newNominal }).eq('id', transId);
+      Swal.fire({ title: 'INFAQU', text: 'Nominal diperbarui!', icon: 'success', customClass: { popup: 'colored-toast' } });
+
+      if (currAdmin) await refreshAdminData();
+      else if (currMember && currMember.is_admin) {
+        await loadMemberAdminStats(); await loadMemberAdminTransactions(); await loadMyInfaq(); await updateMemberRankRibbon();
+      }
+    }
+
+    // Hapus Transaksi Infaq
+    async function deleteTransaction(transId) {
+      const { isConfirmed } = await Swal.fire({
+        title: 'INFAQU', text: 'Hapus data transaksi ini?', icon: 'question', showCancelButton: true, confirmButtonText: 'Hapus', customClass: { popup: 'colored-toast' }
+      });
+      if (isConfirmed) {
+        await supabaseClient.from('infaq').delete().eq('id', transId);
+        Swal.fire({ title: 'INFAQU', text: 'Transaksi dihapus!', icon: 'success', customClass: { popup: 'colored-toast' } });
+        if (currAdmin) await refreshAdminData();
+        else if (currMember && currMember.is_admin) {
+          await loadMemberAdminStats(); await loadMemberAdminTransactions(); await loadMyInfaq(); await updateMemberRankRibbon();
+        }
+      }
+    }
+  </script>
 </body>
 </html>
