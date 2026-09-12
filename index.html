@@ -1276,16 +1276,13 @@
     }
   }
 
-  // FUNGSI EXPORT DATA REKAPITULASI KE SPREADSHEET (EXCEL .XLSX)
+  // FUNGSI EXPORT DATA REKAPITULASI KE SPREADSHEET (EXCEL .XLSX) DENGAN KOLOM BULAN DINAMIS
   async function exportToSpreadsheet() {
     const btn = document.getElementById('btn-export-excel');
     btn.disabled = true;
     btn.innerText = "Mengekspor...";
 
     try {
-      const now = new Date();
-      const currentYear = now.getFullYear();
-      const currentMonth = now.getMonth();
       const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
       // 1. Ambil Data Terbaru dari Supabase
@@ -1299,79 +1296,118 @@
 
       if (errM || errI) throw new Error("Gagal mengambil data dari database server.");
 
-      // 2. Susun Matriks Data Laporan Spreadsheet
+      // 2. Kumpulkan daftar bulan unik yang ada pada transaksi (Format key: "YYYY-MM")
+      const uniqueMonthsMap = new Map();
+      if (infaqs) {
+        infaqs.forEach(i => {
+          if (i.tanggal) {
+            const parts = i.tanggal.split('-');
+            if (parts.length >= 2) {
+              const yearMonthKey = `${parts[0]}-${parts[1]}`;
+              if (!uniqueMonthsMap.has(yearMonthKey)) {
+                const year = parseInt(parts[0], 10);
+                const monthIndex = parseInt(parts[1], 10) - 1;
+                const label = `${namaBulan[monthIndex]} ${year}`;
+                uniqueMonthsMap.set(yearMonthKey, { key: yearMonthKey, label: label });
+              }
+            }
+          }
+        });
+      }
+
+      // Urutkan bulan secara kronologis (dari yang terlama ke terbaru)
+      const sortedMonths = Array.from(uniqueMonthsMap.values()).sort((a, b) => a.key.localeCompare(b.key));
+
+      // Jika belum ada data transaksi sama sekali, gunakan bulan berjalan sebagai default kolom
+      if (sortedMonths.length === 0) {
+        const now = new Date();
+        const yKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+        sortedMonths.push({ key: yKey, label: `${namaBulan[now.getMonth()]} ${now.getFullYear()}` });
+      }
+
+      // 3. Susun Header Tabel Spreadsheet secara Dinamis
+      const headerRow = ["No", "ID Anggota", "Nama Anggota"];
+      sortedMonths.forEach(m => {
+        headerRow.push(m.label);
+      });
+      headerRow.push("Total Akumulasi (Rp)");
+
       const sheetData = [
-        ["LAPORAN REKAPITULASI PROGRES INFAQ ANGGOTA"],
-        [`Grup: ${currAdmin.nama_grup}`, `Instansi: ${currAdmin.nama_sekolah}`, `Kode Grup: ${currAdmin.kode_grup}`, `Periode: ${namaBulan[currentMonth]} ${currentYear}`],
+        ["LAPORAN REKAPITULASI PROGRES INFAQ ANGGOTA PER BULAN"],
+        [`Grup: ${currAdmin.nama_grup}`, `Instansi: ${currAdmin.nama_sekolah}`, `Kode Grup: ${currAdmin.kode_grup}`],
         [], // Baris Kosong
-        ["No", "ID Anggota", "Nama Anggota", "Infaq Bulan Ini (Rp)", "Total Infaq Akumulasi (Rp)"]
+        headerRow
       ];
 
-      let grandMonthly = 0;
-      let grandTotal = 0;
+      // Array penampung Grand Total per kolom bulan & total keseluruhan
+      const grandTotalByMonth = new Array(sortedMonths.length).fill(0);
+      let grandTotalOverall = 0;
 
       if (members && members.length > 0) {
         members.forEach((m, idx) => {
-          let monthlyInfaq = 0;
-          let totalInfaq = 0;
-
-          if (infaqs) {
-            infaqs.filter(i => i.id_anggota === m.id_anggota).forEach(i => {
-              const nominal = Number(i.nominal) || 0;
-              totalInfaq += nominal;
-
-              if (i.tanggal) {
-                const tDate = new Date(i.tanggal);
-                if (tDate.getFullYear() === currentYear && tDate.getMonth() === currentMonth) {
-                  monthlyInfaq += nominal;
-                }
-              }
-            });
-          }
-
-          grandMonthly += monthlyInfaq;
-          grandTotal += totalInfaq;
-
-          sheetData.push([
+          const rowData = [
             idx + 1,
             m.id_anggota,
-            m.nama_anggota,
-            monthlyInfaq,
-            totalInfaq
-          ]);
+            m.nama_anggota
+          ];
+
+          let memberTotal = 0;
+
+          // Hitung infaq per bulan untuk anggota ini
+          sortedMonths.forEach((sm, mIdx) => {
+            let monthlySum = 0;
+            if (infaqs) {
+              infaqs.filter(i => i.id_anggota === m.id_anggota).forEach(i => {
+                if (i.tanggal && i.tanggal.startsWith(sm.key)) {
+                  monthlySum += Number(i.nominal) || 0;
+                }
+              });
+            }
+            rowData.push(monthlySum);
+            memberTotal += monthlySum;
+            grandTotalByMonth[mIdx] += monthlySum;
+          });
+
+          rowData.push(memberTotal);
+          grandTotalOverall += memberTotal;
+
+          sheetData.push(rowData);
         });
       } else {
-        sheetData.push(["-", "-", "Belum Ada Anggota Terdaftar", 0, 0]);
+        const emptyRow = ["-", "-", "Belum Ada Anggota Terdaftar"];
+        sortedMonths.forEach(() => emptyRow.push(0));
+        emptyRow.push(0);
+        sheetData.push(emptyRow);
       }
 
-      // Baris Total
+      // Baris Grand Total di bawah
+      const totalRow = ["", "", "GRAND TOTAL:"];
+      grandTotalByMonth.forEach(val => totalRow.push(val));
+      totalRow.push(grandTotalOverall);
       sheetData.push([]);
-      sheetData.push(["", "", "GRAND TOTAL:", grandMonthly, grandTotal]);
+      sheetData.push(totalRow);
 
-      // 3. Konversi Data Array menjadi Worksheet & Workbook
+      // 4. Konversi Data Array menjadi Worksheet & Workbook
       const worksheet = XLSX.utils.aoa_to_sheet(sheetData);
 
       // Set Lebar Kolom Otomatis
-      worksheet['!cols'] = [
-        { wch: 6 },  // No
-        { wch: 16 }, // ID Anggota
-        { wch: 28 }, // Nama Anggota
-        { wch: 22 }, // Infaq Bulan Ini
-        { wch: 26 }  // Total Infaq
-      ];
+      const colWidths = [{ wch: 6 }, { wch: 16 }, { wch: 28 }];
+      sortedMonths.forEach(() => colWidths.push({ wch: 20 }));
+      colWidths.push({ wch: 24 });
+      worksheet['!cols'] = colWidths;
 
       const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Rekapitulasi Infaq");
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Rekap Bulanan");
 
-      // 4. Unduh Berkas Spreadsheet (.xlsx)
-      const fileName = `Rekap_Infaq_${currAdmin.kode_grup}_${namaBulan[currentMonth]}_${currentYear}.xlsx`;
+      // 5. Unduh Berkas Spreadsheet (.xlsx)
+      const fileName = `Rekap_Infaq_Bulanan_${currAdmin.kode_grup}.xlsx`;
       XLSX.writeFile(workbook, fileName);
 
     } catch (err) {
       alert("Proses Export Spreadsheet Gagal: " + err.message);
     } finally {
       btn.disabled = false;
-      btn.innerHTML = '<i data-lucide="file-spreadsheet" size="14"></i> Export Spreadsheet';
+      btn.innerHTML = '<i data-lucide="file-spreadsheet" size="14"></i> Export';
       lucide.createIcons();
     }
   }
