@@ -325,45 +325,45 @@
       background: rgba(239, 68, 68, 0.2);
       border-color: rgba(239, 68, 68, 0.4);
     }
+
+    /* Icon-only Action Buttons (Icon-Only UI/UX Upgrade) */
     .btn-icon-del {
-      background: rgba(239, 68, 68, 0.15);
+      background: rgba(239, 68, 68, 0.12);
       color: #ef4444;
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 700;
-      line-height: 1;
-      width: auto;
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      padding: 6px;
+      border-radius: 8px;
+      width: 32px;
+      height: 32px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      justify-content: center;
       transition: all 0.2s;
     }
     .btn-icon-del:hover {
-      background: rgba(239, 68, 68, 0.3);
+      background: rgba(239, 68, 68, 0.25);
       color: #fff;
+      transform: scale(1.05);
     }
     .btn-icon-edit {
-      background: rgba(245, 158, 11, 0.15);
+      background: rgba(245, 158, 11, 0.12);
       color: #f59e0b;
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 700;
-      line-height: 1;
-      width: auto;
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      padding: 6px;
+      border-radius: 8px;
+      width: 32px;
+      height: 32px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      justify-content: center;
       transition: all 0.2s;
     }
     .btn-icon-edit:hover {
-      background: rgba(245, 158, 11, 0.3);
+      background: rgba(245, 158, 11, 0.25);
       color: #fff;
+      transform: scale(1.05);
     }
 
     /* Badge Admin Toggle Style */
@@ -930,7 +930,7 @@
     <!-- FITUR KHUSUS ADMIN DI HALAMAN ANGGOTA -->
     <div id="member-admin-panel" style="display: none; background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.2); padding: 20px; border-radius: 16px; margin-bottom: 16px;">
       <h4 style="margin-bottom: 14px; font-size: 14px; color: #818cf8; display: flex; align-items: center; gap: 6px;">
-        <i data-lucide="shield-check" size="16"></i> Panel Admin Grup
+        <i data-lucide="shield-check" size="16"></i> Panel Khusus Admin Grup
       </h4>
 
       <!-- Statistik Bulanan & Tahunan Grup -->
@@ -975,8 +975,9 @@
               <tr>
                 <th>Tanggal</th>
                 <th>ID</th>
+                <th>Nama</th>
                 <th>Nominal</th>
-                <th>Aksi</th>
+                <th style="text-align: center;">Aksi</th>
               </tr>
             </thead>
             <tbody id="dash-member-admin-trans-table"></tbody>
@@ -1107,8 +1108,9 @@
             <tr>
               <th>Tanggal</th>
               <th>ID</th>
+              <th>Nama</th>
               <th>Nominal</th>
-              <th>Aksi</th>
+              <th style="text-align: center;">Aksi</th>
             </tr>
           </thead>
           <tbody id="dash-admin-trans-table"></tbody>
@@ -1126,7 +1128,7 @@
               <th>No</th>
               <th>ID / Nama</th>
               <th>Akses Admin</th>
-              <th>Aksi</th>
+              <th style="text-align: center;">Aksi</th>
             </tr>
           </thead>
           <tbody id="dash-admin-management-table"></tbody>
@@ -1359,7 +1361,6 @@
 
     if (!members) return;
 
-    // Hitung total infaq tiap anggota
     const totals = members.map(m => {
       let sum = 0;
       if (infaqs) {
@@ -1370,17 +1371,14 @@
       return { id_anggota: m.id_anggota, total: sum };
     });
 
-    // Urutkan dari terbesar ke terkecil
     totals.sort((a, b) => b.total - a.total);
 
-    // Cari posisi peringkat anggota saat ini (1-based index)
     const rankIndex = totals.findIndex(t => t.id_anggota === currMember.id_anggota);
     const rank = rankIndex !== -1 ? rankIndex + 1 : totals.length + 1;
 
     const medalBox = document.getElementById('dash-a-medal-box');
     const medalText = document.getElementById('dash-a-medal-text');
 
-    // Reset kelas
     medalBox.className = 'medal-ribbon-container';
 
     if (rank === 1) {
@@ -1452,28 +1450,41 @@
   }
 
   async function loadMemberAdminTransactions() {
-    const { data } = await supabaseClient.from('infaq')
+    const { data: infaqs } = await supabaseClient.from('infaq')
       .select('*')
       .eq('kode_grup', currMember.kode_grup)
       .order('tanggal', { ascending: false });
 
+    const { data: members } = await supabaseClient.from('anggota')
+      .select('id_anggota, nama_anggota')
+      .eq('kode_grup', currMember.kode_grup);
+
+    const memberNameMap = {};
+    if (members) {
+      members.forEach(m => {
+        memberNameMap[m.id_anggota] = m.nama_anggota;
+      });
+    }
+
     const tbody = document.getElementById('dash-member-admin-trans-table');
     tbody.innerHTML = '';
 
-    if (data && data.length > 0) {
-      data.forEach(item => {
+    if (infaqs && infaqs.length > 0) {
+      infaqs.forEach(item => {
+        const memberName = memberNameMap[item.id_anggota] || '-';
         tbody.innerHTML += `
           <tr>
             <td>${formatDateIndo(item.tanggal)}</td>
-            <td>${item.id_anggota}</td>
+            <td style="color: var(--text-muted);">${item.id_anggota}</td>
+            <td><strong>${memberName}</strong></td>
             <td>Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
-            <td>
-              <div style="display: flex; gap: 6px;">
-                <button class="btn-icon-edit" onclick="editTransaction(${item.id}, ${item.nominal})">
-                  <i data-lucide="pencil" size="10"></i> Edit
+            <td style="text-align: center;">
+              <div style="display: flex; gap: 6px; justify-content: center;">
+                <button class="btn-icon-edit" title="Edit" onclick="editTransaction(${item.id}, ${item.nominal})">
+                  <i data-lucide="pencil" size="14"></i>
                 </button>
-                <button class="btn-icon-del" onclick="deleteTransaction(${item.id})">
-                  <i data-lucide="trash-2" size="10"></i> Hapus
+                <button class="btn-icon-del" title="Hapus" onclick="deleteTransaction(${item.id})">
+                  <i data-lucide="trash-2" size="14"></i>
                 </button>
               </div>
             </td>
@@ -1482,7 +1493,7 @@
       });
       lucide.createIcons();
     } else {
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 8px 12px;">Belum ada riwayat transaksi</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted); padding: 12px;">Belum ada riwayat transaksi</td></tr>';
     }
   }
 
@@ -1885,9 +1896,9 @@
                 ${adminBadgeText}
               </button>
             </td>
-            <td>
-              <button class="btn-icon-del" onclick="deleteMember('${m.id_anggota}', '${m.nama_anggota}')">
-                <i data-lucide="trash-2" size="12"></i> Hapus
+            <td style="text-align: center;">
+              <button class="btn-icon-del" title="Hapus" onclick="deleteMember('${m.id_anggota}', '${m.nama_anggota}')">
+                <i data-lucide="trash-2" size="14"></i>
               </button>
             </td>
           </tr>
@@ -1895,8 +1906,8 @@
       });
       lucide.createIcons();
     } else {
-      rekapTbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color: var(--text-muted); padding: 8px 12px;">Belum ada anggota terdaftar</td></tr>';
-      mgmtTbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 8px 12px;">Belum ada anggota terdaftar</td></tr>';
+      rekapTbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color: var(--text-muted); padding: 12px;">Belum ada anggota terdaftar</td></tr>';
+      mgmtTbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 12px;">Belum ada anggota terdaftar</td></tr>';
     }
   }
 
@@ -2115,28 +2126,41 @@
   }
 
   async function loadAdminTransactions() {
-    const { data } = await supabaseClient.from('infaq')
+    const { data: infaqs } = await supabaseClient.from('infaq')
       .select('*')
       .eq('kode_grup', currAdmin.kode_grup)
       .order('tanggal', { ascending: false });
 
+    const { data: members } = await supabaseClient.from('anggota')
+      .select('id_anggota, nama_anggota')
+      .eq('kode_grup', currAdmin.kode_grup);
+
+    const memberNameMap = {};
+    if (members) {
+      members.forEach(m => {
+        memberNameMap[m.id_anggota] = m.nama_anggota;
+      });
+    }
+
     const tbody = document.getElementById('dash-admin-trans-table');
     tbody.innerHTML = '';
 
-    if (data && data.length > 0) {
-      data.forEach(item => {
+    if (infaqs && infaqs.length > 0) {
+      infaqs.forEach(item => {
+        const memberName = memberNameMap[item.id_anggota] || '-';
         tbody.innerHTML += `
           <tr>
             <td>${formatDateIndo(item.tanggal)}</td>
-            <td>${item.id_anggota}</td>
+            <td style="color: var(--text-muted);">${item.id_anggota}</td>
+            <td><strong>${memberName}</strong></td>
             <td>Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
-            <td>
-              <div style="display: flex; gap: 6px;">
-                <button class="btn-icon-edit" onclick="editTransaction(${item.id}, ${item.nominal})">
-                  <i data-lucide="pencil" size="10"></i> Edit
+            <td style="text-align: center;">
+              <div style="display: flex; gap: 6px; justify-content: center;">
+                <button class="btn-icon-edit" title="Edit" onclick="editTransaction(${item.id}, ${item.nominal})">
+                  <i data-lucide="pencil" size="14"></i>
                 </button>
-                <button class="btn-icon-del" onclick="deleteTransaction(${item.id})">
-                  <i data-lucide="trash-2" size="10"></i> Hapus
+                <button class="btn-icon-del" title="Hapus" onclick="deleteTransaction(${item.id})">
+                  <i data-lucide="trash-2" size="14"></i>
                 </button>
               </div>
             </td>
@@ -2145,7 +2169,7 @@
       });
       lucide.createIcons();
     } else {
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 8px 12px;">Belum ada riwayat transaksi</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted); padding: 12px;">Belum ada riwayat transaksi</td></tr>';
     }
   }
 
