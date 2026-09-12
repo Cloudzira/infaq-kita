@@ -327,15 +327,16 @@
       background: rgba(239, 68, 68, 0.15);
       color: #ef4444;
       border: 1px solid rgba(239, 68, 68, 0.3);
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
       line-height: 1;
       width: auto;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 3px;
+      transition: all 0.2s;
     }
     .btn-icon-del:hover {
       background: rgba(239, 68, 68, 0.3);
@@ -346,9 +347,9 @@
       background: rgba(99, 102, 241, 0.15);
       color: #818cf8;
       border: 1px solid rgba(99, 102, 241, 0.3);
-      padding: 3px 8px;
+      padding: 4px 8px;
       border-radius: 6px;
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
@@ -527,7 +528,7 @@
       top: 0;
       z-index: 2;
       background: #0f172a !important;
-      padding: 8px 12px;
+      padding: 10px 12px;
       font-weight: 700;
       color: var(--text-muted);
       border-bottom: 1px solid var(--glass-border);
@@ -544,7 +545,7 @@
       text-align: left;
     }
     td {
-      padding: 8px 12px;
+      padding: 10px 12px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.03);
       color: #e2e8f0;
       vertical-align: middle;
@@ -758,7 +759,7 @@
       </div>
     </div>
 
-    <!-- FITUR KHUSUS ADMIN DI HALAMAN ANGGOTA (DIPOSISIKAN TEPAT DI ATAS TOMBOL KELUAR AKUN) -->
+    <!-- FITUR KHUSUS ADMIN DI HALAMAN ANGGOTA -->
     <div id="member-admin-panel" style="display: none; background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.2); padding: 20px; border-radius: 16px; margin-bottom: 16px;">
       <h4 style="margin-bottom: 14px; font-size: 14px; color: #818cf8; display: flex; align-items: center; gap: 6px;">
         <i data-lucide="shield-check" size="16"></i> Panel Khusus Admin Grup
@@ -903,7 +904,7 @@
             <th>No</th>
             <th>ID / Nama</th>
             <th>Total Infaq</th>
-            <th>Akses Admin</th>
+            <th>Aksi & Akses</th>
           </tr>
         </thead>
         <tbody id="dash-admin-rekap-table"></tbody>
@@ -1079,7 +1080,6 @@
     document.getElementById('dash-a-code').innerText = currMember.kode_grup;
     document.getElementById('dash-a-id').innerText = currMember.id_anggota;
     
-    // Cek apakah anggota ini memiliki status admin
     const roleBadge = document.getElementById('dash-a-role-badge');
     const memberAdminPanel = document.getElementById('member-admin-panel');
 
@@ -1107,7 +1107,6 @@
     showSection('dash-a');
   }
 
-  // FUNGSI LOAD STATISTIK & INPUT INFAQ UNTUK ANGGOTA YANG JADI ADMIN
   async function loadMembersForMemberAdmin() {
     const select = document.getElementById('m-at-anggota');
     select.innerHTML = '<option value="">-- Memuat anggota... --</option>';
@@ -1117,6 +1116,7 @@
       .eq('kode_grup', currMember.kode_grup);
 
     if (data && data.length > 0) {
+      data.sort((a, b) => a.nama_anggota.localeCompare(b.nama_anggota, 'id', { sensitivity: 'base' }));
       select.innerHTML = '<option value="">-- Pilih Anggota --</option>';
       data.forEach(a => {
         select.innerHTML += `<option value="${a.id_anggota}">${a.nama_anggota} (${a.id_anggota})</option>`;
@@ -1159,7 +1159,6 @@
     document.getElementById('dash-member-admin-yearly').innerText = totalYearly.toLocaleString('id-ID');
   }
 
-  // SUBMIT INPUT INFAQ DARI PANEL ANGGOTA ADMIN
   document.getElementById('form-member-add-infaq').addEventListener('submit', async (e) => {
     e.preventDefault();
     const idAnggota = document.getElementById('m-at-anggota').value;
@@ -1186,7 +1185,6 @@
     await loadMyInfaq();
   });
 
-  // UPDATE PROFIL ANGGOTA
   document.getElementById('form-edit-a').addEventListener('submit', async (e) => {
     e.preventDefault();
     const newCode = document.getElementById('ea-code').value.trim();
@@ -1375,6 +1373,7 @@
       .eq('kode_grup', currAdmin.kode_grup);
 
     if (data && data.length > 0) {
+      data.sort((a, b) => a.nama_anggota.localeCompare(b.nama_anggota, 'id', { sensitivity: 'base' }));
       select.innerHTML = '<option value="">-- Pilih Anggota --</option>';
       data.forEach(a => {
         select.innerHTML += `<option value="${a.id_anggota}">${a.nama_anggota} (${a.id_anggota})</option>`;
@@ -1422,6 +1421,9 @@
     tbody.innerHTML = '';
 
     if (members && members.length > 0) {
+      // Urutkan anggota berdasarkan nama lengkap secara alfabetis
+      members.sort((a, b) => a.nama_anggota.localeCompare(b.nama_anggota, 'id', { sensitivity: 'base' }));
+
       members.forEach((m, index) => {
         let totalM = 0;
         if (infaqs) {
@@ -1443,16 +1445,21 @@
             </td>
             <td><strong style="color: var(--accent-emerald);">Rp ${totalM.toLocaleString('id-ID')}</strong></td>
             <td>
-              <button class="${adminBadgeClass}" onclick="toggleAdminStatus('${m.id_anggota}', ${isAdmin})">
-                ${adminBadgeText}
-              </button>
+              <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+                <button class="${adminBadgeClass}" onclick="toggleAdminStatus('${m.id_anggota}', ${isAdmin})">
+                  ${adminBadgeText}
+                </button>
+                <button class="btn-icon-del" onclick="deleteMember('${m.id_anggota}', '${m.nama_anggota}')">
+                  <i data-lucide="user-x" size="12"></i> Hapus
+                </button>
+              </div>
             </td>
           </tr>
         `;
       });
       lucide.createIcons();
     } else {
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 8px 12px;">Belum ada anggota terdaftar</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 12px;">Belum ada anggota terdaftar</td></tr>';
     }
   }
 
@@ -1469,6 +1476,30 @@
     if (error) return alert("Gagal memperbarui status admin: " + error.message);
 
     alert("Status hak akses admin berhasil diperbarui!");
+    await refreshAdminData();
+  }
+
+  async function deleteMember(idAnggota, namaAnggota) {
+    if (!confirm(`PERHATIAN: Apakah Anda yakin ingin menghapus anggota "${namaAnggota}" (${idAnggota}) beserta seluruh riwayat infaq miliknya secara permanen?`)) return;
+
+    // Hapus riwayat infaq anggota terlebih dahulu agar tidak ada orphan record
+    const { error: errInfaq } = await supabaseClient.from('infaq')
+      .delete()
+      .eq('kode_grup', currAdmin.kode_grup)
+      .eq('id_anggota', idAnggota);
+
+    if (errInfaq) return alert("Gagal menghapus riwayat infaq anggota: " + errInfaq.message);
+
+    // Hapus data anggota dari database
+    const { error: errMember } = await supabaseClient.from('anggota')
+      .delete()
+      .eq('kode_grup', currAdmin.kode_grup)
+      .eq('id_anggota', idAnggota);
+
+    if (errMember) return alert("Gagal menghapus data anggota: " + errMember.message);
+
+    alert(`Anggota ${namaAnggota} berhasil dihapus.`);
+    await loadMembersForAdmin();
     await refreshAdminData();
   }
 
@@ -1533,6 +1564,8 @@
       let grandTotalOverall = 0;
 
       if (members && members.length > 0) {
+        members.sort((a, b) => a.nama_anggota.localeCompare(b.nama_anggota, 'id', { sensitivity: 'base' }));
+
         members.forEach((m, idx) => {
           const rowData = [
             idx + 1,
@@ -1614,7 +1647,7 @@
             <td>Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
             <td>
               <button class="btn-icon-del" onclick="deleteTransaction(${item.id})">
-                <i data-lucide="trash-2" size="10"></i> Hapus
+                <i data-lucide="trash-2" size="12"></i> Hapus
               </button>
             </td>
           </tr>
