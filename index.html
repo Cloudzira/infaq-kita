@@ -151,8 +151,8 @@
       border-color: var(--accent-emerald);
     }
     .theme-option {
-      width: 16px;
-      height: 16px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       display: inline-flex;
       align-items: center;
@@ -169,14 +169,14 @@
       transform: scale(1.05);
     }
 
-    /* Guide Sparkles Button (Disesuaikan ukurannya agar sama dengan pill switch/elemen aksi) */
+    /* Guide Open Book Button (Matched with theme switcher dimensions) */
     .guide-btn {
       background: var(--glass-card);
       border: 1px solid var(--glass-border);
-      color: var(--text-main);
-      width: 16px;
-      height: 16px;
-      border-radius: 30px;
+      color: var(--text-muted);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -186,9 +186,11 @@
       transition: all 0.3s ease;
     }
     .guide-btn:hover {
-      transform: scale(1.1);
+      transform: scale(1.05);
       border-color: var(--accent-emerald);
       color: var(--accent-emerald);
+      background: var(--btn-primary-bg);
+      color: #ffffff;
     }
 
     /* Header & Logo Brand */
@@ -544,9 +546,9 @@
           <span class="theme-option opt-default"><i data-lucide="moon" size="12"></i></span>
           <span class="theme-option opt-feminine"><i data-lucide="sun" size="12"></i></span>
         </div>
-        <!-- Guide Sparkles Button -->
+        <!-- Guide Open Book Button -->
         <button class="guide-btn" onclick="showGuideModal()" title="Panduan Penggunaan">
-          <i data-lucide="sparkles" size="12"></i>
+          <i data-lucide="book-open" size="14"></i>
         </button>
       </div>
 
