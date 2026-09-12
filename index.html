@@ -123,29 +123,73 @@
       margin-top: 10px;
     }
 
-    /* Theme Switcher Button (Custom 4-pointed Sparkle SVG matching uploaded image) */
-    .theme-switcher-wrapper {
+    /* Top Action Bar (Theme Switcher & Guide Button) */
+    .top-action-bar {
       position: absolute;
       top: -10px;
       right: 0;
       z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .theme-btn {
-      background: transparent;
-      border: none;
-      color: #f59e0b; /* Golden sparkle color */
+
+    /* Professional Pill Toggle Switcher for Themes */
+    .theme-switch-pill {
+      background: var(--glass-card);
+      border: 1px solid var(--glass-border);
+      padding: 3px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .theme-switch-pill:hover {
+      border-color: var(--accent-emerald);
+    }
+    .theme-option {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    [data-theme="default"] .theme-option.opt-default,
+    [data-theme="feminine"] .theme-option.opt-feminine {
+      background: var(--btn-primary-bg);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      transform: scale(1.05);
+    }
+
+    /* Guide Icon Button */
+    .guide-btn {
+      background: var(--glass-card);
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
       width: 32px;
       height: 32px;
+      border-radius: 50%;
+      font-size: 12px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       transition: all 0.3s ease;
-      filter: drop-shadow(0 2px 8px rgba(245, 158, 11, 0.3));
     }
-    .theme-btn:hover {
-      transform: scale(1.15) rotate(15deg);
-      filter: drop-shadow(0 4px 12px rgba(245, 158, 11, 0.5));
+    .guide-btn:hover {
+      transform: scale(1.1);
+      border-color: var(--accent-emerald);
+      color: var(--accent-emerald);
     }
 
     /* Header & Logo Brand */
@@ -494,12 +538,16 @@
 
     <!-- BRAND HEADER -->
     <div class="brand-header">
-      <!-- Tombol Switch Tema (Sesuai Referensi Gambar Sparkle 4-titik & Proporsional Tanpa Blok Lingkaran) -->
-      <div class="theme-switcher-wrapper">
-        <button class="theme-btn" onclick="toggleTheme()" id="theme-switch-btn" title="Ganti Tema">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 0C12 6.627 17.373 12 24 12C17.373 12 12 17.373 12 24C12 17.373 6.627 12 0 12C6.627 12 12 6.627 12 0Z"/>
-          </svg>
+      <!-- Top Action Bar (Theme Switcher & Guide Button) -->
+      <div class="top-action-bar">
+        <!-- Professional Theme Switch Pill -->
+        <div class="theme-switch-pill" onclick="toggleTheme()" id="theme-switch-pill" title="Ganti Tema">
+          <span class="theme-option opt-default"><i data-lucide="moon" size="12"></i></span>
+          <span class="theme-option opt-feminine"><i data-lucide="sun" size="12"></i></span>
+        </div>
+        <!-- Guide Button -->
+        <button class="guide-btn" onclick="showGuideModal()" title="Panduan Penggunaan">
+          <i data-lucide="help-circle" size="14"></i>
         </button>
       </div>
 
@@ -853,6 +901,36 @@
     // Cek tema tersimpan saat load
     const savedTheme = localStorage.getItem('infaq_theme') || 'default';
     setTheme(savedTheme);
+
+    // Fungsi Popup Panduan Penggunaan
+    function showGuideModal() {
+      Swal.fire({
+        title: '<span style="font-size: 20px; font-weight: 800;">Panduan Penggunaan INFAQU</span>',
+        html: `
+          <div style="text-align: left; font-size: 13px; line-height: 1.6; max-height: 350px; overflow-y: auto; padding-right: 5px;">
+            <p style="margin-bottom: 10px;">Selamat datang di <strong>INFAQU</strong>. Berikut adalah panduan ringkas cara menggunakan aplikasi:</p>
+            
+            <div style="margin-bottom: 12px; background: rgba(16, 185, 129, 0.08); padding: 10px 12px; border-radius: 10px; border-left: 3px solid var(--accent-emerald);">
+              <strong>1. Buat Grup Baru</strong><br>
+              Pilih menu <em>Buat Grup Baru</em> di halaman utama. Masukkan nama instansi, nama kelas/grup, nama penanggung jawab, dan PIN admin. Setelah disimpan, sistem akan menghasilkan <strong>Kode Grup</strong> unik (contoh: GRP-XXXX).
+            </div>
+
+            <div style="margin-bottom: 12px; background: rgba(6, 182, 212, 0.08); padding: 10px 12px; border-radius: 10px; border-left: 3px solid var(--accent-cyan);">
+              <strong>2. Pendaftaran Anggota</strong><br>
+              Pilih menu <em>Daftar Anggota Baru</em>. Masukkan Kode Grup yang diberikan oleh admin grup, isi nama lengkap, ID anggota unik, PIN rahasia, serta target infaq pribadi Anda.
+            </div>
+
+            <div style="margin-bottom: 12px; background: rgba(99, 102, 241, 0.08); padding: 10px 12px; border-radius: 10px; border-left: 3px solid var(--accent-indigo);">
+              <strong>3. Cara Login & Cek Progress</strong><br>
+              • <strong>Login Anggota:</strong> Masukkan Kode Grup, ID, dan PIN untuk melihat riwayat infaq pribadi, grafik pencapaian target, serta peringkat medali Anda.<br>
+              • <strong>Login Admin:</strong> Masukkan Kode Grup dan PIN Admin untuk merekap data, mencatat infaq harian, mengekspor laporan ke Excel, dan mengatur hak akses admin anggota.
+            </div>
+          </div>
+        `,
+        confirmButtonText: 'Mengerti',
+        customClass: { popup: 'colored-toast' }
+      });
+    }
 
     // Fungsi Format Tanggal Indonesia (DD/MM/YYYY)
     function formatDateIndo(dateStr) {
