@@ -891,23 +891,21 @@
     </form>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-      <h4 style="font-size: 14px; font-weight: 700;">Rekapitulasi Infaq & Manajemen Admin</h4>
+      <h4 style="font-size: 14px; font-weight: 700;">Rekapitulasi Infaq</h4>
       <div style="display: flex; gap: 8px;">
         <button class="btn-primary" onclick="refreshAdminData()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="refresh-cw" size="12"></i> Refresh</button>
         <button class="btn-success" id="btn-export-excel" onclick="exportToSpreadsheet()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="file-spreadsheet" size="12"></i> Export</button>
       </div>
     </div>
 
-    <!-- AREA REKAPITULASI & HAK ADMIN -->
-    <div class="table-container" style="max-height: 400px; overflow-y: auto;">
+    <!-- AREA REKAPITULASI -->
+    <div class="table-container" style="max-height: 400px; overflow-y: auto; margin-bottom: 24px;">
       <table>
         <thead>
           <tr>
             <th>No</th>
             <th>ID / Nama</th>
             <th>Total Infaq</th>
-            <th>Akses Admin</th>
-            <th>Aksi</th>
           </tr>
         </thead>
         <tbody id="dash-admin-rekap-table"></tbody>
@@ -915,7 +913,7 @@
     </div>
 
     <!-- Tabel Daftar Transaksi Masuk -->
-    <div style="margin-top: 24px;">
+    <div style="margin-bottom: 24px;">
       <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">Kelola Input</h4>
       <div class="table-container" style="max-height: 400px; overflow-y: auto;">
         <table>
@@ -928,6 +926,24 @@
             </tr>
           </thead>
           <tbody id="dash-admin-trans-table"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tabel Manajemen Admin Tersendiri -->
+    <div style="margin-bottom: 24px;">
+      <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">Manajemen Admin & Anggota</h4>
+      <div class="table-container" style="max-height: 400px; overflow-y: auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>ID / Nama</th>
+              <th>Akses Admin</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="dash-admin-management-table"></tbody>
         </table>
       </div>
     </div>
@@ -1424,8 +1440,11 @@
       .select('*')
       .eq('kode_grup', currAdmin.kode_grup);
 
-    const tbody = document.getElementById('dash-admin-rekap-table');
-    tbody.innerHTML = '';
+    const rekapTbody = document.getElementById('dash-admin-rekap-table');
+    const mgmtTbody = document.getElementById('dash-admin-management-table');
+    
+    rekapTbody.innerHTML = '';
+    mgmtTbody.innerHTML = '';
 
     if (members && members.length > 0) {
       members.sort((a, b) => a.nama_anggota.localeCompare(b.nama_anggota, 'id', { sensitivity: 'base' }));
@@ -1442,7 +1461,8 @@
         const adminBadgeClass = isAdmin ? "badge-admin-toggle is-admin" : "badge-admin-toggle";
         const adminBadgeText = isAdmin ? '<i data-lucide="shield-check" size="12"></i> Admin' : '<i data-lucide="shield" size="12"></i> Jadikan Admin';
 
-        tbody.innerHTML += `
+        // Tabel Rekapitulasi (Hanya No, ID/Nama, Total Infaq)
+        rekapTbody.innerHTML += `
           <tr>
             <td>${index + 1}</td>
             <td>
@@ -1450,6 +1470,17 @@
               <span style="font-size:10px; color:var(--text-muted);">${m.id_anggota}</span>
             </td>
             <td><strong style="color: var(--accent-emerald);">Rp ${totalM.toLocaleString('id-ID')}</strong></td>
+          </tr>
+        `;
+
+        // Tabel Manajemen Admin & Anggota Tersendiri (No, ID/Nama, Akses Admin, Aksi Hapus)
+        mgmtTbody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>
+              <strong>${m.nama_anggota}</strong><br>
+              <span style="font-size:10px; color:var(--text-muted);">${m.id_anggota}</span>
+            </td>
             <td>
               <button class="${adminBadgeClass}" onclick="toggleAdminStatus('${m.id_anggota}', ${isAdmin})">
                 ${adminBadgeText}
@@ -1465,7 +1496,8 @@
       });
       lucide.createIcons();
     } else {
-      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted); padding: 8px 12px;">Belum ada anggota terdaftar</td></tr>';
+      rekapTbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color: var(--text-muted); padding: 8px 12px;">Belum ada anggota terdaftar</td></tr>';
+      mgmtTbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 8px 12px;">Belum ada anggota terdaftar</td></tr>';
     }
   }
 
