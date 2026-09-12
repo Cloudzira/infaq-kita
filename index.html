@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>INFAQU - Kurniapedia</title>
+  <!-- SweetAlert2 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Library SheetJS untuk Export Spreadsheet / Excel -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -978,6 +980,9 @@
   Kurniapedia | 2026
 </div>
 
+<!-- SweetAlert2 JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
 <script>
   lucide.createIcons();
 
@@ -1061,7 +1066,10 @@
       pin_admin: document.getElementById('cc-pin').value
     }]);
 
-    if (error) return alert("Gagal membuat grup: " + error.message);
+    if (error) {
+      Swal.fire('Gagal', "Gagal membuat grup: " + error.message, 'error');
+      return;
+    }
     document.getElementById('cc-code-display').innerText = code;
     document.getElementById('cc-result').style.display = 'block';
   });
@@ -1080,9 +1088,18 @@
       is_admin: false
     }]);
 
-    if (error) return alert("Pendaftaran gagal: " + error.message);
-    alert("Pendaftaran Berhasil! Silakan Login.");
-    showSection('login-a');
+    if (error) {
+      Swal.fire('Gagal', "Pendaftaran gagal: " + error.message, 'error');
+      return;
+    }
+    Swal.fire({
+      title: 'INFAQU',
+      text: 'Pendaftaran Berhasil! Silakan Login.',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    }).then(() => {
+      showSection('login-a');
+    });
   });
 
   // 3. LOGIN ANGGOTA
@@ -1099,7 +1116,10 @@
       .eq('pin_anggota', pin)
       .single();
 
-    if (error || !data) return alert("Login gagal! Periksa Kode Grup, ID Anggota, dan PIN Anda.");
+    if (error || !data) {
+      Swal.fire('Login Gagal', "Periksa Kode Grup, ID Anggota, dan PIN Anda.", 'error');
+      return;
+    }
     
     const { data: groupData } = await supabaseClient.from('grup')
       .select('nama_grup')
@@ -1208,7 +1228,10 @@
     const nominal = Number(document.getElementById('m-at-nominal').value);
     const catatan = document.getElementById('m-at-catatan').value;
 
-    if (!idAnggota) return alert("Pilih anggota terlebih dahulu.");
+    if (!idAnggota) {
+      Swal.fire('Perhatian', 'Pilih anggota terlebih dahulu.', 'warning');
+      return;
+    }
 
     const { error } = await supabaseClient.from('infaq').insert([{
       kode_grup: currMember.kode_grup,
@@ -1218,9 +1241,18 @@
       catatan: catatan
     }]);
 
-    if (error) return alert("Gagal menyimpan infaq: " + error.message);
+    if (error) {
+      Swal.fire('Gagal', "Gagal menyimpan infaq: " + error.message, 'error');
+      return;
+    }
 
-    alert("Infaq berhasil disimpan!");
+    Swal.fire({
+      title: 'INFAQU',
+      text: 'Infaq berhasil disimpan!',
+      icon: 'success',
+      timer: 1500,
+      showConfirmButton: false
+    });
     document.getElementById('m-at-nominal').value = '';
     document.getElementById('m-at-catatan').value = '';
     await loadMemberAdminStats();
@@ -1236,7 +1268,10 @@
     const newPin = document.getElementById('ea-pin').value.trim();
 
     const { data: gCheck } = await supabaseClient.from('grup').select('kode_grup, nama_grup').eq('kode_grup', newCode).single();
-    if (!gCheck) return alert("Kode Grup baru tidak ditemukan/tidak valid di sistem.");
+    if (!gCheck) {
+      Swal.fire('Gagal', 'Kode Grup baru tidak ditemukan/tidak valid di sistem.', 'error');
+      return;
+    }
 
     const oldCode = currMember.kode_grup;
     const oldId = currMember.id_anggota;
@@ -1253,7 +1288,10 @@
       };
 
       const { error: errInsert } = await supabaseClient.from('anggota').insert([newMemberData]);
-      if (errInsert) return alert("Gagal memperbarui ID (ID Baru mungkin sudah dipakai): " + errInsert.message);
+      if (errInsert) {
+        Swal.fire('Gagal', "Gagal memperbarui ID (ID Baru mungkin sudah dipakai): " + errInsert.message, 'error');
+        return;
+      }
 
       const { error: errInfaq } = await supabaseClient.from('infaq')
         .update({ kode_grup: newCode, id_anggota: newId })
@@ -1262,7 +1300,8 @@
 
       if (errInfaq) {
         await supabaseClient.from('anggota').delete().eq('kode_grup', newCode).eq('id_anggota', newId);
-        return alert("Gagal memindahkan data riwayat transaksi: " + errInfaq.message);
+        Swal.fire('Gagal', "Gagal memindahkan data riwayat transaksi: " + errInfaq.message, 'error');
+        return;
       }
 
       await supabaseClient.from('anggota').delete().eq('kode_grup', oldCode).eq('id_anggota', oldId);
@@ -1276,7 +1315,10 @@
         .eq('kode_grup', oldCode)
         .eq('id_anggota', oldId);
 
-      if (errUpdate) return alert("Gagal memperbarui profil: " + errUpdate.message);
+      if (errUpdate) {
+        Swal.fire('Gagal', "Gagal memperbarui profil: " + errUpdate.message, 'error');
+        return;
+      }
     }
 
     currMember.kode_grup = newCode;
@@ -1286,13 +1328,22 @@
     if (newPin !== "") currMember.pin_anggota = newPin;
 
     localStorage.setItem('infaq_member', JSON.stringify(currMember));
-    alert("Profil berhasil diperbarui!");
+    Swal.fire({
+      title: 'INFAQU',
+      text: 'Profil berhasil diperbarui!',
+      icon: 'success',
+      timer: 1500,
+      showConfirmButton: false
+    });
     await showMemberDash();
   });
 
   async function updateTargetInfaq() {
     const newTarget = Number(document.getElementById('dash-a-target-input').value);
-    if (!newTarget || newTarget <= 0) return alert("Masukkan nominal target yang valid.");
+    if (!newTarget || newTarget <= 0) {
+      Swal.fire('Perhatian', 'Masukkan nominal target yang valid.', 'warning');
+      return;
+    }
 
     currMember.target_infaq = newTarget;
     localStorage.setItem('infaq_member', JSON.stringify(currMember));
@@ -1302,7 +1353,13 @@
       .eq('kode_grup', currMember.kode_grup)
       .eq('id_anggota', currMember.id_anggota);
 
-    alert("Target infaq berhasil diperbarui!");
+    Swal.fire({
+      title: 'INFAQU',
+      text: 'Target infaq berhasil diperbarui!',
+      icon: 'success',
+      timer: 1500,
+      showConfirmButton: false
+    });
     await loadMyInfaq();
   }
 
@@ -1354,7 +1411,7 @@
       return;
     }
 
-    alert("Login admin gagal! PIN salah.");
+    Swal.fire('Login Gagal', 'PIN salah.', 'error');
   });
 
   async function showAdminDash() {
@@ -1433,7 +1490,10 @@
     const nominal = Number(document.getElementById('at-nominal').value);
     const catatan = document.getElementById('at-catatan').value;
 
-    if (!idAnggota) return alert("Pilih anggota terlebih dahulu.");
+    if (!idAnggota) {
+      Swal.fire('Perhatian', 'Pilih anggota terlebih dahulu.', 'warning');
+      return;
+    }
 
     const { error } = await supabaseClient.from('infaq').insert([{
       kode_grup: currAdmin.kode_grup,
@@ -1443,9 +1503,18 @@
       catatan: catatan
     }]);
 
-    if (error) return alert("Gagal menyimpan infaq: " + error.message);
+    if (error) {
+      Swal.fire('Gagal', "Gagal menyimpan infaq: " + error.message, 'error');
+      return;
+    }
 
-    alert("Infaq berhasil disimpan!");
+    Swal.fire({
+      title: 'INFAQU',
+      text: 'Infaq berhasil disimpan!',
+      icon: 'success',
+      timer: 1500,
+      showConfirmButton: false
+    });
     document.getElementById('at-nominal').value = '';
     document.getElementById('at-catatan').value = '';
     await refreshAdminData();
@@ -1523,7 +1592,17 @@
 
   async function toggleAdminStatus(idAnggota, currentStatus) {
     const actionText = currentStatus ? "mencabut akses admin dari" : "menjadikan admin untuk";
-    if (!confirm(`Apakah Anda yakin ingin ${actionText} anggota dengan ID: ${idAnggota}?`)) return;
+    
+    const result = await Swal.fire({
+      title: 'INFAQU',
+      text: `Apakah Anda yakin ingin ${actionText} anggota dengan ID: ${idAnggota}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Ya',
+      cancelButtonText: 'Batal'
+    });
+
+    if (!result.isConfirmed) return;
 
     const newStatus = !currentStatus;
     const { error } = await supabaseClient.from('anggota')
@@ -1531,14 +1610,33 @@
       .eq('kode_grup', currAdmin.kode_grup)
       .eq('id_anggota', idAnggota);
 
-    if (error) return alert("Gagal memperbarui status admin: " + error.message);
+    if (error) {
+      Swal.fire('Gagal', "Gagal memperbarui status admin: " + error.message, 'error');
+      return;
+    }
 
-    alert("Status hak akses admin berhasil diperbarui!");
+    Swal.fire({
+      title: 'INFAQU',
+      text: 'Status hak akses admin berhasil diperbarui!',
+      icon: 'success',
+      timer: 1500,
+      showConfirmButton: false
+    });
     await refreshAdminData();
   }
 
   async function deleteMember(idAnggota, namaAnggota) {
-    if (!confirm(`Apakah Anda yakin ingin menghapus anggota "${namaAnggota}" (${idAnggota})? Tindakan ini juga akan menghapus seluruh riwayat infaq milik anggota tersebut.`)) return;
+    const result = await Swal.fire({
+      title: 'INFAQU',
+      text: `Apakah Anda yakin ingin menghapus anggota "${namaAnggota}" (${idAnggota})? Tindakan ini juga akan menghapus seluruh riwayat infaq milik anggota tersebut.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Ya, Hapus',
+      cancelButtonText: 'Batal',
+      confirmButtonColor: '#d33'
+    });
+
+    if (!result.isConfirmed) return;
 
     // Hapus riwayat infaq anggota terlebih dahulu
     await supabaseClient.from('infaq')
@@ -1552,9 +1650,18 @@
       .eq('kode_grup', currAdmin.kode_grup)
       .eq('id_anggota', idAnggota);
 
-    if (error) return alert("Gagal menghapus anggota: " + error.message);
+    if (error) {
+      Swal.fire('Gagal', "Gagal menghapus anggota: " + error.message, 'error');
+      return;
+    }
 
-    alert("Anggota dan riwayat infaq terkait berhasil dihapus!");
+    Swal.fire({
+      title: 'INFAQU',
+      text: 'Anggota dan riwayat infaq terkait berhasil dihapus!',
+      icon: 'success',
+      timer: 1500,
+      showConfirmButton: false
+    });
     await refreshAdminData();
     await loadMembersForAdmin();
   }
@@ -1677,7 +1784,7 @@
       XLSX.writeFile(workbook, fileName);
 
     } catch (err) {
-      alert("Proses Export Spreadsheet Gagal: " + err.message);
+      Swal.fire('Gagal', "Proses Export Spreadsheet Gagal: " + err.message, 'error');
     } finally {
       btn.disabled = false;
       btn.innerHTML = '<i data-lucide="file-spreadsheet" size="14"></i> Export';
@@ -1721,34 +1828,72 @@
   }
 
   async function editTransaction(transId, currentNominal) {
-    const newNominalStr = prompt("Masukkan nominal infaq baru:", currentNominal);
-    if (newNominalStr === null) return; // Dibatalkan
+    const { value: newNominalStr } = await Swal.fire({
+      title: 'INFAQU',
+      text: 'Masukkan nominal infaq baru:',
+      input: 'text',
+      inputValue: currentNominal,
+      showCancelButton: true,
+      confirmButtonText: 'OK',
+      cancelButtonText: 'Cancel'
+    });
+
+    if (newNominalStr === undefined) return; // Dibatalkan
 
     const newNominal = Number(newNominalStr);
     if (isNaN(newNominal) || newNominal < 0) {
-      return alert("Nominal yang dimasukkan tidak valid.");
+      Swal.fire('Perhatian', 'Nominal yang dimasukkan tidak valid.', 'warning');
+      return;
     }
 
     const { error } = await supabaseClient.from('infaq')
       .update({ nominal: newNominal })
       .eq('id', transId);
 
-    if (error) return alert("Gagal memperbarui nominal infaq: " + error.message);
+    if (error) {
+      Swal.fire('Gagal', "Gagal memperbarui nominal infaq: " + error.message, 'error');
+      return;
+    }
 
-    alert("Nominal infaq berhasil diperbarui!");
+    Swal.fire({
+      title: 'INFAQU',
+      text: 'Nominal infaq berhasil diperbarui!',
+      icon: 'success',
+      timer: 1500,
+      showConfirmButton: false
+    });
     await refreshAdminData();
   }
 
   async function deleteTransaction(transId) {
-    if (!confirm("Apakah Anda yakin ingin menghapus data inputan infaq ini?")) return;
+    const result = await Swal.fire({
+      title: 'INFAQU',
+      text: 'Apakah Anda yakin ingin menghapus data inputan infaq ini?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Ya, Hapus',
+      cancelButtonText: 'Batal',
+      confirmButtonColor: '#d33'
+    });
+
+    if (!result.isConfirmed) return;
 
     const { error } = await supabaseClient.from('infaq')
       .delete()
       .eq('id', transId);
 
-    if (error) return alert("Gagal menghapus transaksi: " + error.message);
+    if (error) {
+      Swal.fire('Gagal', "Gagal menghapus transaksi: " + error.message, 'error');
+      return;
+    }
 
-    alert("Data transaksi berhasil dihapus!");
+    Swal.fire({
+      title: 'INFAQU',
+      text: 'Data transaksi berhasil dihapus!',
+      icon: 'success',
+      timer: 1500,
+      showConfirmButton: false
+    });
     await refreshAdminData();
   }
 </script>
