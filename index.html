@@ -323,7 +323,6 @@
       background: rgba(239, 68, 68, 0.2);
       border-color: rgba(239, 68, 68, 0.4);
     }
-    /* Tombol Hapus Dibuat Lebih Ringkas & Kecil */
     .btn-icon-del {
       background: rgba(239, 68, 68, 0.15);
       color: #ef4444;
@@ -340,6 +339,36 @@
     }
     .btn-icon-del:hover {
       background: rgba(239, 68, 68, 0.3);
+    }
+
+    /* Badge Admin Toggle Style */
+    .badge-admin-toggle {
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+    .badge-admin-toggle:hover {
+      background: rgba(99, 102, 241, 0.3);
+      color: #fff;
+    }
+    .badge-admin-toggle.is-admin {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+    .badge-admin-toggle.is-admin:hover {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border-color: rgba(239, 68, 68, 0.3);
     }
 
     /* Dashboard Header & Cards */
@@ -477,7 +506,6 @@
       background: rgba(0, 0, 0, 0.2);
     }
 
-    /* Custom Scrollbar Styling */
     .table-container::-webkit-scrollbar {
       width: 6px;
       height: 6px;
@@ -494,7 +522,6 @@
       background: var(--accent-emerald);
     }
 
-    /* Sticky Table Header saat Scroll */
     th {
       position: sticky;
       top: 0;
@@ -743,8 +770,8 @@
         <input type="text" id="ladmin-code" placeholder="Contoh: GRP-1234" required>
       </div>
       <div class="form-group">
-        <label>PIN Admin Grup</label>
-        <input type="password" id="ladmin-pin" placeholder="••••" required>
+        <label>ID / PIN Admin</label>
+        <input type="password" id="ladmin-pin" placeholder="PIN Utama atau PIN Anggota yang jadi Admin" required>
       </div>
       <button type="submit" class="btn-primary"><i data-lucide="shield" size="18"></i> Masuk Panel Admin</button>
     </form>
@@ -820,30 +847,29 @@
     </form>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-      <h4 style="font-size: 14px; font-weight: 700;">Rekapitulasi Infaq</h4>
+      <h4 style="font-size: 14px; font-weight: 700;">Rekapitulasi Infaq & Manajemen Admin</h4>
       <div style="display: flex; gap: 8px;">
         <button class="btn-primary" onclick="refreshAdminData()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="refresh-cw" size="12"></i> Refresh</button>
-        <!-- TOMBOL EXPORT SPREADSHEET -->
         <button class="btn-success" id="btn-export-excel" onclick="exportToSpreadsheet()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="file-spreadsheet" size="12"></i> Export</button>
       </div>
     </div>
 
-    <!-- AREA REKAPITULASI PANEL ADMIN (MAX HEIGHT 400PX WITH SCROLL) -->
+    <!-- AREA REKAPITULASI & HAK ADMIN -->
     <div class="table-container" style="max-height: 400px; overflow-y: auto;">
       <table>
         <thead>
           <tr>
             <th>No</th>
-            <th>ID</th>
-            <th>Nama</th>
+            <th>ID / Nama</th>
             <th>Total Infaq</th>
+            <th>Akses Admin</th>
           </tr>
         </thead>
         <tbody id="dash-admin-rekap-table"></tbody>
       </table>
     </div>
 
-    <!-- Tabel Daftar Transaksi Masuk (MAX HEIGHT 400PX WITH SCROLL) -->
+    <!-- Tabel Daftar Transaksi Masuk -->
     <div style="margin-top: 24px;">
       <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">Kelola Input</h4>
       <div class="table-container" style="max-height: 400px; overflow-y: auto;">
@@ -967,7 +993,8 @@
       nama_anggota: document.getElementById('ra-nama').value,
       id_anggota: document.getElementById('ra-id').value,
       pin_anggota: document.getElementById('ra-pin').value,
-      target_infaq: targetVal
+      target_infaq: targetVal,
+      is_admin: false
     }]);
 
     if (error) return alert("Pendaftaran gagal: " + error.message);
@@ -1044,7 +1071,8 @@
         id_anggota: newId,
         nama_anggota: newNama,
         pin_anggota: (newPin !== "") ? newPin : currMember.pin_anggota,
-        target_infaq: currMember.target_infaq || 100000
+        target_infaq: currMember.target_infaq || 100000,
+        is_admin: currMember.is_admin || false
       };
 
       const { error: errInsert } = await supabaseClient.from('anggota').insert([newMemberData]);
@@ -1130,27 +1158,51 @@
     document.getElementById('dash-a-percent').innerText = progressPercent + '%';
   }
 
-  // 4. LOGIN ADMIN
+  // 4. LOGIN ADMIN (Mendukung PIN Utama Grup ATAU Anggota yang berstatus Admin)
   document.getElementById('form-login-admin').addEventListener('submit', async (e) => {
     e.preventDefault();
     const kode = document.getElementById('ladmin-code').value;
-    const pin = document.getElementById('ladmin-pin').value;
+    const pinInput = document.getElementById('ladmin-pin').value;
 
-    const { data, error } = await supabaseClient.from('grup')
+    // Cek apakah PIN utama grup
+    const { data: groupData } = await supabaseClient.from('grup')
       .select('*')
       .eq('kode_grup', kode)
-      .eq('pin_admin', pin)
+      .eq('pin_admin', pinInput)
       .single();
 
-    if (error || !data) return alert("Login admin gagal!");
-    currAdmin = data;
-    localStorage.setItem('infaq_admin', JSON.stringify(currAdmin));
-    await showAdminDash();
+    if (groupData) {
+      currAdmin = groupData;
+      localStorage.setItem('infaq_admin', JSON.stringify(currAdmin));
+      await showAdminDash();
+      return;
+    }
+
+    // Jika bukan PIN utama grup, cek apakah anggota yang memiliki status admin (is_admin = true)
+    const { data: adminMember } = await supabaseClient.from('anggota')
+      .select('*')
+      .eq('kode_grup', kode)
+      .eq('pin_anggota', pinInput)
+      .eq('is_admin', true)
+      .single();
+
+    if (adminMember) {
+      currAdmin = {
+        kode_grup: adminMember.kode_grup,
+        nama_sekolah: "Instansi Terkait",
+        nama_grup: adminMember.nama_anggota + " (Admin Member)"
+      };
+      localStorage.setItem('infaq_admin', JSON.stringify(currAdmin));
+      await showAdminDash();
+      return;
+    }
+
+    alert("Login admin gagal! PIN salah atau akun Anda tidak memiliki hak akses admin.");
   });
 
   async function showAdminDash() {
-    document.getElementById('dash-admin-title').innerText = "Panel Admin " + currAdmin.nama_grup;
-    document.getElementById('dash-admin-sekolah').innerText = currAdmin.nama_sekolah;
+    document.getElementById('dash-admin-title').innerText = "Panel Admin " + (currAdmin.nama_grup || '');
+    document.getElementById('dash-admin-sekolah').innerText = currAdmin.nama_sekolah || '-';
     document.getElementById('dash-admin-code').innerText = currAdmin.kode_grup;
     await loadMembersForAdmin();
     await refreshAdminData();
@@ -1262,21 +1314,52 @@
             totalM += Number(i.nominal);
           });
         }
+        
+        const isAdmin = m.is_admin === true;
+        const adminBadgeClass = isAdmin ? "badge-admin-toggle is-admin" : "badge-admin-toggle";
+        const adminBadgeText = isAdmin ? '<i data-lucide="shield-check" size="12"></i> Admin' : '<i data-lucide="shield" size="12"></i> Jadikan Admin';
+
         tbody.innerHTML += `
           <tr>
             <td>${index + 1}</td>
-            <td>${m.id_anggota}</td>
-            <td><strong>${m.nama_anggota}</strong></td>
+            <td>
+              <strong>${m.nama_anggota}</strong><br>
+              <span style="font-size:10px; color:var(--text-muted);">${m.id_anggota}</span>
+            </td>
             <td><strong style="color: var(--accent-emerald);">Rp ${totalM.toLocaleString('id-ID')}</strong></td>
+            <td>
+              <button class="${adminBadgeClass}" onclick="toggleAdminStatus('${m.id_anggota}', ${isAdmin})">
+                ${adminBadgeText}
+              </button>
+            </td>
           </tr>
         `;
       });
+      lucide.createIcons();
     } else {
       tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 8px 12px;">Belum ada anggota terdaftar</td></tr>';
     }
   }
 
-  // FUNGSI EXPORT DATA REKAPITULASI KE SPREADSHEET (EXCEL .XLSX) DENGAN KOLOM BULAN DINAMIS
+  // FUNGSI MENJADIKAN ATAU MENCABUT HAK AKSES ADMIN PADA ANGGOTA
+  async function toggleAdminStatus(idAnggota, currentStatus) {
+    const actionText = currentStatus ? "mencabut akses admin dari" : "menjadikan admin untuk";
+    if (!confirm(`Apakah Anda yakin ingin ${actionText} anggota dengan ID: ${idAnggota}?`)) return;
+
+    const newStatus = !currentStatus;
+    const { error } = await supabaseClient.from('anggota')
+      .update({ is_admin: newStatus })
+      .eq('kode_grup', currAdmin.kode_grup)
+      .eq('id_anggota', idAnggota);
+
+    if (error) return alert("Gagal memperbarui status admin: " + error.message);
+
+    alert("Status hak akses admin berhasil diperbarui!");
+    await refreshAdminData();
+    await loadMembersForAdmin();
+  }
+
+  // FUNGSI EXPORT DATA REKAPITULASI KE SPREADSHEET (EXCEL .XLSX)
   async function exportToSpreadsheet() {
     const btn = document.getElementById('btn-export-excel');
     btn.disabled = true;
@@ -1285,7 +1368,6 @@
     try {
       const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
-      // 1. Ambil Data Terbaru dari Supabase
       const { data: members, error: errM } = await supabaseClient.from('anggota')
         .select('*')
         .eq('kode_grup', currAdmin.kode_grup);
@@ -1296,7 +1378,6 @@
 
       if (errM || errI) throw new Error("Gagal mengambil data dari database server.");
 
-      // 2. Kumpulkan daftar bulan unik yang ada pada transaksi (Format key: "YYYY-MM")
       const uniqueMonthsMap = new Map();
       if (infaqs) {
         infaqs.forEach(i => {
@@ -1315,18 +1396,15 @@
         });
       }
 
-      // Urutkan bulan secara kronologis (dari yang terlama ke terbaru)
       const sortedMonths = Array.from(uniqueMonthsMap.values()).sort((a, b) => a.key.localeCompare(b.key));
 
-      // Jika belum ada data transaksi sama sekali, gunakan bulan berjalan sebagai default kolom
       if (sortedMonths.length === 0) {
         const now = new Date();
         const yKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
         sortedMonths.push({ key: yKey, label: `${namaBulan[now.getMonth()]} ${now.getFullYear()}` });
       }
 
-      // 3. Susun Header Tabel Spreadsheet secara Dinamis
-      const headerRow = ["No", "ID Anggota", "Nama Anggota"];
+      const headerRow = ["No", "ID Anggota", "Nama Anggota", "Status Admin"];
       sortedMonths.forEach(m => {
         headerRow.push(m.label);
       });
@@ -1334,12 +1412,11 @@
 
       const sheetData = [
         ["LAPORAN REKAPITULASI PROGRES INFAQ ANGGOTA PER BULAN"],
-        [`Grup: ${currAdmin.nama_grup}`, `Instansi: ${currAdmin.nama_sekolah}`, `Kode Grup: ${currAdmin.kode_grup}`],
-        [], // Baris Kosong
+        [`Grup: ${currAdmin.nama_grup || '-'}`, `Instansi: ${currAdmin.nama_sekolah || '-'}`, `Kode Grup: ${currAdmin.kode_grup}`],
+        [],
         headerRow
       ];
 
-      // Array penampung Grand Total per kolom bulan & total keseluruhan
       const grandTotalByMonth = new Array(sortedMonths.length).fill(0);
       let grandTotalOverall = 0;
 
@@ -1348,12 +1425,12 @@
           const rowData = [
             idx + 1,
             m.id_anggota,
-            m.nama_anggota
+            m.nama_anggota,
+            m.is_admin ? "Admin" : "Anggota"
           ];
 
           let memberTotal = 0;
 
-          // Hitung infaq per bulan untuk anggota ini
           sortedMonths.forEach((sm, mIdx) => {
             let monthlySum = 0;
             if (infaqs) {
@@ -1374,24 +1451,20 @@
           sheetData.push(rowData);
         });
       } else {
-        const emptyRow = ["-", "-", "Belum Ada Anggota Terdaftar"];
+        const emptyRow = ["-", "-", "Belum Ada Anggota Terdaftar", "-"];
         sortedMonths.forEach(() => emptyRow.push(0));
         emptyRow.push(0);
         sheetData.push(emptyRow);
       }
 
-      // Baris Grand Total di bawah
-      const totalRow = ["", "", "GRAND TOTAL:"];
+      const totalRow = ["", "", "GRAND TOTAL:", ""];
       grandTotalByMonth.forEach(val => totalRow.push(val));
       totalRow.push(grandTotalOverall);
       sheetData.push([]);
       sheetData.push(totalRow);
 
-      // 4. Konversi Data Array menjadi Worksheet & Workbook
       const worksheet = XLSX.utils.aoa_to_sheet(sheetData);
-
-      // Set Lebar Kolom Otomatis
-      const colWidths = [{ wch: 6 }, { wch: 16 }, { wch: 28 }];
+      const colWidths = [{ wch: 6 }, { wch: 16 }, { wch: 28 }, { wch: 15 }];
       sortedMonths.forEach(() => colWidths.push({ wch: 20 }));
       colWidths.push({ wch: 24 });
       worksheet['!cols'] = colWidths;
@@ -1399,7 +1472,6 @@
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Rekap Bulanan");
 
-      // 5. Unduh Berkas Spreadsheet (.xlsx)
       const fileName = `Rekap_Infaq_Bulanan_${currAdmin.kode_grup}.xlsx`;
       XLSX.writeFile(workbook, fileName);
 
