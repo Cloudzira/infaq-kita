@@ -705,46 +705,6 @@
       </div>
     </div>
 
-    <!-- FITUR KHUSUS ADMIN DI HALAMAN ANGGOTA (MUNCUL JIKA is_admin = true) -->
-    <div id="member-admin-panel" style="display: none; background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.2); padding: 20px; border-radius: 16px; margin-bottom: 20px;">
-      <h4 style="margin-bottom: 14px; font-size: 14px; color: #818cf8; display: flex; align-items: center; gap: 6px;">
-        <i data-lucide="shield-check" size="16"></i> Panel Khusus Admin Grup
-      </h4>
-
-      <!-- Statistik Bulanan & Tahunan Grup -->
-      <div class="stat-grid" style="margin-bottom: 16px;">
-        <div class="stat-card" style="background: rgba(0,0,0,0.2);">
-          <span class="stat-label">Infaq Bulan Ini</span>
-          <div class="stat-value" style="color: var(--accent-cyan);">Rp <span id="dash-member-admin-monthly">0</span></div>
-        </div>
-        <div class="stat-card" style="background: rgba(0,0,0,0.2);">
-          <span class="stat-label">Infaq Tahun Ini</span>
-          <div class="stat-value" style="color: var(--accent-emerald);">Rp <span id="dash-member-admin-yearly">0</span></div>
-        </div>
-      </div>
-
-      <!-- Form Input Infaq untuk Anggota -->
-      <form id="form-member-add-infaq">
-        <div class="form-group">
-          <label>Pilih Anggota</label>
-          <select id="m-at-anggota" required></select>
-        </div>
-        <div class="form-group">
-          <label>Tanggal Input</label>
-          <input type="date" id="m-at-tanggal" required>
-        </div>
-        <div class="form-group">
-          <label>Nominal (Rp)</label>
-          <input type="number" id="m-at-nominal" placeholder="50000" required>
-        </div>
-        <div class="form-group">
-          <label>Catatan</label>
-          <input type="text" id="m-at-catatan" placeholder="Infaq Harian / Pekanan / Bulanan">
-        </div>
-        <button type="submit" class="btn-success" style="padding: 10px;"><i data-lucide="plus" size="16"></i> Simpan Infaq</button>
-      </form>
-    </div>
-
     <!-- Riwayat Infaq -->
     <h4 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 700;">Riwayat Infaq</h4>
     <div class="table-container" style="margin-bottom: 20px;">
@@ -796,6 +756,46 @@
         <input type="number" id="dash-a-target-input" placeholder="Nominal Rp...">
         <button type="button" class="btn-primary" onclick="updateTargetInfaq()">Simpan</button>
       </div>
+    </div>
+
+    <!-- FITUR KHUSUS ADMIN DI HALAMAN ANGGOTA (DIPOSISIKAN TEPAT DI ATAS TOMBOL KELUAR AKUN) -->
+    <div id="member-admin-panel" style="display: none; background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.2); padding: 20px; border-radius: 16px; margin-bottom: 16px;">
+      <h4 style="margin-bottom: 14px; font-size: 14px; color: #818cf8; display: flex; align-items: center; gap: 6px;">
+        <i data-lucide="shield-check" size="16"></i> Panel Khusus Admin Grup
+      </h4>
+
+      <!-- Statistik Bulanan & Tahunan Grup -->
+      <div class="stat-grid" style="margin-bottom: 16px;">
+        <div class="stat-card" style="background: rgba(0,0,0,0.2);">
+          <span class="stat-label">Infaq Bulan Ini</span>
+          <div class="stat-value" style="color: var(--accent-cyan);">Rp <span id="dash-member-admin-monthly">0</span></div>
+        </div>
+        <div class="stat-card" style="background: rgba(0,0,0,0.2);">
+          <span class="stat-label">Infaq Tahun Ini</span>
+          <div class="stat-value" style="color: var(--accent-emerald);">Rp <span id="dash-member-admin-yearly">0</span></div>
+        </div>
+      </div>
+
+      <!-- Form Input Infaq untuk Anggota -->
+      <form id="form-member-add-infaq">
+        <div class="form-group">
+          <label>Pilih Anggota</label>
+          <select id="m-at-anggota" required></select>
+        </div>
+        <div class="form-group">
+          <label>Tanggal Input</label>
+          <input type="date" id="m-at-tanggal" required>
+        </div>
+        <div class="form-group">
+          <label>Nominal (Rp)</label>
+          <input type="number" id="m-at-nominal" placeholder="50000" required>
+        </div>
+        <div class="form-group">
+          <label>Catatan</label>
+          <input type="text" id="m-at-catatan" placeholder="Infaq Harian / Pekanan / Bulanan">
+        </div>
+        <button type="submit" class="btn-success" style="padding: 10px;"><i data-lucide="plus" size="16"></i> Simpan Infaq</button>
+      </form>
     </div>
 
     <button class="btn-danger" onclick="logout()"><i data-lucide="log-out" size="16"></i> Keluar Akun</button>
