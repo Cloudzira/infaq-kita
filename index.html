@@ -16,57 +16,77 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- 2. STYLING (CSS) DENGAN DUA TEMA -->
+  <!-- 2. STYLING (CSS) DENGAN DUA TEMA ELITE UI/UX -->
   <style>
-    /* ================= TEMA 1: DEFAULT (DARK COSMIC / EMERALD) ================= */
+    /* ================= TEMA 1: DARK COSMIC EMERALD (DEFAULT) ================= */
     :root, [data-theme="default"] {
-      --bg-gradient: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 60%, #030712 100%);
-      --accent-emerald: #10b981;
+      --bg-gradient: radial-gradient(circle at 50% -20%, #1e1b4b 0%, #0b0f19 50%, #030712 100%);
+      --accent-primary: #10b981;
+      --accent-primary-hover: #059669;
       --accent-cyan: #06b6d4;
-      --accent-indigo: #6366f1;
-      --accent-violet: #8b5cf6;
-      --glass-bg: rgba(255, 255, 255, 0.03);
+      --accent-glow: rgba(16, 185, 129, 0.25);
+      
+      --glass-bg: rgba(15, 23, 42, 0.65);
+      --glass-card: rgba(15, 23, 42, 0.75);
       --glass-border: rgba(255, 255, 255, 0.08);
-      --glass-card: rgba(15, 23, 42, 0.65);
+      --glass-border-hover: rgba(16, 185, 129, 0.35);
+      
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
+      
       --orb-1: #4f46e5;
       --orb-2: #10b981;
-      --btn-primary-bg: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-      --btn-success-bg: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      
+      --btn-primary-bg: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      --btn-success-bg: linear-gradient(135deg, #059669 0%, #047857 100%);
       --btn-warning-bg: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-      --input-bg: rgba(0, 0, 0, 0.25);
-      --table-header-bg: #0f172a;
+      
+      --input-bg: rgba(0, 0, 0, 0.35);
+      --input-focus-border: #10b981;
+      --input-focus-shadow: rgba(16, 185, 129, 0.2);
+      
+      --table-header-bg: rgba(15, 23, 42, 0.95);
       --select-bg-color: #0f172a;
-      --select-text-color: #fff;
-      --swal-bg: rgba(15, 23, 42, 0.85);
-      --swal-border: rgba(255, 255, 255, 0.1);
+      --select-text-color: #f8fafc;
+      
+      --swal-bg: #0f172a;
+      --swal-border: rgba(255, 255, 255, 0.12);
       --swal-text: #f8fafc;
     }
 
-    /* ================= TEMA 2: FEMININE / PINK LIGHT GLASSMORPHISM ================= */
+    /* ================= TEMA 2: PINK LIGHT NEOMORPHIC GLASS ================= */
     [data-theme="feminine"] {
-      --bg-gradient: radial-gradient(circle at 50% 0%, #ffe4e6 0%, #fce7f3 50%, #fdf2f8 100%);
-      --accent-emerald: #db2777; /* Hot Pink as primary accent */
+      --bg-gradient: radial-gradient(circle at 50% -20%, #ffe4e6 0%, #fce7f3 50%, #fdf2f8 100%);
+      --accent-primary: #db2777;
+      --accent-primary-hover: #be185d;
       --accent-cyan: #e11d48;
-      --accent-indigo: #c084fc;
-      --accent-violet: #a855f7;
-      --glass-bg: rgba(255, 255, 255, 0.6);
-      --glass-border: rgba(244, 114, 182, 0.25);
-      --glass-card: rgba(255, 255, 255, 0.75);
+      --accent-glow: rgba(219, 39, 119, 0.2);
+      
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-card: rgba(255, 255, 255, 0.85);
+      --glass-border: rgba(244, 114, 182, 0.3);
+      --glass-border-hover: rgba(219, 39, 119, 0.5);
+      
       --text-main: #4c0519;
       --text-muted: #881337;
+      
       --orb-1: #f472b6;
       --orb-2: #fbcfe8;
+      
       --btn-primary-bg: linear-gradient(135deg, #db2777 0%, #be185d 100%);
-      --btn-success-bg: linear-gradient(135deg, #db2777 0%, #9d174d 100%);
+      --btn-success-bg: linear-gradient(135deg, #be185d 0%, #9d174d 100%);
       --btn-warning-bg: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
-      --input-bg: rgba(255, 255, 255, 0.8);
-      --table-header-bg: #fbcfe8;
+      
+      --input-bg: rgba(255, 255, 255, 0.9);
+      --input-focus-border: #db2777;
+      --input-focus-shadow: rgba(219, 39, 119, 0.25);
+      
+      --table-header-bg: rgba(251, 207, 232, 0.8);
       --select-bg-color: #ffffff;
       --select-text-color: #4c0519;
-      --swal-bg: rgba(255, 255, 255, 0.95);
-      --swal-border: rgba(244, 114, 182, 0.3);
+      
+      --swal-bg: #ffffff;
+      --swal-border: rgba(244, 114, 182, 0.4);
       --swal-text: #4c0519;
     }
 
@@ -85,31 +105,36 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      padding: 24px 16px;
       overflow-x: hidden;
       position: relative;
-      transition: background 0.5s ease, color 0.5s ease;
+      transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.6s ease;
     }
 
-    /* Efek Latar Belakang (Glowing Orbs) Dinamis */
+    /* Dinamis Latar Belakang Orbs dengan Animasi Halus */
     .glow-orb {
       position: fixed;
       border-radius: 50%;
-      filter: blur(130px);
+      filter: blur(140px);
       pointer-events: none;
       z-index: 0;
-      opacity: 0.45;
-      transition: background 0.5s ease;
+      opacity: 0.5;
+      transition: background 0.6s ease;
+      animation: floatOrb 12s ease-in-out infinite alternate;
     }
-    .glow-orb-1 { width: 400px; height: 400px; background: var(--orb-1); top: -100px; left: -100px; }
-    .glow-orb-2 { width: 350px; height: 350px; background: var(--orb-2); bottom: -100px; right: -100px; }
+    .glow-orb-1 { width: 450px; height: 450px; background: var(--orb-1); top: -120px; left: -120px; }
+    .glow-orb-2 { width: 400px; height: 400px; background: var(--orb-2); bottom: -120px; right: -120px; animation-delay: -6s; }
+
+    @keyframes floatOrb {
+      0% { transform: translateY(0px) scale(1); }
+      100% { transform: translateY(30px) scale(1.05); }
+    }
 
     .container {
       width: 100%;
-      max-width: 520px;
+      max-width: 500px;
       position: relative;
       z-index: 10;
-      margin-bottom: 20px;
     }
 
     .page-footer {
@@ -119,45 +144,47 @@
       font-size: 11px;
       color: var(--text-muted);
       opacity: 0.8;
-      letter-spacing: 0.5px;
-      margin-top: 10px;
+      letter-spacing: 0.8px;
+      margin-top: 24px;
+      font-weight: 500;
     }
 
     /* Top Action Bar (Theme Switcher & Guide Button) */
     .top-action-bar {
       position: absolute;
-      top: -10px;
+      top: -6px;
       right: 0;
       z-index: 20;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
-    /* Professional Pill Toggle Switcher for Themes */
+    /* Professional Pill Toggle Switcher */
     .theme-switch-pill {
       background: var(--glass-card);
       border: 1px solid var(--glass-border);
-      padding: 3px;
+      padding: 4px;
       border-radius: 30px;
       display: flex;
       align-items: center;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .theme-switch-pill:hover {
-      border-color: var(--accent-emerald);
+      border-color: var(--accent-primary);
+      transform: translateY(-1px);
     }
     .theme-option {
-      width: 16px;
-      height: 16px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 12px;
       color: var(--text-muted);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -165,69 +192,64 @@
     [data-theme="feminine"] .theme-option.opt-feminine {
       background: var(--btn-primary-bg);
       color: #ffffff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 12px var(--accent-glow);
       transform: scale(1.05);
     }
 
-    /* Guide Open Book Button (Matched with theme switcher dimensions) */
+    /* Guide Open Book Button */
     .guide-btn {
       background: var(--glass-card);
       border: 1px solid var(--glass-border);
       color: var(--text-muted);
-      width: 16px;
-      height: 16px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .guide-btn:hover {
-      transform: scale(1.05);
-      border-color: var(--accent-emerald);
-      color: var(--accent-emerald);
+      transform: translateY(-1px);
+      border-color: var(--accent-primary);
       background: var(--btn-primary-bg);
       color: #ffffff;
+      box-shadow: 0 4px 12px var(--accent-glow);
     }
 
     /* Header & Logo Brand */
     .brand-header {
       text-align: center;
-      margin-bottom: 28px;
+      margin-bottom: 32px;
       position: relative;
     }
     .brand-logo {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 56px;
-      height: 56px;
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2));
+      width: 64px;
+      height: 64px;
+      background: var(--glass-card);
       border: 1px solid var(--glass-border);
-      border-radius: 18px;
-      margin-bottom: 12px;
-      box-shadow: 0 0 25px rgba(16, 185, 129, 0.25);
-      color: var(--accent-emerald);
-      transition: all 0.3s ease;
+      border-radius: 20px;
+      margin-bottom: 14px;
+      box-shadow: 0 12px 35px var(--accent-glow);
+      color: var(--accent-primary);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    [data-theme="feminine"] .brand-logo {
-      background: linear-gradient(135deg, rgba(219, 39, 119, 0.15), rgba(244, 63, 94, 0.15));
-      box-shadow: 0 0 25px rgba(219, 39, 119, 0.2);
+    .brand-logo:hover {
+      transform: scale(1.05) rotate(3deg);
+      border-color: var(--accent-primary);
     }
 
     .main-title {
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 800;
       letter-spacing: -0.5px;
-      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    [data-theme="feminine"] .main-title {
-      background: linear-gradient(135deg, #4c0519 0%, #9f1239 100%);
+      background: linear-gradient(135deg, var(--text-main) 0%, var(--text-muted) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -235,231 +257,223 @@
     .main-subtitle {
       font-size: 13px;
       color: var(--text-muted);
-      margin-top: 4px;
+      margin-top: 6px;
+      font-weight: 500;
     }
 
-    /* Kartu Glassmorphism */
+    /* Premium Glassmorphism Card */
     .card {
       background: var(--glass-card);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       border: 1px solid var(--glass-border);
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-      animation: fadeIn 0.4s ease-out;
+      border-radius: 28px;
+      padding: 32px 28px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      animation: cardEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       transition: background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes cardEntrance {
+      from { opacity: 0; transform: translateY(16px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .btn-back {
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--glass-bg);
       border: 1px solid var(--glass-border);
       color: var(--text-muted);
       font-weight: 600;
       cursor: pointer;
-      padding: 8px 14px;
+      padding: 8px 16px;
       border-radius: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       font-size: 13px;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.2s ease;
-    }
-    [data-theme="feminine"] .btn-back {
-      background: rgba(0, 0, 0, 0.03);
+      transition: all 0.25s ease;
     }
     .btn-back:hover {
       color: var(--text-main);
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
+      background: var(--glass-card);
+      border-color: var(--accent-primary);
+      transform: translateX(-3px);
     }
 
-    /* Menu Utama (Grid Layout) */
+    /* Menu Utama (Grid Layout dengan Interaksi Halus) */
     .menu-grid {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
     .menu-card {
-      background: rgba(255, 255, 255, 0.03);
+      background: var(--glass-bg);
       border: 1px solid var(--glass-border);
-      padding: 18px 20px;
-      border-radius: 16px;
+      padding: 20px 22px;
+      border-radius: 20px;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 18px;
       position: relative;
       overflow: hidden;
-    }
-    [data-theme="feminine"] .menu-card {
-      background: rgba(255, 255, 255, 0.5);
     }
     .menu-card::before {
       content: '';
       position: absolute;
       top: 0; left: 0; width: 4px; height: 100%;
-      background: linear-gradient(180deg, var(--accent-emerald), var(--accent-cyan));
+      background: var(--btn-primary-bg);
       opacity: 0;
-      transition: opacity 0.3s;
+      transition: opacity 0.3s ease;
     }
     .menu-card:hover {
-      transform: translateY(-2px);
-      background: rgba(255, 255, 255, 0.06);
-      border-color: var(--accent-emerald);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
-    [data-theme="feminine"] .menu-card:hover {
-      background: rgba(255, 255, 255, 0.9);
+      transform: translateY(-3px);
+      background: var(--glass-card);
+      border-color: var(--glass-border-hover);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
     }
     .menu-card:hover::before { opacity: 1; }
     .menu-icon {
-      width: 42px; height: 42px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.05);
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      background: var(--glass-card);
       border: 1px solid var(--glass-border);
       display: flex; align-items: center; justify-content: center;
-      color: var(--accent-emerald);
+      color: var(--accent-primary);
       flex-shrink: 0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
     }
-    [data-theme="feminine"] .menu-icon {
-      background: rgba(219, 39, 119, 0.08);
-    }
+    .menu-card:hover .menu-icon { transform: scale(1.08); }
     .menu-content { flex: 1; }
-    .menu-card h4 { color: var(--text-main); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
-    .menu-card p { font-size: 12px; color: var(--text-muted); }
-    .menu-arrow { color: var(--text-muted); transition: transform 0.2s, color 0.2s; }
-    .menu-card:hover .menu-arrow { transform: translateX(4px); color: var(--text-main); }
+    .menu-card h4 { color: var(--text-main); font-size: 16px; font-weight: 700; margin-bottom: 3px; letter-spacing: -0.2px; }
+    .menu-card p { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+    .menu-arrow { color: var(--text-muted); transition: transform 0.3s ease, color 0.3s ease; }
+    .menu-card:hover .menu-arrow { transform: translateX(5px); color: var(--accent-primary); }
 
-    /* Form & Input */
-    .form-group { margin-bottom: 16px; }
+    /* Form & Input Modern Style */
+    .form-group { margin-bottom: 18px; }
     label {
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 700;
       color: var(--text-muted);
       display: block;
       margin-bottom: 8px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.8px;
     }
     input, select {
       width: 100%;
-      padding: 12px 16px;
-      border-radius: 12px;
+      padding: 13px 18px;
+      border-radius: 14px;
       border: 1px solid var(--glass-border);
       font-size: 14px;
+      font-weight: 500;
       outline: none;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       background: var(--input-bg);
       color: var(--text-main);
     }
-    input::placeholder { color: var(--text-muted); opacity: 0.6; }
+    input::placeholder { color: var(--text-muted); opacity: 0.5; }
     select {
       appearance: none;
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23881337' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
       background-repeat: no-repeat;
-      background-position: right 14px center;
+      background-position: right 16px center;
       background-size: 16px;
     }
-    [data-theme="default"] select {
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    }
-    select option { background: var(--select-bg-color); color: var(--select-text-color); }
+    select option { background: var(--select-bg-color); color: var(--select-text-color); padding: 10px; }
     input:focus, select:focus {
-      border-color: var(--accent-emerald);
-      box-shadow: 0 0 0 3px rgba(219, 39, 119, 0.15);
+      border-color: var(--input-focus-border);
+      box-shadow: 0 0 0 4px var(--input-focus-shadow);
       background: var(--glass-card);
     }
 
-    /* Tombol-tombol Aksi */
+    /* Tombol Aksi Mewah */
     button {
       width: 100%;
-      padding: 13px;
-      border-radius: 12px;
+      padding: 14px 20px;
+      border-radius: 14px;
       font-weight: 700;
       font-size: 14px;
       cursor: pointer;
       border: none;
-      transition: all 0.25s ease;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
+      letter-spacing: 0.2px;
     }
-    .btn-primary { background: var(--btn-primary-bg); color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); }
-    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-    .btn-success { background: var(--btn-success-bg); color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); }
-    .btn-success:hover { opacity: 0.9; transform: translateY(-1px); }
-    .btn-warning { background: var(--btn-warning-bg); color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); }
-    .btn-warning:hover { opacity: 0.9; transform: translateY(-1px); }
-    .btn-danger { background: rgba(239, 68, 68, 0.12); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.25); margin-top: 16px; }
-    .btn-danger:hover { background: rgba(239, 68, 68, 0.25); color: #fff; }
+    .btn-primary { background: var(--btn-primary-bg); color: white; box-shadow: 0 8px 25px var(--accent-glow); }
+    .btn-primary:hover { opacity: 0.95; transform: translateY(-2px); box-shadow: 0 12px 30px var(--accent-glow); }
+    .btn-success { background: var(--btn-success-bg); color: white; box-shadow: 0 8px 25px var(--accent-glow); }
+    .btn-success:hover { opacity: 0.95; transform: translateY(-2px); box-shadow: 0 12px 30px var(--accent-glow); }
+    .btn-warning { background: var(--btn-warning-bg); color: white; box-shadow: 0 8px 25px rgba(245, 158, 11, 0.25); }
+    .btn-warning:hover { opacity: 0.95; transform: translateY(-2px); }
+    .btn-danger { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.25); margin-top: 20px; }
+    .btn-danger:hover { background: rgba(239, 68, 68, 0.2); color: #fff; transform: translateY(-1px); }
 
     /* Tombol Ikon Kecil (Edit & Hapus) */
     .btn-action-group {
       display: inline-flex;
-      gap: 6px;
+      gap: 8px;
       justify-content: center;
       align-items: center;
     }
     .btn-icon-del, .btn-icon-edit {
       padding: 6px;
-      border-radius: 8px;
-      width: 32px; height: 32px;
+      border-radius: 10px;
+      width: 34px; height: 34px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s;
+      transition: all 0.25s ease;
     }
-    .btn-icon-del { background: rgba(239, 68, 68, 0.12); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.25); }
-    .btn-icon-del:hover { background: rgba(239, 68, 68, 0.25); color: #fff; transform: scale(1.05); }
-    .btn-icon-edit { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.25); }
-    .btn-icon-edit:hover { background: rgba(245, 158, 11, 0.25); color: #fff; transform: scale(1.05); }
+    .btn-icon-del { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
+    .btn-icon-del:hover { background: rgba(239, 68, 68, 0.25); color: #fff; transform: scale(1.1); }
+    .btn-icon-edit { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
+    .btn-icon-edit:hover { background: rgba(245, 158, 11, 0.25); color: #fff; transform: scale(1.1); }
 
     /* Badge Admin Toggle */
     .badge-admin-toggle {
-      background: rgba(99, 102, 241, 0.15);
+      background: rgba(99, 102, 241, 0.12);
       color: #818cf8;
-      border: 1px solid rgba(99, 102, 241, 0.3);
-      padding: 4px 8px;
-      border-radius: 6px;
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      padding: 6px 12px;
+      border-radius: 8px;
       font-size: 11px;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      transition: all 0.2s;
+      gap: 6px;
+      transition: all 0.25s ease;
     }
     .badge-admin-toggle.is-admin {
-      background: rgba(219, 39, 119, 0.15);
-      color: var(--accent-emerald);
-      border-color: rgba(219, 39, 119, 0.3);
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-primary);
+      border-color: rgba(16, 185, 129, 0.35);
     }
+    .badge-admin-toggle:hover { transform: scale(1.03); }
 
-    /* Dashboard Profil Header & Pita Medali */
+    /* Dashboard Profil Header & Pita Medali Premium */
     .user-header {
       border-bottom: 1px solid var(--glass-border);
-      padding-bottom: 16px;
-      margin-bottom: 20px;
+      padding-bottom: 20px;
+      margin-bottom: 24px;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 12px;
+      gap: 16px;
     }
-    .user-info h3 { font-size: 22px; color: var(--text-main); font-weight: 800; }
-    .user-info p.group-title { font-size: 13px; color: var(--accent-cyan); font-weight: 600; margin-top: 2px; }
-    .user-badges { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-    .badge { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; border: 1px solid var(--glass-border); }
-    [data-theme="feminine"] .badge { background: rgba(255, 255, 255, 0.6); }
+    .user-info h3 { font-size: 24px; color: var(--text-main); font-weight: 800; letter-spacing: -0.5px; }
+    .user-info p.group-title { font-size: 13px; color: var(--accent-cyan); font-weight: 600; margin-top: 4px; }
+    .user-badges { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .badge { background: var(--glass-bg); color: var(--text-muted); padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; border: 1px solid var(--glass-border); }
     .badge strong { color: var(--text-main); }
 
     .medal-ribbon-container {
@@ -467,65 +481,66 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: rgba(255, 255, 255, 0.03);
+      background: var(--glass-bg);
       border: 1px solid var(--glass-border);
-      padding: 8px 14px;
-      border-radius: 14px;
+      padding: 10px 16px;
+      border-radius: 16px;
       text-align: center;
       flex-shrink: 0;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
     }
-    [data-theme="feminine"] .medal-ribbon-container {
-      background: rgba(255, 255, 255, 0.6);
-    }
-    .medal-icon-wrapper { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 4px; }
-    .medal-text { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+    .medal-icon-wrapper { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .medal-text { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; }
 
     /* Variasi Warna Medali Juara */
     .medal-rank-1 .medal-icon-wrapper { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; }
     .medal-rank-2 .medal-icon-wrapper { background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%); color: #fff; }
     .medal-rank-3 .medal-icon-wrapper { background: linear-gradient(135deg, #b45309 0%, #78350f 100%); color: #fff; }
-    .medal-rank-other .medal-icon-wrapper { background: rgba(255, 255, 255, 0.08); color: var(--text-muted); }
+    .medal-rank-other .medal-icon-wrapper { background: var(--glass-card); color: var(--text-muted); border: 1px solid var(--glass-border); }
 
     /* Statistik & Progress Bar */
-    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-    .stat-card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); padding: 16px; border-radius: 16px; }
-    [data-theme="feminine"] .stat-card { background: rgba(255, 255, 255, 0.5); }
-    .stat-card .stat-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 6px; display: block; }
-    .stat-card .stat-value { font-size: 18px; font-weight: 800; color: var(--text-main); }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+    .stat-card { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 18px; border-radius: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
+    .stat-card .stat-label { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 0.5px; }
+    .stat-card .stat-value { font-size: 20px; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; }
 
-    .progress-section { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); padding: 18px; border-radius: 16px; margin-bottom: 20px; }
-    [data-theme="feminine"] .progress-section { background: rgba(255, 255, 255, 0.5); }
+    .progress-section { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 20px; border-radius: 18px; margin-bottom: 24px; }
     .progress-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 10px; }
-    .progress-bg { background: rgba(0, 0, 0, 0.2); height: 12px; border-radius: 20px; overflow: hidden; padding: 2px; border: 1px solid var(--glass-border); }
-    .progress-fill { background: linear-gradient(90deg, var(--accent-emerald) 0%, var(--accent-cyan) 100%); height: 100%; width: 0%; transition: width 0.8s; border-radius: 20px; }
+    .progress-bg { background: rgba(0, 0, 0, 0.2); height: 14px; border-radius: 20px; overflow: hidden; padding: 2px; border: 1px solid var(--glass-border); }
+    .progress-fill { background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-cyan) 100%); height: 100%; width: 0%; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 20px; box-shadow: 0 0 15px var(--accent-glow); }
 
-    .target-box { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); padding: 16px; border-radius: 16px; margin-bottom: 20px; }
-    [data-theme="feminine"] .target-box { background: rgba(255, 255, 255, 0.5); }
-    .target-box-flex { display: flex; gap: 10px; margin-top: 8px; }
-    .target-box-flex input { background: var(--input-bg); }
-    .target-box-flex button { width: auto; min-width: 100px; }
+    .target-box { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 18px; border-radius: 18px; margin-bottom: 20px; }
+    .target-box-flex { display: flex; gap: 12px; margin-top: 10px; }
+    .target-box-flex button { width: auto; min-width: 110px; }
 
     /* Collapse / Dropdown Accordion */
-    .collapsible-header { cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 700; color: var(--text-main); }
-    .collapsible-content { display: none; margin-top: 14px; border-top: 1px solid var(--glass-border); padding-top: 14px; }
+    .collapsible-header { cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 700; color: var(--text-main); letter-spacing: 0.3px; }
+    .collapsible-content { display: none; margin-top: 16px; border-top: 1px solid var(--glass-border); padding-top: 16px; }
 
-    /* Tabel & Scrollbar */
-    .table-container { overflow-x: auto; border-radius: 16px; border: 1px solid var(--glass-border); background: rgba(0, 0, 0, 0.1); }
-    [data-theme="feminine"] .table-container { background: rgba(255, 255, 255, 0.4); }
-    table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
-    th { position: sticky; top: 0; background: var(--table-header-bg) !important; padding: 10px 12px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--glass-border); text-transform: uppercase; font-size: 11px; }
-    td { padding: 10px 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: var(--text-main); vertical-align: middle; }
+    /* Tabel & Scrollbar Modern */
+    .table-container { overflow-x: auto; border-radius: 18px; border: 1px solid var(--glass-border); background: var(--glass-bg); box-shadow: inset 0 2px 8px rgba(0,0,0,0.05); }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+    th { position: sticky; top: 0; background: var(--table-header-bg) !important; backdrop-filter: blur(10px); padding: 14px 16px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--glass-border); text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
+    td { padding: 14px 16px; border-bottom: 1px solid var(--glass-border); color: var(--text-main); vertical-align: middle; font-weight: 500; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255, 255, 255, 0.03); }
 
-    .code-box { background: rgba(219, 39, 119, 0.08); border: 1px dashed var(--accent-emerald); padding: 18px; border-radius: 16px; text-align: center; color: var(--accent-emerald); margin-top: 16px; }
+    .code-box { background: var(--glass-bg); border: 2px dashed var(--accent-primary); padding: 24px; border-radius: 20px; text-align: center; color: var(--accent-primary); margin-top: 20px; box-shadow: 0 10px 30px var(--accent-glow); }
 
-    /* Kostum Popup SweetAlert2 */
+    /* Kostum Popup SweetAlert2 Glassmorphism */
     .colored-toast.swal2-popup {
       background: var(--swal-bg) !important;
-      backdrop-filter: blur(20px) !important;
+      backdrop-filter: blur(30px) !important;
       border: 1px solid var(--swal-border) !important;
-      border-radius: 24px !important;
+      border-radius: 28px !important;
       color: var(--swal-text) !important;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.3) !important;
+    }
+    .swal2-styled.swal2-confirm {
+      background: var(--btn-primary-bg) !important;
+      border-radius: 12px !important;
+      font-weight: 700 !important;
+      box-shadow: 0 8px 20px var(--accent-glow) !important;
     }
   </style>
 </head>
@@ -542,18 +557,18 @@
       <!-- Top Action Bar (Theme Switcher & Guide Button) -->
       <div class="top-action-bar">
         <!-- Professional Theme Switch Pill -->
-        <div class="theme-switch-pill" onclick="toggleTheme()" id="theme-switch-pill" title="Ganti Tema">
-          <span class="theme-option opt-default"><i data-lucide="moon" size="12"></i></span>
-          <span class="theme-option opt-feminine"><i data-lucide="sun" size="12"></i></span>
+        <div class="theme-switch-pill" onclick="toggleTheme()" id="theme-switch-pill" title="Ganti Tema Estetik">
+          <span class="theme-option opt-default"><i data-lucide="moon" size="14"></i></span>
+          <span class="theme-option opt-feminine"><i data-lucide="sun" size="14"></i></span>
         </div>
         <!-- Guide Open Book Button -->
         <button class="guide-btn" onclick="showGuideModal()" title="Panduan Penggunaan">
-          <i data-lucide="book-open" size="50"></i>
+          <i data-lucide="book-open" size="16"></i>
         </button>
       </div>
 
       <div class="brand-logo">
-        <i data-lucide="heart-handshake" size="28"></i>
+        <i data-lucide="heart-handshake" size="32"></i>
       </div>
       <h1 class="main-title">INFAQU</h1>
       <p class="main-subtitle">Sistem Manajemen & Transparansi Infaq Digital</p>
@@ -563,39 +578,39 @@
     <div id="sec-home">
       <div class="menu-grid">
         <div class="menu-card" onclick="showSection('login-a')">
-          <div class="menu-icon"><i data-lucide="user"></i></div>
+          <div class="menu-icon"><i data-lucide="user" size="22"></i></div>
           <div class="menu-content">
             <h4>Login Anggota</h4>
             <p>Cek progress dan atur target pencapaian pribadi</p>
           </div>
-          <i data-lucide="chevron-right" class="menu-arrow"></i>
+          <i data-lucide="chevron-right" class="menu-arrow" size="18"></i>
         </div>
 
         <div class="menu-card" onclick="showSection('reg-a')">
-          <div class="menu-icon"><i data-lucide="user-plus"></i></div>
+          <div class="menu-icon"><i data-lucide="user-plus" size="22"></i></div>
           <div class="menu-content">
             <h4>Daftar Anggota Baru</h4>
             <p>Daftar mandiri dengan Kode Grup</p>
           </div>
-          <i data-lucide="chevron-right" class="menu-arrow"></i>
+          <i data-lucide="chevron-right" class="menu-arrow" size="18"></i>
         </div>
 
         <div class="menu-card" onclick="showSection('login-admin')">
-          <div class="menu-icon"><i data-lucide="shield-check"></i></div>
+          <div class="menu-icon"><i data-lucide="shield-check" size="22"></i></div>
           <div class="menu-content">
             <h4>Login Admin</h4>
             <p>Input infaq dan rekapitulasi data</p>
           </div>
-          <i data-lucide="chevron-right" class="menu-arrow"></i>
+          <i data-lucide="chevron-right" class="menu-arrow" size="18"></i>
         </div>
 
         <div class="menu-card" onclick="showSection('create-c')">
-          <div class="menu-icon"><i data-lucide="folder-plus"></i></div>
+          <div class="menu-icon"><i data-lucide="folder-plus" size="22"></i></div>
           <div class="menu-content">
             <h4>Buat Grup Baru</h4>
             <p>Daftarkan instansi / Grup untuk dapatkan Kode Grup</p>
           </div>
-          <i data-lucide="chevron-right" class="menu-arrow"></i>
+          <i data-lucide="chevron-right" class="menu-arrow" size="18"></i>
         </div>
       </div>
     </div>
@@ -603,28 +618,28 @@
     <!-- ================= 2. FORM LOGIN ANGGOTA ================= -->
     <div id="sec-login-a" class="card" style="display:none;">
       <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
-      <h3 style="margin-bottom: 20px; font-weight: 800;">Login Anggota</h3>
+      <h3 style="margin-bottom: 24px; font-weight: 800; font-size: 20px;">Login Anggota</h3>
       <form id="form-login-a">
         <div class="form-group">
           <label>Kode Grup</label>
           <input type="text" id="la-code" placeholder="Contoh: GRP-1234" required>
         </div>
         <div class="form-group">
-          <label>ID</label>
+          <label>ID Anggota</label>
           <input type="text" id="la-id" placeholder="ID Anggota Anda" required>
         </div>
         <div class="form-group">
           <label>PIN</label>
           <input type="password" id="la-pin" placeholder="••••" required>
         </div>
-        <button type="submit" class="btn-primary"><i data-lucide="log-in" size="18"></i> Login</button>
+        <button type="submit" class="btn-primary" style="margin-top: 8px;"><i data-lucide="log-in" size="18"></i> Masuk Dashboard</button>
       </form>
     </div>
 
     <!-- ================= 3. FORM PENDAFTARAN ANGGOTA ================= -->
     <div id="sec-reg-a" class="card" style="display:none;">
       <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
-      <h3 style="margin-bottom: 20px; font-weight: 800;">Pendaftaran Anggota</h3>
+      <h3 style="margin-bottom: 24px; font-weight: 800; font-size: 20px;">Pendaftaran Anggota</h3>
       <form id="form-reg-a">
         <div class="form-group">
           <label>Kode Grup</label>
@@ -646,7 +661,7 @@
           <label>Target Infaq Pribadi (Rp)</label>
           <input type="number" id="ra-target" placeholder="100000" value="100000">
         </div>
-        <button type="submit" class="btn-success"><i data-lucide="user-check" size="18"></i> Daftar</button>
+        <button type="submit" class="btn-success" style="margin-top: 8px;"><i data-lucide="user-check" size="18"></i> Daftar Sekarang</button>
       </form>
     </div>
 
@@ -659,12 +674,12 @@
           <div class="user-badges">
             <span class="badge">Kode: <strong id="dash-a-code">-</strong></span>
             <span class="badge">ID: <strong id="dash-a-id">-</strong></span>
-            <span class="badge" id="dash-a-role-badge" style="display:none; background: rgba(219, 39, 119, 0.15); color: var(--accent-emerald);">Admin</span>
+            <span class="badge" id="dash-a-role-badge" style="display:none; background: rgba(16, 185, 129, 0.15); color: var(--accent-primary);">Admin</span>
           </div>
         </div>
         <!-- Pita Medali Peringkat -->
         <div id="dash-a-medal-box" class="medal-ribbon-container medal-rank-other">
-          <div class="medal-icon-wrapper"><i data-lucide="award" size="16"></i></div>
+          <div class="medal-icon-wrapper"><i data-lucide="award" size="18"></i></div>
           <span class="medal-text" id="dash-a-medal-text">JUARA -</span>
         </div>
       </div>
@@ -673,7 +688,7 @@
       <div class="stat-grid">
         <div class="stat-card">
           <span class="stat-label">Total Infaq</span>
-          <div class="stat-value" style="color: var(--accent-emerald);">Rp <span id="dash-a-total">0</span></div>
+          <div class="stat-value" style="color: var(--accent-primary);">Rp <span id="dash-a-total">0</span></div>
         </div>
         <div class="stat-card">
           <span class="stat-label">Target Infaq</span>
@@ -685,7 +700,7 @@
       <div class="progress-section">
         <div class="progress-header">
           <span style="color: var(--text-muted);">Pencapaian Target</span>
-          <span id="dash-a-percent" style="color: var(--accent-emerald);">0%</span>
+          <span id="dash-a-percent" style="color: var(--accent-primary);">0%</span>
         </div>
         <div class="progress-bg">
           <div id="dash-a-bar" class="progress-fill"></div>
@@ -693,8 +708,8 @@
       </div>
 
       <!-- Tabel Riwayat Infaq Pribadi -->
-      <h4 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 700;">RIWAYAT INFAQ</h4>
-      <div class="table-container" style="margin-bottom: 20px;">
+      <h4 style="margin: 0 0 12px 0; font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-muted);">RIWAYAT INFAQ PRIBADI</h4>
+      <div class="table-container" style="margin-bottom: 24px;">
         <table>
           <thead>
             <tr><th>Tanggal</th><th>Nominal</th><th>Catatan</th></tr>
@@ -706,7 +721,7 @@
       <!-- Menu Edit Profil Akun -->
       <div class="target-box">
         <div class="collapsible-header" onclick="toggleEditProfile()">
-          <span><i data-lucide="user-pen" size="14"></i> EDIT DATA AKUN</span>
+          <span><i data-lucide="user-pen" size="14" style="vertical-align: middle; margin-right: 6px;"></i> EDIT DATA AKUN</span>
           <i data-lucide="chevron-down" id="edit-profile-icon" size="16"></i>
         </div>
         <div id="edit-profile-content" class="collapsible-content">
@@ -715,7 +730,7 @@
             <div class="form-group"><label>ID Anggota</label><input type="text" id="ea-id" required></div>
             <div class="form-group"><label>Nama Lengkap</label><input type="text" id="ea-nama" required></div>
             <div class="form-group"><label>PIN Baru (Opsional)</label><input type="password" id="ea-pin" placeholder="Kosongkan jika tidak diubah"></div>
-            <button type="submit" class="btn-warning" style="padding: 10px;"><i data-lucide="save" size="16"></i> Simpan Perubahan</button>
+            <button type="submit" class="btn-warning" style="padding: 12px;"><i data-lucide="save" size="16"></i> Simpan Perubahan</button>
           </form>
         </div>
       </div>
@@ -729,33 +744,35 @@
         </div>
       </div>
 
-      <!-- Panel Khusus Admin di Halaman Anggota (Jika Anggota berstatus Admin Grup) -->
-      <div id="member-admin-panel" style="display: none; background: rgba(219, 39, 119, 0.05); border: 1px solid rgba(219, 39, 119, 0.2); padding: 20px; border-radius: 16px; margin-bottom: 16px;">
-        <h4 style="margin-bottom: 14px; font-size: 14px; color: var(--accent-emerald);"><i data-lucide="shield-check" size="16"></i> PANEL ADMIN GRUP</h4>
+      <!-- Panel Khusus Admin di Halaman Anggota -->
+      <div id="member-admin-panel" style="display: none; background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 24px; border-radius: 20px; margin-bottom: 24px;">
+        <h4 style="margin-bottom: 16px; font-size: 14px; font-weight: 800; color: var(--accent-primary); display: flex; align-items: center; gap: 8px;">
+          <i data-lucide="shield-check" size="18"></i> PANEL ADMIN GRUP
+        </h4>
         
-        <div class="stat-grid" style="margin-bottom: 16px;">
-          <div class="stat-card" style="background: rgba(0,0,0,0.05);">
+        <div class="stat-grid" style="margin-bottom: 18px;">
+          <div class="stat-card" style="background: var(--glass-card);">
             <span class="stat-label">Infaq Bulan Ini</span>
             <div class="stat-value" style="color: var(--accent-cyan);">Rp <span id="dash-member-admin-monthly">0</span></div>
           </div>
-          <div class="stat-card" style="background: rgba(0,0,0,0.05);">
+          <div class="stat-card" style="background: var(--glass-card);">
             <span class="stat-label">Infaq Tahun Ini</span>
-            <div class="stat-value" style="color: var(--accent-emerald);">Rp <span id="dash-member-admin-yearly">0</span></div>
+            <div class="stat-value" style="color: var(--accent-primary);">Rp <span id="dash-member-admin-yearly">0</span></div>
           </div>
         </div>
 
-        <form id="form-member-add-infaq" style="margin-bottom: 20px;">
+        <form id="form-member-add-infaq" style="margin-bottom: 24px;">
           <div class="form-group"><label>Pilih Anggota</label><select id="m-at-anggota" required></select></div>
           <div class="form-group"><label>Tanggal Input</label><input type="date" id="m-at-tanggal" required></div>
           <div class="form-group"><label>Nominal (Rp)</label><input type="number" id="m-at-nominal" placeholder="50000" required></div>
           <div class="form-group"><label>Catatan</label><input type="text" id="m-at-catatan" placeholder="Keterangan"></div>
-          <button type="submit" class="btn-success" style="padding: 10px;"><i data-lucide="plus" size="16"></i> Simpan Infaq</button>
+          <button type="submit" class="btn-success" style="padding: 12px;"><i data-lucide="plus" size="16"></i> Simpan Infaq</button>
         </form>
 
-        <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 10px; color: var(--accent-emerald);">KELOLA INPUT</h4>
-        <div class="table-container" style="max-height: 300px; overflow-y: auto;">
+        <h4 style="font-size: 12px; font-weight: 700; margin-bottom: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">KELOLA INPUT MASUK</h4>
+        <div class="table-container" style="max-height: 280px; overflow-y: auto;">
           <table>
-            <thead><tr><th>Tanggal</th><th>ID</th><th>Nama</th><th>Nominal</th><th style="text-align: center;">Aksi</th></tr></thead>
+            <thead><tr><th>Tanggal</th><th>ID & Nama</th><th>Nominal</th><th style="text-align: center;">Aksi</th></tr></thead>
             <tbody id="dash-member-admin-trans-table"></tbody>
           </table>
         </div>
@@ -767,28 +784,28 @@
     <!-- ================= 5. FORM LOGIN ADMIN ================= -->
     <div id="sec-login-admin" class="card" style="display:none;">
       <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
-      <h3 style="margin-bottom: 20px; font-weight: 800;">Login Admin</h3>
+      <h3 style="margin-bottom: 24px; font-weight: 800; font-size: 20px;">Login Admin</h3>
       <form id="form-login-admin">
         <div class="form-group"><label>Kode Grup</label><input type="text" id="ladmin-code" placeholder="Contoh: GRP-1234" required></div>
         <div class="form-group"><label>PIN Admin</label><input type="password" id="ladmin-pin" placeholder="PIN Admin" required></div>
-        <button type="submit" class="btn-primary"><i data-lucide="shield" size="18"></i> Masuk Panel Admin</button>
+        <button type="submit" class="btn-primary" style="margin-top: 8px;"><i data-lucide="shield" size="18"></i> Masuk Panel Admin</button>
       </form>
     </div>
 
     <!-- ================= 6. FORM BUAT GRUP BARU ================= -->
     <div id="sec-create-c" class="card" style="display:none;">
       <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
-      <h3 style="margin-bottom: 20px; font-weight: 800;">Buat Grup Baru</h3>
+      <h3 style="margin-bottom: 24px; font-weight: 800; font-size: 20px;">Buat Grup Baru</h3>
       <form id="form-create-c">
         <div class="form-group"><label>Nama Instansi</label><input type="text" id="cc-sekolah" placeholder="Nama Instansi/Sekolah" required></div>
         <div class="form-group"><label>Nama Grup</label><input type="text" id="cc-kelas" placeholder="Nama Grup/Kelas" required></div>
         <div class="form-group"><label>Nama Admin</label><input type="text" id="cc-admin" placeholder="Nama Penanggung Jawab" required></div>
         <div class="form-group"><label>Buat PIN Admin</label><input type="password" id="cc-pin" placeholder="••••" required></div>
-        <button type="submit" class="btn-success"><i data-lucide="plus-circle" size="18"></i> Buat Grup</button>
+        <button type="submit" class="btn-success" style="margin-top: 8px;"><i data-lucide="plus-circle" size="18"></i> Buat Grup Sekarang</button>
       </form>
       <div id="cc-result" style="display:none;" class="code-box">
-        <p style="font-size: 12px; font-weight: 600;">Kode Grup Anda Berhasil Dibuat:</p>
-        <span id="cc-code-display" style="font-size: 28px; font-weight: 800; letter-spacing: 2px;">-</span>
+        <p style="font-size: 12px; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Kode Grup Anda Berhasil Dibuat:</p>
+        <span id="cc-code-display" style="font-size: 32px; font-weight: 800; letter-spacing: 3px;">-</span>
       </div>
     </div>
 
@@ -797,7 +814,7 @@
       <div class="user-header">
         <div class="user-info">
           <h3 id="dash-admin-title">Panel Admin</h3>
-          <p class="group-title">Instansi <span id="dash-admin-sekolah" style="color: var(--text-main);">-</span> | Kode <span id="dash-admin-code" style="color: var(--accent-emerald);">-</span></p>
+          <p class="group-title">Instansi <span id="dash-admin-sekolah" style="color: var(--text-main);">-</span> | Kode <span id="dash-admin-code" style="color: var(--accent-primary);">-</span></p>
         </div>
       </div>
 
@@ -808,13 +825,13 @@
         </div>
         <div class="stat-card">
           <span class="stat-label">Infaq Tahun Ini</span>
-          <div class="stat-value" style="color: var(--accent-emerald);">Rp <span id="dash-admin-yearly">0</span></div>
+          <div class="stat-value" style="color: var(--accent-primary);">Rp <span id="dash-admin-yearly">0</span></div>
         </div>
       </div>
 
       <!-- Form Input Infaq (Oleh Admin) -->
-      <form id="form-add-infaq" style="margin-bottom: 24px;">
-        <h4 style="margin-bottom: 14px; font-size: 14px;">INPUT INFAQ</h4>
+      <form id="form-add-infaq" style="margin-bottom: 28px;">
+        <h4 style="margin-bottom: 14px; font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-muted);">INPUT INFAQ</h4>
         <div class="form-group"><label>Pilih Anggota</label><select id="at-anggota" required></select></div>
         <div class="form-group"><label>Tanggal Input</label><input type="date" id="at-tanggal" required></div>
         <div class="form-group"><label>Nominal (Rp)</label><input type="number" id="at-nominal" placeholder="50000" required></div>
@@ -824,14 +841,14 @@
 
       <!-- Tabel Rekapitulasi Anggota -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <h4 style="font-size: 14px; font-weight: 700;">REKAP INFAQ</h4>
+        <h4 style="font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-muted);">REKAP INFAQ ANGGOTA</h4>
         <div style="display: flex; gap: 8px;">
-          <button class="btn-primary" onclick="refreshAdminData()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="refresh-cw" size="12"></i> Refresh</button>
-          <button class="btn-success" id="btn-export-excel" onclick="exportToSpreadsheet()" style="width:auto; padding: 8px 12px; font-size: 12px;"><i data-lucide="file-spreadsheet" size="12"></i> Export</button>
+          <button class="btn-primary" onclick="refreshAdminData()" style="width:auto; padding: 8px 14px; font-size: 12px;"><i data-lucide="refresh-cw" size="14"></i> Refresh</button>
+          <button class="btn-success" id="btn-export-excel" onclick="exportToSpreadsheet()" style="width:auto; padding: 8px 14px; font-size: 12px;"><i data-lucide="file-spreadsheet" size="14"></i> Export</button>
         </div>
       </div>
 
-      <div class="table-container" style="max-height: 400px; overflow-y: auto; margin-bottom: 24px;">
+      <div class="table-container" style="max-height: 350px; overflow-y: auto; margin-bottom: 28px;">
         <table>
           <thead><tr><th>No</th><th>ID / Nama</th><th>Bulan Ini</th><th>Total Infaq</th></tr></thead>
           <tbody id="dash-admin-rekap-table"></tbody>
@@ -839,20 +856,20 @@
       </div>
 
       <!-- Tabel Kelola Transaksi Masuk -->
-      <div style="margin-bottom: 24px;">
-        <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">Kelola Input</h4>
-        <div class="table-container" style="max-height: 400px; overflow-y: auto;">
+      <div style="margin-bottom: 28px;">
+        <h4 style="font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px;">KELOLA INPUT TRANSAKSI</h4>
+        <div class="table-container" style="max-height: 350px; overflow-y: auto;">
           <table>
-            <thead><tr><th>Tanggal</th><th>ID</th><th>Nama</th><th>Nominal</th><th style="text-align: center;">Aksi</th></tr></thead>
+            <thead><tr><th>Tanggal</th><th>ID & Nama</th><th>Nominal</th><th style="text-align: center;">Aksi</th></tr></thead>
             <tbody id="dash-admin-trans-table"></tbody>
           </table>
         </div>
       </div>
 
       <!-- Tabel Manajemen Hak Akses Admin -->
-      <div style="margin-bottom: 24px;">
-        <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">MANAJEMEN ADMIN</h4>
-        <div class="table-container" style="max-height: 400px; overflow-y: auto;">
+      <div style="margin-bottom: 28px;">
+        <h4 style="font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px;">MANAJEMEN HAK AKSES ADMIN</h4>
+        <div class="table-container" style="max-height: 350px; overflow-y: auto;">
           <table>
             <thead><tr><th>No</th><th>ID / Nama</th><th>Akses Admin</th><th style="text-align: center;">Aksi</th></tr></thead>
             <tbody id="dash-admin-management-table"></tbody>
@@ -860,7 +877,7 @@
         </div>
       </div>
 
-      <button class="btn-danger" onclick="logout()"><i data-lucide="log-out" size="16"></i> Keluar</button>
+      <button class="btn-danger" onclick="logout()"><i data-lucide="log-out" size="16"></i> Keluar Panel Admin</button>
     </div>
 
   </div>
@@ -903,28 +920,28 @@
     const savedTheme = localStorage.getItem('infaq_theme') || 'default';
     setTheme(savedTheme);
 
-    // Fungsi Popup Panduan Penggunaan
+    // Fungsi Popup Panduan Penggunaan Estetik
     function showGuideModal() {
       Swal.fire({
         title: '<span style="font-size: 20px; font-weight: 800;">Panduan INFAQU</span>',
         html: `
-          <div style="text-align: left; font-size: 13px; line-height: 1.6; max-height: 350px; overflow-y: auto; padding-right: 5px;">
-            <p style="margin-bottom: 10px;">Selamat datang di <strong>INFAQU</strong>. Berikut adalah panduan ringkas cara menggunakan aplikasi:</p>
+          <div style="text-align: left; font-size: 13px; line-height: 1.6; max-height: 350px; overflow-y: auto; padding-right: 5px; color: var(--text-main);">
+            <p style="margin-bottom: 12px;">Selamat datang di <strong>INFAQU</strong>. Berikut adalah panduan ringkas cara menggunakan aplikasi:</p>
             
-            <div style="margin-bottom: 12px; background: rgba(16, 185, 129, 0.08); padding: 10px 12px; border-radius: 10px; border-left: 3px solid var(--accent-emerald);">
+            <div style="margin-bottom: 14px; background: var(--glass-bg); padding: 12px 14px; border-radius: 12px; border-left: 3px solid var(--accent-primary);">
               <strong>1. Buat Grup Baru</strong><br>
-              Pilih menu <em>Buat Grup Baru</em> di halaman utama. Masukkan nama instansi, nama grup, nama admin/penanggung jawab, dan PIN admin. Setelah disimpan, sistem akan memberikan <strong>KODE GRUP</strong> unik (Contoh: GRP-XXXX).
+              Pilih menu <em>Buat Grup Baru</em> di halaman utama. Masukkan nama instansi, nama grup, nama admin, dan PIN admin. Sistem akan memberikan <strong>KODE GRUP</strong> unik.
             </div>
 
-            <div style="margin-bottom: 12px; background: rgba(6, 182, 212, 0.08); padding: 10px 12px; border-radius: 10px; border-left: 3px solid var(--accent-cyan);">
+            <div style="margin-bottom: 14px; background: var(--glass-bg); padding: 12px 14px; border-radius: 12px; border-left: 3px solid var(--accent-cyan);">
               <strong>2. Pendaftaran Anggota</strong><br>
-              Pilih menu <em>Daftar Anggota Baru</em>. Masukkan Kode Grup yang diberikan oleh Admin Grup, isi nama lengkap, ID anggota unik, PIN rahasia, serta target infaq pribadi Anda.
+              Pilih menu <em>Daftar Anggota Baru</em>. Masukkan Kode Grup dari Admin, isi nama lengkap, ID anggota unik, PIN rahasia, serta target infaq pribadi.
             </div>
 
-            <div style="margin-bottom: 12px; background: rgba(99, 102, 241, 0.08); padding: 10px 12px; border-radius: 10px; border-left: 3px solid var(--accent-indigo);">
+            <div style="margin-bottom: 14px; background: var(--glass-bg); padding: 12px 14px; border-radius: 12px; border-left: 3px solid #818cf8;">
               <strong>3. Cara Login & Cek Progress</strong><br>
-              • <strong>Login Anggota:</strong> Masukkan Kode Grup, ID, dan PIN untuk melihat riwayat infaq pribadi dan grafik pencapaian target.<br>
-              • <strong>Login Admin:</strong> Masukkan Kode Grup dan PIN Admin untuk dapat merekap data, menginput infaq, mengekspor laporan ke Excel, dan mengatur hak akses admin anggota.
+              • <strong>Login Anggota:</strong> Cek riwayat infaq pribadi dan grafik pencapaian target.<br>
+              • <strong>Login Admin:</strong> Rekap data, input infaq, ekspor laporan ke Excel, dan atur hak akses admin anggota.
             </div>
           </div>
         `,
@@ -1170,9 +1187,8 @@
         infaqs.forEach(item => {
           tbody.innerHTML += `<tr>
             <td>${formatDateIndo(item.tanggal)}</td>
-            <td>${item.id_anggota}</td>
-            <td><strong>${memberNameMap[item.id_anggota] || '-'}</strong></td>
-            <td>Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
+            <td><strong>${memberNameMap[item.id_anggota] || '-'}</strong><br><span style="font-size:10px; color:var(--text-muted);">${item.id_anggota}</span></td>
+            <td><strong style="color: var(--accent-primary);">Rp ${Number(item.nominal).toLocaleString('id-ID')}</strong></td>
             <td style="text-align: center;">
               <div class="btn-action-group">
                 <button class="btn-icon-edit" onclick="editTransaction(${item.id}, ${item.nominal})"><i data-lucide="pencil" size="14"></i></button>
@@ -1183,7 +1199,7 @@
         });
         lucide.createIcons();
       } else {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">Belum ada riwayat transaksi</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted);">Belum ada riwayat transaksi</td></tr>';
       }
     }
 
@@ -1267,7 +1283,7 @@
       if (data && data.length > 0) {
         data.forEach(t => {
           total += Number(t.nominal);
-          tbody.innerHTML += `<tr><td>${formatDateIndo(t.tanggal)}</td><td><strong style="color: var(--accent-emerald);">Rp ${Number(t.nominal).toLocaleString('id-ID')}</strong></td><td>${t.catatan || '-'}</td></tr>`;
+          tbody.innerHTML += `<tr><td>${formatDateIndo(t.tanggal)}</td><td><strong style="color: var(--accent-primary);">Rp ${Number(t.nominal).toLocaleString('id-ID')}</strong></td><td>${t.catatan || '-'}</td></tr>`;
         });
       } else {
         tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color: var(--text-muted);">Belum ada riwayat infaq</td></tr>';
@@ -1383,7 +1399,7 @@
             <td>${index + 1}</td>
             <td><strong>${m.nama_anggota}</strong><br><span style="font-size:10px; color:var(--text-muted);">${m.id_anggota}</span></td>
             <td><strong style="color: var(--accent-cyan);">Rp ${monthlyM.toLocaleString('id-ID')}</strong></td>
-            <td><strong style="color: var(--accent-emerald);">Rp ${totalM.toLocaleString('id-ID')}</strong></td>
+            <td><strong style="color: var(--accent-primary);">Rp ${totalM.toLocaleString('id-ID')}</strong></td>
           </tr>`;
 
           mgmtTbody.innerHTML += `<tr>
@@ -1431,9 +1447,8 @@
         infaqs.forEach(item => {
           tbody.innerHTML += `<tr>
             <td>${formatDateIndo(item.tanggal)}</td>
-            <td>${item.id_anggota}</td>
-            <td><strong>${memberNameMap[item.id_anggota] || '-'}</strong></td>
-            <td>Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
+            <td><strong>${memberNameMap[item.id_anggota] || '-'}</strong><br><span style="font-size:10px; color:var(--text-muted);">${item.id_anggota}</span></td>
+            <td><strong style="color: var(--accent-primary);">Rp ${Number(item.nominal).toLocaleString('id-ID')}</strong></td>
             <td style="text-align: center;">
               <div class="btn-action-group">
                 <button class="btn-icon-edit" onclick="editTransaction(${item.id}, ${item.nominal})"><i data-lucide="pencil" size="14"></i></button>
@@ -1444,7 +1459,7 @@
         });
         lucide.createIcons();
       } else {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">Belum ada riwayat transaksi</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted);">Belum ada riwayat transaksi</td></tr>';
       }
     }
 
@@ -1516,7 +1531,7 @@
       } catch (err) {
         Swal.fire({ title: 'INFAQU', text: 'Gagal Export: ' + err.message, icon: 'error', customClass: { popup: 'colored-toast' } });
       } finally {
-        btn.disabled = false; btn.innerHTML = '<i data-lucide="file-spreadsheet" size="12"></i> Export';
+        btn.disabled = false; btn.innerHTML = '<i data-lucide="file-spreadsheet" size="14"></i> Export';
         lucide.createIcons();
       }
     }
