@@ -37,27 +37,37 @@
       --btn-warning-bg: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
       --input-bg: rgba(0, 0, 0, 0.25);
       --table-header-bg: #0f172a;
+      --select-bg-color: #0f172a;
+      --select-text-color: #fff;
+      --swal-bg: rgba(15, 23, 42, 0.85);
+      --swal-border: rgba(255, 255, 255, 0.1);
+      --swal-text: #f8fafc;
     }
 
-    /* ================= TEMA 2: FEMININE / PINK GLASSMORPHISM ================= */
+    /* ================= TEMA 2: FEMININE / PINK LIGHT GLASSMORPHISM ================= */
     [data-theme="feminine"] {
-      --bg-gradient: radial-gradient(circle at 50% 0%, #4c1d95 0%, #2e1065 50%, #180532 100%);
-      --accent-emerald: #ec4899; /* Hot Pink as primary accent */
-      --accent-cyan: #f43f5e;
-      --accent-indigo: #d946ef;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #ffe4e6 0%, #fce7f3 50%, #fdf2f8 100%);
+      --accent-emerald: #db2777; /* Hot Pink as primary accent */
+      --accent-cyan: #e11d48;
+      --accent-indigo: #c084fc;
       --accent-violet: #a855f7;
-      --glass-bg: rgba(255, 255, 255, 0.04);
-      --glass-border: rgba(244, 114, 182, 0.15);
-      --glass-card: rgba(45, 12, 63, 0.65);
-      --text-main: #fff1f2;
-      --text-muted: #fbcfe8;
-      --orb-1: #ec4899;
-      --orb-2: #8b5cf6;
+      --glass-bg: rgba(255, 255, 255, 0.6);
+      --glass-border: rgba(244, 114, 182, 0.25);
+      --glass-card: rgba(255, 255, 255, 0.75);
+      --text-main: #4c0519;
+      --text-muted: #881337;
+      --orb-1: #f472b6;
+      --orb-2: #fbcfe8;
       --btn-primary-bg: linear-gradient(135deg, #db2777 0%, #be185d 100%);
-      --btn-success-bg: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+      --btn-success-bg: linear-gradient(135deg, #db2777 0%, #9d174d 100%);
       --btn-warning-bg: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
-      --input-bg: rgba(0, 0, 0, 0.3);
-      --table-header-bg: #2e1065;
+      --input-bg: rgba(255, 255, 255, 0.8);
+      --table-header-bg: #fbcfe8;
+      --select-bg-color: #ffffff;
+      --select-text-color: #4c0519;
+      --swal-bg: rgba(255, 255, 255, 0.95);
+      --swal-border: rgba(244, 114, 182, 0.3);
+      --swal-text: #4c0519;
     }
 
     * {
@@ -78,7 +88,7 @@
       padding: 20px;
       overflow-x: hidden;
       position: relative;
-      transition: background 0.5s ease;
+      transition: background 0.5s ease, color 0.5s ease;
     }
 
     /* Efek Latar Belakang (Glowing Orbs) Dinamis */
@@ -113,10 +123,10 @@
       margin-top: 10px;
     }
 
-    /* Theme Switcher Button / Bar di Atas */
+    /* Theme Switcher Button (Simbol saja & Diperkecil) */
     .theme-switcher-wrapper {
       position: absolute;
-      top: -15px;
+      top: -10px;
       right: 0;
       z-index: 20;
     }
@@ -124,20 +134,20 @@
       background: var(--glass-card);
       border: 1px solid var(--glass-border);
       color: var(--text-main);
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 700;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 12px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
       backdrop-filter: blur(10px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       transition: all 0.3s ease;
     }
     .theme-btn:hover {
-      transform: scale(1.05);
+      transform: scale(1.1);
       border-color: var(--accent-emerald);
     }
 
@@ -162,8 +172,8 @@
       transition: all 0.3s ease;
     }
     [data-theme="feminine"] .brand-logo {
-      background: linear-gradient(135deg, rgba(236, 72, 153, 0.25), rgba(217, 70, 239, 0.25));
-      box-shadow: 0 0 25px rgba(236, 72, 153, 0.3);
+      background: linear-gradient(135deg, rgba(219, 39, 119, 0.15), rgba(244, 63, 94, 0.15));
+      box-shadow: 0 0 25px rgba(219, 39, 119, 0.2);
     }
 
     .main-title {
@@ -175,7 +185,7 @@
       -webkit-text-fill-color: transparent;
     }
     [data-theme="feminine"] .main-title {
-      background: linear-gradient(135deg, #ffffff 0%, #fbcfe8 100%);
+      background: linear-gradient(135deg, #4c0519 0%, #9f1239 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -194,9 +204,9 @@
       border: 1px solid var(--glass-border);
       border-radius: 24px;
       padding: 28px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
       animation: fadeIn 0.4s ease-out;
-      transition: background 0.5s ease, border 0.5s ease;
+      transition: background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
     }
 
     @keyframes fadeIn {
@@ -219,8 +229,11 @@
       gap: 8px;
       transition: all 0.2s ease;
     }
+    [data-theme="feminine"] .btn-back {
+      background: rgba(0, 0, 0, 0.03);
+    }
     .btn-back:hover {
-      color: #fff;
+      color: var(--text-main);
       background: rgba(255, 255, 255, 0.1);
       border-color: rgba(255, 255, 255, 0.2);
     }
@@ -244,6 +257,9 @@
       position: relative;
       overflow: hidden;
     }
+    [data-theme="feminine"] .menu-card {
+      background: rgba(255, 255, 255, 0.5);
+    }
     .menu-card::before {
       content: '';
       position: absolute;
@@ -256,7 +272,10 @@
       transform: translateY(-2px);
       background: rgba(255, 255, 255, 0.06);
       border-color: var(--accent-emerald);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    [data-theme="feminine"] .menu-card:hover {
+      background: rgba(255, 255, 255, 0.9);
     }
     .menu-card:hover::before { opacity: 1; }
     .menu-icon {
@@ -268,11 +287,14 @@
       color: var(--accent-emerald);
       flex-shrink: 0;
     }
+    [data-theme="feminine"] .menu-icon {
+      background: rgba(219, 39, 119, 0.08);
+    }
     .menu-content { flex: 1; }
-    .menu-card h4 { color: #fff; font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+    .menu-card h4 { color: var(--text-main); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
     .menu-card p { font-size: 12px; color: var(--text-muted); }
     .menu-arrow { color: var(--text-muted); transition: transform 0.2s, color 0.2s; }
-    .menu-card:hover .menu-arrow { transform: translateX(4px); color: #fff; }
+    .menu-card:hover .menu-arrow { transform: translateX(4px); color: var(--text-main); }
 
     /* Form & Input */
     .form-group { margin-bottom: 16px; }
@@ -294,12 +316,12 @@
       outline: none;
       transition: all 0.2s ease;
       background: var(--input-bg);
-      color: #fff;
+      color: var(--text-main);
     }
-    input::placeholder { color: rgba(255, 255, 255, 0.3); }
+    input::placeholder { color: var(--text-muted); opacity: 0.6; }
     select {
       appearance: none;
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fbcfe8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23881337' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
       background-repeat: no-repeat;
       background-position: right 14px center;
       background-size: 16px;
@@ -307,12 +329,11 @@
     [data-theme="default"] select {
       background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     }
-    select option { background: #0f172a; color: #fff; }
-    [data-theme="feminine"] select option { background: #2e1065; color: #fff; }
+    select option { background: var(--select-bg-color); color: var(--select-text-color); }
     input:focus, select:focus {
       border-color: var(--accent-emerald);
-      box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
-      background: rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 0 3px rgba(219, 39, 119, 0.15);
+      background: var(--glass-card);
     }
 
     /* Tombol-tombol Aksi */
@@ -330,11 +351,11 @@
       justify-content: center;
       gap: 8px;
     }
-    .btn-primary { background: var(--btn-primary-bg); color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
+    .btn-primary { background: var(--btn-primary-bg); color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); }
     .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-    .btn-success { background: var(--btn-success-bg); color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
+    .btn-success { background: var(--btn-success-bg); color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); }
     .btn-success:hover { opacity: 0.9; transform: translateY(-1px); }
-    .btn-warning { background: var(--btn-warning-bg); color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
+    .btn-warning { background: var(--btn-warning-bg); color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); }
     .btn-warning:hover { opacity: 0.9; transform: translateY(-1px); }
     .btn-danger { background: rgba(239, 68, 68, 0.12); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.25); margin-top: 16px; }
     .btn-danger:hover { background: rgba(239, 68, 68, 0.25); color: #fff; }
@@ -377,9 +398,9 @@
       transition: all 0.2s;
     }
     .badge-admin-toggle.is-admin {
-      background: rgba(16, 185, 129, 0.15);
+      background: rgba(219, 39, 119, 0.15);
       color: var(--accent-emerald);
-      border-color: rgba(16, 185, 129, 0.3);
+      border-color: rgba(219, 39, 119, 0.3);
     }
 
     /* Dashboard Profil Header & Pita Medali */
@@ -392,11 +413,12 @@
       align-items: flex-start;
       gap: 12px;
     }
-    .user-info h3 { font-size: 22px; color: #fff; font-weight: 800; }
+    .user-info h3 { font-size: 22px; color: var(--text-main); font-weight: 800; }
     .user-info p.group-title { font-size: 13px; color: var(--accent-cyan); font-weight: 600; margin-top: 2px; }
     .user-badges { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
     .badge { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; border: 1px solid var(--glass-border); }
-    .badge strong { color: #fff; }
+    [data-theme="feminine"] .badge { background: rgba(255, 255, 255, 0.6); }
+    .badge strong { color: var(--text-main); }
 
     .medal-ribbon-container {
       display: flex;
@@ -409,7 +431,10 @@
       border-radius: 14px;
       text-align: center;
       flex-shrink: 0;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    [data-theme="feminine"] .medal-ribbon-container {
+      background: rgba(255, 255, 255, 0.6);
     }
     .medal-icon-wrapper { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 4px; }
     .medal-text { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -423,42 +448,42 @@
     /* Statistik & Progress Bar */
     .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
     .stat-card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); padding: 16px; border-radius: 16px; }
+    [data-theme="feminine"] .stat-card { background: rgba(255, 255, 255, 0.5); }
     .stat-card .stat-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 6px; display: block; }
-    .stat-card .stat-value { font-size: 18px; font-weight: 800; }
+    .stat-card .stat-value { font-size: 18px; font-weight: 800; color: var(--text-main); }
 
     .progress-section { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); padding: 18px; border-radius: 16px; margin-bottom: 20px; }
+    [data-theme="feminine"] .progress-section { background: rgba(255, 255, 255, 0.5); }
     .progress-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 10px; }
-    .progress-bg { background: rgba(0, 0, 0, 0.3); height: 12px; border-radius: 20px; overflow: hidden; padding: 2px; border: 1px solid var(--glass-border); }
+    .progress-bg { background: rgba(0, 0, 0, 0.2); height: 12px; border-radius: 20px; overflow: hidden; padding: 2px; border: 1px solid var(--glass-border); }
     .progress-fill { background: linear-gradient(90deg, var(--accent-emerald) 0%, var(--accent-cyan) 100%); height: 100%; width: 0%; transition: width 0.8s; border-radius: 20px; }
 
     .target-box { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); padding: 16px; border-radius: 16px; margin-bottom: 20px; }
+    [data-theme="feminine"] .target-box { background: rgba(255, 255, 255, 0.5); }
     .target-box-flex { display: flex; gap: 10px; margin-top: 8px; }
-    .target-box-flex input { background: rgba(0,0,0,0.2); }
+    .target-box-flex input { background: var(--input-bg); }
     .target-box-flex button { width: auto; min-width: 100px; }
 
     /* Collapse / Dropdown Accordion */
-    .collapsible-header { cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 700; color: #fff; }
+    .collapsible-header { cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 700; color: var(--text-main); }
     .collapsible-content { display: none; margin-top: 14px; border-top: 1px solid var(--glass-border); padding-top: 14px; }
 
     /* Tabel & Scrollbar */
-    .table-container { overflow-x: auto; border-radius: 16px; border: 1px solid var(--glass-border); background: rgba(0, 0, 0, 0.2); }
+    .table-container { overflow-x: auto; border-radius: 16px; border: 1px solid var(--glass-border); background: rgba(0, 0, 0, 0.1); }
+    [data-theme="feminine"] .table-container { background: rgba(255, 255, 255, 0.4); }
     table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
     th { position: sticky; top: 0; background: var(--table-header-bg) !important; padding: 10px 12px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--glass-border); text-transform: uppercase; font-size: 11px; }
-    td { padding: 10px 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); color: #e2e8f0; vertical-align: middle; }
+    td { padding: 10px 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: var(--text-main); vertical-align: middle; }
 
-    .code-box { background: rgba(16, 185, 129, 0.08); border: 1px dashed var(--accent-emerald); padding: 18px; border-radius: 16px; text-align: center; color: var(--accent-emerald); margin-top: 16px; }
+    .code-box { background: rgba(219, 39, 119, 0.08); border: 1px dashed var(--accent-emerald); padding: 18px; border-radius: 16px; text-align: center; color: var(--accent-emerald); margin-top: 16px; }
 
     /* Kostum Popup SweetAlert2 */
     .colored-toast.swal2-popup {
-      background: rgba(15, 23, 42, 0.85) !important;
+      background: var(--swal-bg) !important;
       backdrop-filter: blur(20px) !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border: 1px solid var(--swal-border) !important;
       border-radius: 24px !important;
-      color: #f8fafc !important;
-    }
-    [data-theme="feminine"] .colored-toast.swal2-popup {
-      background: rgba(45, 12, 63, 0.9) !important;
-      border: 1px solid rgba(244, 114, 182, 0.2) !important;
+      color: var(--swal-text) !important;
     }
   </style>
 </head>
@@ -472,10 +497,10 @@
 
     <!-- BRAND HEADER -->
     <div class="brand-header">
-      <!-- Tombol Switch Tema -->
+      <!-- Tombol Switch Tema (Simbol saja & Diperkecil) -->
       <div class="theme-switcher-wrapper">
-        <button class="theme-btn" onclick="toggleTheme()" id="theme-switch-btn">
-          <i data-lucide="sparkles" size="14"></i> <span id="theme-btn-text">Tema Pink</span>
+        <button class="theme-btn" onclick="toggleTheme()" id="theme-switch-btn" title="Ganti Tema">
+          <i data-lucide="sparkles" size="14"></i>
         </button>
       </div>
 
@@ -586,7 +611,7 @@
           <div class="user-badges">
             <span class="badge">Kode: <strong id="dash-a-code">-</strong></span>
             <span class="badge">ID: <strong id="dash-a-id">-</strong></span>
-            <span class="badge" id="dash-a-role-badge" style="display:none; background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald);">Admin</span>
+            <span class="badge" id="dash-a-role-badge" style="display:none; background: rgba(219, 39, 119, 0.15); color: var(--accent-emerald);">Admin</span>
           </div>
         </div>
         <!-- Pita Medali Peringkat -->
@@ -604,7 +629,7 @@
         </div>
         <div class="stat-card">
           <span class="stat-label">Target Infaq</span>
-          <div class="stat-value" id="dash-a-target-text" style="color: #fff;">Rp 0</div>
+          <div class="stat-value" id="dash-a-target-text">Rp 0</div>
         </div>
       </div>
 
@@ -657,15 +682,15 @@
       </div>
 
       <!-- Panel Khusus Admin di Halaman Anggota (Jika Anggota berstatus Admin Grup) -->
-      <div id="member-admin-panel" style="display: none; background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.2); padding: 20px; border-radius: 16px; margin-bottom: 16px;">
-        <h4 style="margin-bottom: 14px; font-size: 14px; color: #818cf8;"><i data-lucide="shield-check" size="16"></i> PANEL ADMIN GRUP</h4>
+      <div id="member-admin-panel" style="display: none; background: rgba(219, 39, 119, 0.05); border: 1px solid rgba(219, 39, 119, 0.2); padding: 20px; border-radius: 16px; margin-bottom: 16px;">
+        <h4 style="margin-bottom: 14px; font-size: 14px; color: var(--accent-emerald);"><i data-lucide="shield-check" size="16"></i> PANEL ADMIN GRUP</h4>
         
         <div class="stat-grid" style="margin-bottom: 16px;">
-          <div class="stat-card" style="background: rgba(0,0,0,0.2);">
+          <div class="stat-card" style="background: rgba(0,0,0,0.05);">
             <span class="stat-label">Infaq Bulan Ini</span>
             <div class="stat-value" style="color: var(--accent-cyan);">Rp <span id="dash-member-admin-monthly">0</span></div>
           </div>
-          <div class="stat-card" style="background: rgba(0,0,0,0.2);">
+          <div class="stat-card" style="background: rgba(0,0,0,0.05);">
             <span class="stat-label">Infaq Tahun Ini</span>
             <div class="stat-value" style="color: var(--accent-emerald);">Rp <span id="dash-member-admin-yearly">0</span></div>
           </div>
@@ -679,7 +704,7 @@
           <button type="submit" class="btn-success" style="padding: 10px;"><i data-lucide="plus" size="16"></i> Simpan Infaq</button>
         </form>
 
-        <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 10px; color: #818cf8;">KELOLA INPUT</h4>
+        <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 10px; color: var(--accent-emerald);">KELOLA INPUT</h4>
         <div class="table-container" style="max-height: 300px; overflow-y: auto;">
           <table>
             <thead><tr><th>Tanggal</th><th>ID</th><th>Nama</th><th>Nominal</th><th style="text-align: center;">Aksi</th></tr></thead>
@@ -724,7 +749,7 @@
       <div class="user-header">
         <div class="user-info">
           <h3 id="dash-admin-title">Panel Admin</h3>
-          <p class="group-title">Instansi <span id="dash-admin-sekolah" style="color: #fff;">-</span> | Kode <span id="dash-admin-code" style="color: var(--accent-emerald);">-</span></p>
+          <p class="group-title">Instansi <span id="dash-admin-sekolah" style="color: var(--text-main);">-</span> | Kode <span id="dash-admin-code" style="color: var(--accent-emerald);">-</span></p>
         </div>
       </div>
 
@@ -810,16 +835,10 @@
     let currMember = null;
     let currAdmin = null;
 
-    // --- MANAJEMEN TEMA (DEFAULT VS FEMININE PINK) ---
+    // --- MANAJEMEN TEMA (DEFAULT VS FEMININE LIGHT PINK) ---
     function setTheme(themeName) {
       document.body.setAttribute('data-theme', themeName);
       localStorage.setItem('infaq_theme', themeName);
-      const btnText = document.getElementById('theme-btn-text');
-      if (themeName === 'feminine') {
-        btnText.innerText = "Tema Klasik";
-      } else {
-        btnText.innerText = "Tema Pink";
-      }
       lucide.createIcons();
     }
 
