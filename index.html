@@ -261,6 +261,12 @@
     .btn-danger:hover { background: rgba(239, 68, 68, 0.2); }
 
     /* Tombol Ikon Kecil (Edit & Hapus) */
+    .btn-action-group {
+      display: inline-flex;
+      gap: 6px;
+      justify-content: center;
+      align-items: center;
+    }
     .btn-icon-del, .btn-icon-edit {
       padding: 6px;
       border-radius: 8px;
@@ -955,8 +961,10 @@
             <td><strong>${memberNameMap[item.id_anggota] || '-'}</strong></td>
             <td>Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
             <td style="text-align: center;">
-              <button class="btn-icon-edit" onclick="editTransaction(${item.id}, ${item.nominal})"><i data-lucide="pencil" size="14"></i></button>
-              <button class="btn-icon-del" onclick="deleteTransaction(${item.id})"><i data-lucide="trash-2" size="14"></i></button>
+              <div class="btn-action-group">
+                <button class="btn-icon-edit" onclick="editTransaction(${item.id}, ${item.nominal})"><i data-lucide="pencil" size="14"></i></button>
+                <button class="btn-icon-del" onclick="deleteTransaction(${item.id})"><i data-lucide="trash-2" size="14"></i></button>
+              </div>
             </td>
           </tr>`;
         });
@@ -1049,7 +1057,7 @@
           tbody.innerHTML += `<tr><td>${formatDateIndo(t.tanggal)}</td><td><strong style="color: var(--accent-emerald);">Rp ${Number(t.nominal).toLocaleString('id-ID')}</strong></td><td>${t.catatan || '-'}</td></tr>`;
         });
       } else {
-        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color: var::text-muted;">Belum ada riwayat infaq</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color: var::text-muted);">Belum ada riwayat infaq</td></tr>';
       }
 
       const target = currMember.target_infaq || 100000;
@@ -1214,8 +1222,10 @@
             <td><strong>${memberNameMap[item.id_anggota] || '-'}</strong></td>
             <td>Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
             <td style="text-align: center;">
-              <button class="btn-icon-edit" onclick="editTransaction(${item.id}, ${item.nominal})"><i data-lucide="pencil" size="14"></i></button>
-              <button class="btn-icon-del" onclick="deleteTransaction(${item.id})"><i data-lucide="trash-2" size="14"></i></button>
+              <div class="btn-action-group">
+                <button class="btn-icon-edit" onclick="editTransaction(${item.id}, ${item.nominal})"><i data-lucide="pencil" size="14"></i></button>
+                <button class="btn-icon-del" onclick="deleteTransaction(${item.id})"><i data-lucide="trash-2" size="14"></i></button>
+              </div>
             </td>
           </tr>`;
         });
