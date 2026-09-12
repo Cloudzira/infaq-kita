@@ -1159,7 +1159,7 @@
     }
 
     async function loadMemberAdminTransactions() {
-      const { data: infaqs } = await supabaseClient.from('infaq').select('*').eq('kode_grup', currMember.kode_grup).order('tanggal', { ascending: false });
+      const { data: infaqs } = await supabaseClient.from('infaq').select('*').eq('kode_grup', currMember.kode_grup).order('tanggal', { ascending: false }).order('id', { ascending: false });
       const { data: members } = await supabaseClient.from('anggota').select('id_anggota, nama_anggota').eq('kode_grup', currMember.kode_grup);
       const memberNameMap = {};
       if (members) members.forEach(m => memberNameMap[m.id_anggota] = m.nama_anggota);
@@ -1259,7 +1259,7 @@
     }
 
     async function loadMyInfaq() {
-      const { data } = await supabaseClient.from('infaq').select('*').eq('kode_grup', currMember.kode_grup).eq('id_anggota', currMember.id_anggota).order('tanggal', { ascending: false });
+      const { data } = await supabaseClient.from('infaq').select('*').eq('kode_grup', currMember.kode_grup).eq('id_anggota', currMember.id_anggota).order('tanggal', { ascending: false }).order('id', { ascending: false });
       const tbody = document.getElementById('dash-a-table');
       tbody.innerHTML = '';
       let total = 0;
@@ -1420,7 +1420,7 @@
     }
 
     async function loadAdminTransactions() {
-      const { data: infaqs } = await supabaseClient.from('infaq').select('*').eq('kode_grup', currAdmin.kode_grup).order('tanggal', { ascending: false });
+      const { data: infaqs } = await supabaseClient.from('infaq').select('*').eq('kode_grup', currAdmin.kode_grup).order('tanggal', { ascending: false }).order('id', { ascending: false });
       const { data: members } = await supabaseClient.from('anggota').select('id_anggota, nama_anggota').eq('kode_grup', currAdmin.kode_grup);
       const memberNameMap = {};
       if (members) members.forEach(m => memberNameMap[m.id_anggota] = m.nama_anggota);
