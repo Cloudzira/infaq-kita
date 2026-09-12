@@ -434,118 +434,84 @@
     }
     .badge strong { color: #fff; }
 
-    /* 3D Medal Ribbon Styling (Glassmorphism Adapted) */
-    .medal-3d-wrapper {
+    /* Medal Ribbon Styling */
+    .medal-ribbon-container {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      position: relative;
-      padding: 6px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      padding: 8px 14px;
+      border-radius: 14px;
+      text-align: center;
       flex-shrink: 0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
       animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     @keyframes popIn {
       0% { transform: scale(0.8); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
     }
-    
-    .medal-3d-badge {
-      width: 64px;
-      height: 64px;
+    .medal-icon-wrapper {
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4), inset 0 3px 6px rgba(255,255,255,0.4), inset 0 -4px 6px rgba(0,0,0,0.3);
-      border: 2px solid rgba(255, 255, 255, 0.2);
+      margin-bottom: 4px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.3);
     }
-
-    .medal-3d-star {
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-    }
-
-    .medal-3d-ribbon-left, .medal-3d-ribbon-right {
-      position: absolute;
-      bottom: -6px;
-      width: 20px;
-      height: 26px;
-      z-index: -1;
-      border-radius: 2px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-    .medal-3d-ribbon-left {
-      left: 10px;
-      transform: rotate(-15deg);
-    }
-    .medal-3d-ribbon-right {
-      right: 10px;
-      transform: rotate(15deg);
-    }
-
-    .medal-3d-label {
-      font-size: 10px;
+    .medal-text {
+      font-size: 11px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-top: 8px;
-      padding: 2px 8px;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Medal Variations */
+    .medal-rank-1 .medal-icon-wrapper {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #fff;
+      border: 1px solid rgba(251, 191, 36, 0.5);
+    }
+    .medal-rank-1 .medal-text {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .medal-rank-2 .medal-icon-wrapper {
+      background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+      color: #fff;
+      border: 1px solid rgba(226, 232, 240, 0.5);
+    }
+    .medal-rank-2 .medal-text {
+      background: linear-gradient(135deg, #f1f5f9 0%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .medal-rank-3 .medal-icon-wrapper {
+      background: linear-gradient(135deg, #b45309 0%, #78350f 100%);
+      color: #fff;
+      border: 1px solid rgba(217, 119, 6, 0.5);
+    }
+    .medal-rank-3 .medal-text {
+      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .medal-rank-other .medal-icon-wrapper {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
       border: 1px solid var(--glass-border);
     }
-
-    /* 3D Medal Color Variations */
-    /* Rank 1: Gold */
-    .medal-rank-1 .medal-3d-badge,
-    .medal-rank-1 .medal-3d-ribbon-left,
-    .medal-rank-1 .medal-3d-ribbon-right {
-      background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #b45309 100%);
+    .medal-rank-other .medal-text {
+      color: var(--text-muted);
     }
-    .medal-rank-1 .medal-3d-star { color: #fffbeb; }
-    .medal-rank-1 .medal-3d-label {
-      background: rgba(245, 158, 11, 0.15);
-      color: #fbbf24;
-      border-color: rgba(245, 158, 11, 0.3);
-    }
-
-    /* Rank 2: Silver */
-    .medal-rank-2 .medal-3d-badge,
-    .medal-rank-2 .medal-3d-ribbon-left,
-    .medal-rank-2 .medal-3d-ribbon-right {
-      background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 50%, #64748b 100%);
-    }
-    .medal-rank-2 .medal-3d-star { color: #f1f5f9; }
-    .medal-rank-2 .medal-3d-label {
-      background: rgba(148, 163, 184, 0.15);
-      color: #e2e8f0;
-      border-color: rgba(148, 163, 184, 0.3);
-    }
-
-    /* Rank 3: Bronze */
-    .medal-rank-3 .medal-3d-badge,
-    .medal-rank-3 .medal-3d-ribbon-left,
-    .medal-rank-3 .medal-3d-ribbon-right {
-      background: linear-gradient(135deg, #fed7aa 0%, #d97706 50%, #78350f 100%);
-    }
-    .medal-rank-3 .medal-3d-star { color: #ffedd5; }
-    .medal-rank-3 .medal-3d-label {
-      background: rgba(217, 119, 6, 0.15);
-      color: #f59e0b;
-      border-color: rgba(217, 119, 6, 0.3);
-    }
-
-    /* Rank Other: Glassmorphism Default */
-    .medal-rank-other .medal-3d-badge {
-      background: rgba(255, 255, 255, 0.05);
-    }
-    .medal-rank-other .medal-3d-ribbon-left,
-    .medal-rank-other .medal-3d-ribbon-right {
-      background: rgba(255, 255, 255, 0.03);
-    }
-    .medal-rank-other .medal-3d-star { color: var(--text-muted); }
-    .medal-rank-other .medal-3d-label { color: var(--text-muted); }
 
     /* Stat Cards */
     .stat-grid {
@@ -878,14 +844,12 @@
           <span class="badge" id="dash-a-role-badge" style="display:none; background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.3);">Admin</span>
         </div>
       </div>
-      <!-- 3D MEDAL PERINGKAT -->
-      <div id="dash-a-medal-box" class="medal-3d-wrapper medal-rank-other">
-        <div class="medal-3d-ribbon-left"></div>
-        <div class="medal-3d-ribbon-right"></div>
-        <div class="medal-3d-badge">
-          <i data-lucide="star" size="28" class="medal-3d-star" fill="currentColor"></i>
+      <!-- PITA MEDALI PERINGKAT -->
+      <div id="dash-a-medal-box" class="medal-ribbon-container medal-rank-other">
+        <div class="medal-icon-wrapper">
+          <i data-lucide="award" size="16"></i>
         </div>
-        <span class="medal-3d-label" id="dash-a-medal-text">Peringkat -</span>
+        <span class="medal-text" id="dash-a-medal-text">Peringkat -</span>
       </div>
     </div>
 
@@ -966,7 +930,7 @@
     <!-- FITUR KHUSUS ADMIN DI HALAMAN ANGGOTA -->
     <div id="member-admin-panel" style="display: none; background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.2); padding: 20px; border-radius: 16px; margin-bottom: 16px;">
       <h4 style="margin-bottom: 14px; font-size: 14px; color: #818cf8; display: flex; align-items: center; gap: 6px;">
-        <i data-lucide="shield-check" size="16"></i> Panel Khusus Admin Grup
+        <i data-lucide="shield-check" size="16"></i> Panel Admin Grup
       </h4>
 
       <!-- Statistik Bulanan & Tahunan Grup -->
@@ -982,7 +946,7 @@
       </div>
 
       <!-- Form Input Infaq untuk Anggota -->
-      <form id="form-member-add-infaq">
+      <form id="form-member-add-infaq" style="margin-bottom: 20px;">
         <div class="form-group">
           <label>Pilih Anggota</label>
           <select id="m-at-anggota" required></select>
@@ -1001,6 +965,24 @@
         </div>
         <button type="submit" class="btn-success" style="padding: 10px;"><i data-lucide="plus" size="16"></i> Simpan Infaq</button>
       </form>
+
+      <!-- Kelola Input (Tabel Transaksi Grup untuk Admin Anggota) -->
+      <div>
+        <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 10px; color: #818cf8;">Kelola Input Infaq Grup</h4>
+        <div class="table-container" style="max-height: 300px; overflow-y: auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>ID</th>
+                <th>Nominal</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="dash-member-admin-trans-table"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
     <button class="btn-danger" onclick="logout()"><i data-lucide="log-out" size="16"></i> Keluar Akun</button>
@@ -1344,6 +1326,7 @@
       memberAdminPanel.style.display = 'block';
       await loadMembersForMemberAdmin();
       await loadMemberAdminStats();
+      await loadMemberAdminTransactions();
     } else {
       roleBadge.style.display = 'none';
       memberAdminPanel.style.display = 'none';
@@ -1364,7 +1347,7 @@
     showSection('dash-a');
   }
 
-  // HITUNG & TAMPILKAN 3D MEDAL PERINGKAT ANGGOTA
+  // HITUNG & TAMPILKAN PITA MEDALI PERINGKAT ANGGOTA
   async function updateMemberRankRibbon() {
     const { data: members } = await supabaseClient.from('anggota')
       .select('id_anggota')
@@ -1398,7 +1381,7 @@
     const medalText = document.getElementById('dash-a-medal-text');
 
     // Reset kelas
-    medalBox.className = 'medal-3d-wrapper';
+    medalBox.className = 'medal-ribbon-container';
 
     if (rank === 1) {
       medalBox.classList.add('medal-rank-1');
@@ -1468,6 +1451,41 @@
     document.getElementById('dash-member-admin-yearly').innerText = totalYearly.toLocaleString('id-ID');
   }
 
+  async function loadMemberAdminTransactions() {
+    const { data } = await supabaseClient.from('infaq')
+      .select('*')
+      .eq('kode_grup', currMember.kode_grup)
+      .order('tanggal', { ascending: false });
+
+    const tbody = document.getElementById('dash-member-admin-trans-table');
+    tbody.innerHTML = '';
+
+    if (data && data.length > 0) {
+      data.forEach(item => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${formatDateIndo(item.tanggal)}</td>
+            <td>${item.id_anggota}</td>
+            <td>Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
+            <td>
+              <div style="display: flex; gap: 6px;">
+                <button class="btn-icon-edit" onclick="editTransaction(${item.id}, ${item.nominal})">
+                  <i data-lucide="pencil" size="10"></i> Edit
+                </button>
+                <button class="btn-icon-del" onclick="deleteTransaction(${item.id})">
+                  <i data-lucide="trash-2" size="10"></i> Hapus
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+      lucide.createIcons();
+    } else {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 8px 12px;">Belum ada riwayat transaksi</td></tr>';
+    }
+  }
+
   document.getElementById('form-member-add-infaq').addEventListener('submit', async (e) => {
     e.preventDefault();
     const idAnggota = document.getElementById('m-at-anggota').value;
@@ -1512,6 +1530,7 @@
     document.getElementById('m-at-nominal').value = '';
     document.getElementById('m-at-catatan').value = '';
     await loadMemberAdminStats();
+    await loadMemberAdminTransactions();
     await loadMyInfaq();
     await updateMemberRankRibbon();
   });
@@ -2015,7 +2034,7 @@
       headerRow.push("Total Akumulasi (Rp)");
 
       const sheetData = [
-        ["LAPORAN REKAPITULASI PROGRES INFAK ANGGOTA PER BULAN"],
+        ["LAPORAN REKAPITULASI PROGRES INFAQ ANGGOTA PER BULAN"],
         [`Grup: ${currAdmin.nama_grup || '-'}`, `Instansi: ${currAdmin.nama_sekolah || '-'}`, `Kode Grup: ${currAdmin.kode_grup}`],
         [],
         headerRow
@@ -2175,14 +2194,22 @@
       icon: 'success',
       customClass: { popup: 'colored-toast' }
     });
-    await refreshAdminData();
+    
+    if (currAdmin) {
+      await refreshAdminData();
+    } else if (currMember && currMember.is_admin) {
+      await loadMemberAdminStats();
+      await loadMemberAdminTransactions();
+      await loadMyInfaq();
+      await updateMemberRankRibbon();
+    }
   }
 
   async function deleteTransaction(transId) {
     Swal.fire({
       title: 'INFAQU',
       text: 'Apakah Anda yakin ingin menghapus data inputan infaq ini?',
-      icon: 'warning',
+      icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Hapus',
       cancelButtonText: 'Batal',
@@ -2209,7 +2236,15 @@
           icon: 'success',
           customClass: { popup: 'colored-toast' }
         });
-        await refreshAdminData();
+        
+        if (currAdmin) {
+          await refreshAdminData();
+        } else if (currMember && currMember.is_admin) {
+          await loadMemberAdminStats();
+          await loadMemberAdminTransactions();
+          await loadMyInfaq();
+          await updateMemberRankRibbon();
+        }
       }
     });
   }
