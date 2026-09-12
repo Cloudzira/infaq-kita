@@ -123,7 +123,7 @@
       margin-top: 10px;
     }
 
-    /* Theme Switcher Button (Simbol saja & Diperkecil) */
+    /* Theme Switcher Button dengan Desain Bintang 4 Titik Menyerupai Gambar */
     .theme-switcher-wrapper {
       position: absolute;
       top: -10px;
@@ -133,11 +133,10 @@
     .theme-btn {
       background: var(--glass-card);
       border: 1px solid var(--glass-border);
-      color: var(--text-main);
-      width: 30px;
-      height: 30px;
+      color: #f59e0b; /* Warna keemasan */
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      font-size: 12px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -145,10 +144,19 @@
       backdrop-filter: blur(10px);
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       transition: all 0.3s ease;
+      position: relative;
     }
     .theme-btn:hover {
-      transform: scale(1.1);
-      border-color: var(--accent-emerald);
+      transform: scale(1.15) rotate(15deg);
+      border-color: #f59e0b;
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+    }
+    /* SVG Custom Sparkle ala referensi gambar */
+    .theme-btn svg.sparkle-icon {
+      width: 20px;
+      height: 20px;
+      fill: url(#gold-gradient);
+      filter: drop-shadow(0 2px 4px rgba(245,158,11,0.3));
     }
 
     /* Header & Logo Brand */
@@ -489,6 +497,17 @@
 </head>
 <body data-theme="default">
 
+  <!-- SVG untuk Gradasi Emas Ikon Bintang -->
+  <svg width="0" height="0" style="position:absolute;">
+    <defs>
+      <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#fbbf24" />
+        <stop offset="50%" stop-color="#f59e0b" />
+        <stop offset="100%" stop-color="#d97706" />
+      </linearGradient>
+    </defs>
+  </svg>
+
   <!-- Efek Bulatan Cahaya Latar Belakang -->
   <div class="glow-orb glow-orb-1"></div>
   <div class="glow-orb glow-orb-2"></div>
@@ -497,10 +516,12 @@
 
     <!-- BRAND HEADER -->
     <div class="brand-header">
-      <!-- Tombol Switch Tema (Simbol saja & Diperkecil) -->
+      <!-- Tombol Switch Tema dengan Bentuk Ikon Bintang 4 Titik Menyerupai Referensi -->
       <div class="theme-switcher-wrapper">
         <button class="theme-btn" onclick="toggleTheme()" id="theme-switch-btn" title="Ganti Tema">
-          <i data-lucide="sparkles" size="14"></i>
+          <svg class="sparkle-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 0C12 6.627 17.373 12 24 12C17.373 12 12 17.373 12 24C12 17.373 6.627 12 0 12C6.627 12 12 6.627 12 0Z"/>
+          </svg>
         </button>
       </div>
 
@@ -1472,7 +1493,7 @@
         Swal.fire({ title: 'INFAQU', text: 'Transaksi dihapus!', icon: 'success', customClass: { popup: 'colored-toast' } });
         if (currAdmin) await refreshAdminData();
         else if (currMember && currMember.is_admin) {
-          await loadMemberAdminStats(); await loadMemberAdminTransactions(); await loadMyInfaq(); await updateMemberRankRibbon();
+          await loadMemberAdminStats(); await loadMemberAdminTransactions(); await loadMyInfaq(); await updateMenuRankRibbon();
         }
       }
     }
