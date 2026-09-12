@@ -343,6 +343,26 @@
       background: rgba(239, 68, 68, 0.3);
       color: #fff;
     }
+    .btn-icon-edit {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      width: auto;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+    .btn-icon-edit:hover {
+      background: rgba(245, 158, 11, 0.3);
+      color: #fff;
+    }
 
     /* Badge Admin Toggle Style */
     .badge-admin-toggle {
@@ -1682,9 +1702,14 @@
             <td>${item.id_anggota}</td>
             <td>Rp ${Number(item.nominal).toLocaleString('id-ID')}</td>
             <td>
-              <button class="btn-icon-del" onclick="deleteTransaction(${item.id})">
-                <i data-lucide="trash-2" size="10"></i> Hapus
-              </button>
+              <div style="display: flex; gap: 6px;">
+                <button class="btn-icon-edit" onclick="editTransaction(${item.id}, ${item.nominal})">
+                  <i data-lucide="pencil" size="10"></i> Edit
+                </button>
+                <button class="btn-icon-del" onclick="deleteTransaction(${item.id})">
+                  <i data-lucide="trash-2" size="10"></i> Hapus
+                </button>
+              </div>
             </td>
           </tr>
         `;
@@ -1693,6 +1718,25 @@
     } else {
       tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 8px 12px;">Belum ada riwayat transaksi</td></tr>';
     }
+  }
+
+  async function editTransaction(transId, currentNominal) {
+    const newNominalStr = prompt("Masukkan nominal infaq baru:", currentNominal);
+    if (newNominalStr === null) return; // Dibatalkan
+
+    const newNominal = Number(newNominalStr);
+    if (isNaN(newNominal) || newNominal < 0) {
+      return alert("Nominal yang dimasukkan tidak valid.");
+    }
+
+    const { error } = await supabaseClient.from('infaq')
+      .update({ nominal: newNominal })
+      .eq('id', transId);
+
+    if (error) return alert("Gagal memperbarui nominal infaq: " + error.message);
+
+    alert("Nominal infaq berhasil diperbarui!");
+    await refreshAdminData();
   }
 
   async function deleteTransaction(transId) {
