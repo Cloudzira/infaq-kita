@@ -401,6 +401,10 @@
       border-bottom: 1px solid var(--glass-border);
       padding-bottom: 16px;
       margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
     }
     .user-info h3 {
       font-size: 22px;
@@ -417,6 +421,7 @@
       display: flex;
       gap: 8px;
       margin-top: 10px;
+      flex-wrap: wrap;
     }
     .badge {
       background: rgba(255, 255, 255, 0.05);
@@ -428,6 +433,85 @@
       border: 1px solid var(--glass-border);
     }
     .badge strong { color: #fff; }
+
+    /* Medal Ribbon Styling */
+    .medal-ribbon-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      padding: 8px 14px;
+      border-radius: 14px;
+      text-align: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .medal-icon-wrapper {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.3);
+    }
+    .medal-text {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Medal Variations */
+    .medal-rank-1 .medal-icon-wrapper {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #fff;
+      border: 1px solid rgba(251, 191, 36, 0.5);
+    }
+    .medal-rank-1 .medal-text {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .medal-rank-2 .medal-icon-wrapper {
+      background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+      color: #fff;
+      border: 1px solid rgba(226, 232, 240, 0.5);
+    }
+    .medal-rank-2 .medal-text {
+      background: linear-gradient(135deg, #f1f5f9 0%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .medal-rank-3 .medal-icon-wrapper {
+      background: linear-gradient(135deg, #b45309 0%, #78350f 100%);
+      color: #fff;
+      border: 1px solid rgba(217, 119, 6, 0.5);
+    }
+    .medal-rank-3 .medal-text {
+      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .medal-rank-other .medal-icon-wrapper {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      border: 1px solid var(--glass-border);
+    }
+    .medal-rank-other .medal-text {
+      color: var(--text-muted);
+    }
 
     /* Stat Cards */
     .stat-grid {
@@ -760,6 +844,13 @@
           <span class="badge" id="dash-a-role-badge" style="display:none; background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); border-color: rgba(16, 185, 129, 0.3);">Admin</span>
         </div>
       </div>
+      <!-- PITA MEDALI PERINGKAT -->
+      <div id="dash-a-medal-box" class="medal-ribbon-container medal-rank-other">
+        <div class="medal-icon-wrapper">
+          <i data-lucide="award" size="16"></i>
+        </div>
+        <span class="medal-text" id="dash-a-medal-text">Peringkat -</span>
+      </div>
     </div>
 
     <div class="stat-grid">
@@ -836,7 +927,7 @@
       </div>
     </div>
 
-    <!-- FITUR KHUSUS ADMIN DI HALAMAN ANGGOTA (DIPOSISIKAN TEPAT DI ATAS TOMBOL KELUAR AKUN) -->
+    <!-- FITUR KHUSUS ADMIN DI HALAMAN ANGGOTA -->
     <div id="member-admin-panel" style="display: none; background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.2); padding: 20px; border-radius: 16px; margin-bottom: 16px;">
       <h4 style="margin-bottom: 14px; font-size: 14px; color: #818cf8; display: flex; align-items: center; gap: 6px;">
         <i data-lucide="shield-check" size="16"></i> Panel Khusus Admin Grup
@@ -925,11 +1016,13 @@
     </div>
   </div>
 
-  <!-- DASHBOARD ADMIN UTAMA (PIN GRUP) -->
+  <!-- DASHBOARD ADMIN UTAMA -->
   <div id="sec-dash-admin" class="card" style="display: none;">
     <div class="user-header">
-      <h3 id="dash-admin-title">Panel Admin</h3>
-      <p class="group-title">Instansi <span id="dash-admin-sekolah" style="color: #fff;">-</span> | Kode Grup <span id="dash-admin-code" style="color: var(--accent-emerald);">-</span></p>
+      <div class="user-info">
+        <h3 id="dash-admin-title">Panel Admin</h3>
+        <p class="group-title">Instansi <span id="dash-admin-sekolah" style="color: #fff;">-</span> | Kode Grup <span id="dash-admin-code" style="color: var(--accent-emerald);">-</span></p>
+      </div>
     </div>
 
     <!-- STATISTIK BULANAN & TAHUNAN ADMIN -->
@@ -1207,7 +1300,6 @@
     document.getElementById('dash-a-code').innerText = currMember.kode_grup;
     document.getElementById('dash-a-id').innerText = currMember.id_anggota;
     
-    // Cek apakah anggota ini memiliki status admin
     const roleBadge = document.getElementById('dash-a-role-badge');
     const memberAdminPanel = document.getElementById('member-admin-panel');
 
@@ -1232,10 +1324,62 @@
     document.getElementById('dash-a-target-input').value = targetInfaq;
     
     await loadMyInfaq();
+    await updateMemberRankRibbon();
     showSection('dash-a');
   }
 
-  // FUNGSI LOAD STATISTIK & INPUT INFAQ UNTUK ANGGOTA YANG JADI ADMIN
+  // HITUNG & TAMPILKAN PITA MEDALI PERINGKAT ANGGOTA
+  async function updateMemberRankRibbon() {
+    const { data: members } = await supabaseClient.from('anggota')
+      .select('id_anggota')
+      .eq('kode_grup', currMember.kode_grup);
+
+    const { data: infaqs } = await supabaseClient.from('infaq')
+      .select('id_anggota, nominal')
+      .eq('kode_grup', currMember.kode_grup);
+
+    if (!members) return;
+
+    // Hitung total infaq tiap anggota
+    const totals = members.map(m => {
+      let sum = 0;
+      if (infaqs) {
+        infaqs.filter(i => i.id_anggota === m.id_anggota).forEach(i => {
+          sum += Number(i.nominal) || 0;
+        });
+      }
+      return { id_anggota: m.id_anggota, total: sum };
+    });
+
+    // Urutkan dari terbesar ke terkecil
+    totals.sort((a, b) => b.total - a.total);
+
+    // Cari posisi peringkat anggota saat ini (1-based index)
+    const rankIndex = totals.findIndex(t => t.id_anggota === currMember.id_anggota);
+    const rank = rankIndex !== -1 ? rankIndex + 1 : totals.length + 1;
+
+    const medalBox = document.getElementById('dash-a-medal-box');
+    const medalText = document.getElementById('dash-a-medal-text');
+
+    // Reset kelas
+    medalBox.className = 'medal-ribbon-container';
+
+    if (rank === 1) {
+      medalBox.classList.add('medal-rank-1');
+      medalText.innerText = 'Juara 1';
+    } else if (rank === 2) {
+      medalBox.classList.add('medal-rank-2');
+      medalText.innerText = 'Juara 2';
+    } else if (rank === 3) {
+      medalBox.classList.add('medal-rank-3');
+      medalText.innerText = 'Juara 3';
+    } else {
+      medalBox.classList.add('medal-rank-other');
+      medalText.innerText = `Peringkat ${rank}`;
+    }
+    lucide.createIcons();
+  }
+
   async function loadMembersForMemberAdmin() {
     const select = document.getElementById('m-at-anggota');
     select.innerHTML = '<option value="">-- Memuat anggota... --</option>';
@@ -1288,7 +1432,6 @@
     document.getElementById('dash-member-admin-yearly').innerText = totalYearly.toLocaleString('id-ID');
   }
 
-  // SUBMIT INPUT INFAQ DARI PANEL ANGGOTA ADMIN
   document.getElementById('form-member-add-infaq').addEventListener('submit', async (e) => {
     e.preventDefault();
     const idAnggota = document.getElementById('m-at-anggota').value;
@@ -1334,9 +1477,9 @@
     document.getElementById('m-at-catatan').value = '';
     await loadMemberAdminStats();
     await loadMyInfaq();
+    await updateMemberRankRibbon();
   });
 
-  // UPDATE PROFIL ANGGOTA
   document.getElementById('form-edit-a').addEventListener('submit', async (e) => {
     e.preventDefault();
     const newCode = document.getElementById('ea-code').value.trim();
@@ -1664,7 +1807,6 @@
         const adminBadgeClass = isAdmin ? "badge-admin-toggle is-admin" : "badge-admin-toggle";
         const adminBadgeText = isAdmin ? '<i data-lucide="shield-check" size="12"></i> Admin' : '<i data-lucide="shield" size="12"></i> Jadikan Admin';
 
-        // Tabel Rekapitulasi (Hanya No, ID/Nama, Total Infaq)
         rekapTbody.innerHTML += `
           <tr>
             <td>${index + 1}</td>
@@ -1676,7 +1818,6 @@
           </tr>
         `;
 
-        // Tabel Manajemen Admin & Anggota Tersendiri (No, ID/Nama, Akses Admin, Aksi Hapus)
         mgmtTbody.innerHTML += `
           <tr>
             <td>${index + 1}</td>
@@ -1755,13 +1896,11 @@
       customClass: { popup: 'colored-toast' }
     }).then(async (res) => {
       if (res.isConfirmed) {
-        // Hapus riwayat infaq anggota terlebih dahulu
         await supabaseClient.from('infaq')
           .delete()
           .eq('kode_grup', currAdmin.kode_grup)
           .eq('id_anggota', idAnggota);
 
-        // Hapus data anggota
         const { error } = await supabaseClient.from('anggota')
           .delete()
           .eq('kode_grup', currAdmin.kode_grup)
@@ -1967,7 +2106,7 @@
       customClass: { popup: 'colored-toast' }
     });
 
-    if (newNominalStr === undefined) return; // Dibatalkan
+    if (newNominalStr === undefined) return;
 
     const newNominal = Number(newNominalStr);
     if (isNaN(newNominal) || newNominal < 0) {
