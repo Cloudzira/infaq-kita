@@ -1119,9 +1119,9 @@
       const medalText = document.getElementById('dash-a-medal-text');
       medalBox.className = 'medal-ribbon-container';
 
-      if (rank === 1) { medalBox.classList.add('medal-rank-1'); medalText.innerText = 'Rank 1'; }
-      else if (rank === 2) { medalBox.classList.add('medal-rank-2'); medalText.innerText = 'Rank 2'; }
-      else if (rank === 3) { medalBox.classList.add('medal-rank-3'); medalText.innerText = 'Rank 3'; }
+      if (rank === 1) { medalBox.classList.add('medal-rank-1'); medalText.innerText = 'Gold Medal'; }
+      else if (rank === 2) { medalBox.classList.add('medal-rank-2'); medalText.innerText = 'Silver Medal'; }
+      else if (rank === 3) { medalBox.classList.add('medal-rank-3'); medalText.innerText = 'Bronze Medal'; }
       else { medalBox.classList.add('medal-rank-other'); medalText.innerText = `Rank ${rank}`; }
       lucide.createIcons();
     }
