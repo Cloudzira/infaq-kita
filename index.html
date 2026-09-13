@@ -123,7 +123,7 @@
       margin-top: 10px;
     }
 
-    /* Top Action Bar (Theme Switcher & Guide Button) */
+    /* Top Action Bar (Theme Switcher Only) */
     .top-action-bar {
       position: absolute;
       top: -10px;
@@ -167,30 +167,6 @@
       color: #ffffff;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
       transform: scale(1.05);
-    }
-
-    /* Guide Open Book Button (Matched with theme switcher dimensions) */
-    .guide-btn {
-      background: var(--glass-card);
-      border: 1px solid var(--glass-border);
-      color: var(--text-muted);
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-    }
-    .guide-btn:hover {
-      transform: scale(1.05);
-      border-color: var(--accent-emerald);
-      color: var(--accent-emerald);
-      background: var(--btn-primary-bg);
-      color: #ffffff;
     }
 
     /* Header & Logo Brand */
@@ -539,17 +515,13 @@
 
     <!-- BRAND HEADER -->
     <div class="brand-header">
-      <!-- Top Action Bar (Theme Switcher & Guide Button) -->
+      <!-- Top Action Bar (Theme Switcher Only) -->
       <div class="top-action-bar">
         <!-- Professional Theme Switch Pill -->
         <div class="theme-switch-pill" onclick="toggleTheme()" id="theme-switch-pill" title="Ganti Tema">
           <span class="theme-option opt-default"><i data-lucide="moon" size="12"></i></span>
           <span class="theme-option opt-feminine"><i data-lucide="sun" size="12"></i></span>
         </div>
-        <!-- Guide Open Book Button -->
-        <button class="guide-btn" onclick="showGuideModal()" title="Panduan Penggunaan">
-          <i data-lucide="book-open" size="50"></i>
-        </button>
       </div>
 
       <div class="brand-logo">
@@ -594,6 +566,15 @@
           <div class="menu-content">
             <h4>Buat Grup Baru</h4>
             <p>Daftarkan instansi / Grup untuk dapatkan Kode Grup</p>
+          </div>
+          <i data-lucide="chevron-right" class="menu-arrow"></i>
+        </div>
+
+        <div class="menu-card" onclick="showGuideModal()">
+          <div class="menu-icon"><i data-lucide="book-open"></i></div>
+          <div class="menu-content">
+            <h4>Panduan Infaqu</h4>
+            <p>Informasi dan petunjuk penggunaan aplikasi</p>
           </div>
           <i data-lucide="chevron-right" class="menu-arrow"></i>
         </div>
