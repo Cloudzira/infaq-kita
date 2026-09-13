@@ -921,7 +921,7 @@
             <div style="margin-bottom: 12px; background: rgba(99, 102, 241, 0.08); padding: 10px 12px; border-radius: 10px; border-left: 3px solid var(--accent-indigo);">
               <strong>3. Cara Login & Cek Progress</strong><br>
               • <strong>Login Anggota:</strong> Masukkan Kode Grup, ID, dan PIN untuk melihat riwayat infaq pribadi dan grafik pencapaian target.<br>
-              • <strong>Login Admin:</strong> Masukkan Kode Grup dan PIN Admin untuk dapat merekap data, menginput infaq, mengekspor laporan ke Excel, dan mengatur hak akses admin anggota.
+              • <strong>Login Admin:</strong> Masukkan Kode Grup dan PIN Admin untuk dapat merekap data, menginput infaq, mengekspor laporan ke Excel (termasuk detail harian per bulan di sheet terpisah), dan mengatur hak akses admin anggota.
             </div>
           </div>
         `,
@@ -1445,7 +1445,7 @@
       }
     }
 
-    // Export Laporan ke Excel (Spreadsheet)
+    // Export Laporan ke Excel (Spreadsheet) dengan Sheet Utama dan Sheet Bulanan Harian
     async function exportToSpreadsheet() {
       const btn = document.getElementById('btn-export-excel');
       btn.disabled = true; btn.innerText = "Mengekspor...";
@@ -1474,6 +1474,9 @@
           sortedMonths.push({ key: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`, label: `${namaBulan[now.getMonth()]} ${now.getFullYear()}` });
         }
 
+        const workbook = XLSX.utils.book_new();
+
+        // --- SHEET 1: REKAP UTAMA (SAMA SEPERTI SEBELUMNYA) ---
         const headerRow = ["No", "ID Anggota", "Nama Anggota", "Status Admin"];
         sortedMonths.forEach(m => headerRow.push(m.label));
         headerRow.push("Total Akumulasi (Rp)");
@@ -1506,10 +1509,71 @@
         totalRow.push(grandTotalOverall);
         sheetData.push([], totalRow);
 
-        const worksheet = XLSX.utils.aoa_to_sheet(sheetData);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Rekap Bulanan");
-        XLSX.writeFile(workbook, `Rekap_Infaq_${currAdmin.kode_grup}.xlsx`);
+        const worksheetMain = XLSX.utils.aoa_to_sheet(sheetData);
+        XLSX.utils.book_append_sheet(workbook, worksheetMain, "Rekap Bulanan");
+
+        // --- SHEET TAMBAHAN: DETAIL HARIAN PER BULAN ---
+        sortedMonths.forEach(sm => {
+          const [yearStr, monthStr] = sm.key.split('-');
+          const year = parseInt(yearStr, 10);
+          const month = parseInt(monthStr, 10);
+          const daysInMonth = new Date(year, month, 0).getDate();
+
+          // Header harian: No, ID, Nama, Tgl 1 s.d. akhir, Total Bulan Ini, Akumulasi s.d. Bulan Ini
+          const dailyHeader = ["No", "ID Anggota", "Nama Anggota"];
+          for (let d = 1; d <= daysInMonth; d++) {
+            dailyHeader.push(`Tgl ${d}`);
+          }
+          dailyHeader.push("Total Bulan Ini (Rp)");
+          dailyHeader.push("Akumulasi s.d. Bulan Ini (Rp)");
+
+          const dailySheetData = [
+            [`LAPORAN HARIAN INFAQ - ${sm.label.toUpperCase()}`],
+            [`Grup: ${currAdmin.nama_grup} | Instansi: ${currAdmin.nama_sekolah}`],
+            [],
+            dailyHeader
+          ];
+
+          if (members) {
+            members.forEach((m, idx) => {
+              const row = [idx + 1, m.id_anggota, m.nama_anggota];
+              let totalMonthMember = 0;
+
+              for (let d = 1; d <= daysInMonth; d++) {
+                const dayStr = String(d).padStart(2, '0');
+                const fullDateStr = `${sm.key}-${dayStr}`;
+                let dailySum = 0;
+                if (infaqs) {
+                  infaqs.filter(i => i.id_anggota === m.id_anggota && i.tanggal === fullDateStr)
+                        .forEach(i => dailySum += Number(i.nominal) || 0);
+                }
+                row.push(dailySum);
+                totalMonthMember += dailySum;
+              }
+
+              // Akumulasi s.d. bulan ini (semua transaksi dari awal sampai akhir bulan terkait)
+              let accumTotal = 0;
+              if (infaqs) {
+                infaqs.filter(i => {
+                  if (i.id_anggota !== m.id_anggota || !i.tanggal) return false;
+                  return i.tanggal <= `${sm.key}-${String(daysInMonth).padStart(2, '0')}`;
+                }).forEach(i => accumTotal += Number(i.nominal) || 0);
+              }
+
+              row.push(totalMonthMember);
+              row.push(accumTotal);
+              dailySheetData.push(row);
+            });
+          }
+
+          const wsMonthly = XLSX.utils.aoa_to_sheet(dailySheetData);
+          // Batasi nama sheet maksimal 31 karakter agar sesuai standar Excel
+          let sheetName = sm.label.replace(/[^a-zA-Z0-9 ]/g, "");
+          if (sheetName.length > 31) sheetName = sheetName.substring(0, 31);
+          XLSX.utils.book_append_sheet(workbook, wsMonthly, sheetName);
+        });
+
+        XLSX.writeFile(workbook, `Rekap_Lengkap_Infaq_${currAdmin.kode_grup}.xlsx`);
       } catch (err) {
         Swal.fire({ title: 'INFAQU', text: 'Gagal Export: ' + err.message, icon: 'error', customClass: { popup: 'colored-toast' } });
       } finally {
