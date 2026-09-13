@@ -91,7 +91,6 @@
       transition: background 0.5s ease, color 0.5s ease;
     }
 
-    /* Efek Latar Belakang (Glowing Orbs) Dinamis */
     .glow-orb {
       position: fixed;
       border-radius: 50%;
@@ -123,7 +122,6 @@
       margin-top: 10px;
     }
 
-    /* Top Action Bar (Theme Switcher Only) */
     .top-action-bar {
       position: absolute;
       top: -10px;
@@ -134,7 +132,6 @@
       gap: 8px;
     }
 
-    /* Professional Pill Toggle Switcher for Themes */
     .theme-switch-pill {
       background: var(--glass-card);
       border: 1px solid var(--glass-border);
@@ -169,7 +166,6 @@
       transform: scale(1.05);
     }
 
-    /* Header & Logo Brand */
     .brand-header {
       text-align: center;
       margin-bottom: 28px;
@@ -214,7 +210,6 @@
       margin-top: 4px;
     }
 
-    /* Kartu Glassmorphism */
     .card {
       background: var(--glass-card);
       backdrop-filter: blur(20px);
@@ -256,7 +251,6 @@
       border-color: rgba(255, 255, 255, 0.2);
     }
 
-    /* Menu Utama (Grid Layout) */
     .menu-grid {
       display: flex;
       flex-direction: column;
@@ -314,7 +308,6 @@
     .menu-arrow { color: var(--text-muted); transition: transform 0.2s, color 0.2s; }
     .menu-card:hover .menu-arrow { transform: translateX(4px); color: var(--text-main); }
 
-    /* Form & Input */
     .form-group { margin-bottom: 16px; }
     label {
       font-size: 12px;
@@ -339,10 +332,12 @@
     input::placeholder { color: var(--text-muted); opacity: 0.6; }
     select {
       appearance: none;
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23881337' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
       background-repeat: no-repeat;
       background-position: right 14px center;
       background-size: 16px;
+    }
+    [data-theme="feminine"] select {
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23881337' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     }
     [data-theme="default"] select {
       background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
@@ -354,7 +349,6 @@
       background: var(--glass-card);
     }
 
-    /* Tombol-tombol Aksi */
     button {
       width: 100%;
       padding: 13px;
@@ -378,7 +372,6 @@
     .btn-danger { background: rgba(239, 68, 68, 0.12); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.25); margin-top: 16px; }
     .btn-danger:hover { background: rgba(239, 68, 68, 0.25); color: #fff; }
 
-    /* Tombol Ikon Kecil (Edit & Hapus) */
     .btn-action-group {
       display: inline-flex;
       gap: 6px;
@@ -400,7 +393,6 @@
     .btn-icon-edit { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.25); }
     .btn-icon-edit:hover { background: rgba(245, 158, 11, 0.25); color: #fff; transform: scale(1.05); }
 
-    /* Badge Admin Toggle */
     .badge-admin-toggle {
       background: rgba(99, 102, 241, 0.15);
       color: #818cf8;
@@ -421,7 +413,6 @@
       border-color: rgba(219, 39, 119, 0.3);
     }
 
-    /* Dashboard Profil Header & Pita Medali */
     .user-header {
       border-bottom: 1px solid var(--glass-border);
       padding-bottom: 16px;
@@ -457,13 +448,11 @@
     .medal-icon-wrapper { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 4px; }
     .medal-text { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
 
-    /* Variasi Warna Medali Juara */
     .medal-rank-1 .medal-icon-wrapper { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; }
     .medal-rank-2 .medal-icon-wrapper { background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%); color: #fff; }
     .medal-rank-3 .medal-icon-wrapper { background: linear-gradient(135deg, #b45309 0%, #78350f 100%); color: #fff; }
     .medal-rank-other .medal-icon-wrapper { background: rgba(255, 255, 255, 0.08); color: var(--text-muted); }
 
-    /* Statistik & Progress Bar */
     .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
     .stat-card { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); padding: 16px; border-radius: 16px; }
     [data-theme="feminine"] .stat-card { background: rgba(255, 255, 255, 0.5); }
@@ -482,11 +471,9 @@
     .target-box-flex input { background: var(--input-bg); }
     .target-box-flex button { width: auto; min-width: 100px; }
 
-    /* Collapse / Dropdown Accordion */
     .collapsible-header { cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 700; color: var(--text-main); }
     .collapsible-content { display: none; margin-top: 14px; border-top: 1px solid var(--glass-border); padding-top: 14px; }
 
-    /* Tabel & Scrollbar */
     .table-container { overflow-x: auto; border-radius: 16px; border: 1px solid var(--glass-border); background: rgba(0, 0, 0, 0.1); }
     [data-theme="feminine"] .table-container { background: rgba(255, 255, 255, 0.4); }
     table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
@@ -495,7 +482,6 @@
 
     .code-box { background: rgba(219, 39, 119, 0.08); border: 1px dashed var(--accent-emerald); padding: 18px; border-radius: 16px; text-align: center; color: var(--accent-emerald); margin-top: 16px; }
 
-    /* Kostum Popup SweetAlert2 */
     .colored-toast.swal2-popup {
       background: var(--swal-bg) !important;
       backdrop-filter: blur(20px) !important;
@@ -503,8 +489,6 @@
       border-radius: 24px !important;
       color: var(--swal-text) !important;
     }
-    
-    /* Kostum Tombol SweetAlert agar selaras dengan tema aplikasi */
     .colored-toast .swal2-confirm {
       background: var(--btn-primary-bg) !important;
       border-radius: 12px !important;
@@ -523,17 +507,13 @@
 </head>
 <body data-theme="default">
 
-  <!-- Efek Bulatan Cahaya Latar Belakang -->
   <div class="glow-orb glow-orb-1"></div>
   <div class="glow-orb glow-orb-2"></div>
 
   <div class="container">
 
-    <!-- BRAND HEADER -->
     <div class="brand-header">
-      <!-- Top Action Bar (Theme Switcher Only) -->
       <div class="top-action-bar">
-        <!-- Professional Theme Switch Pill -->
         <div class="theme-switch-pill" onclick="toggleTheme()" id="theme-switch-pill" title="Ganti Tema">
           <span class="theme-option opt-default"><i data-lucide="moon" size="12"></i></span>
           <span class="theme-option opt-feminine"><i data-lucide="sun" size="12"></i></span>
@@ -547,7 +527,7 @@
       <p class="main-subtitle">Sistem Manajemen & Transparansi Infaq Digital</p>
     </div>
 
-    <!-- ================= 1. HALAMAN UTAMA (MENU) ================= -->
+    <!-- 1. HALAMAN UTAMA -->
     <div id="sec-home">
       <div class="menu-grid">
         <div class="menu-card" onclick="showSection('login-a')">
@@ -597,57 +577,33 @@
       </div>
     </div>
 
-    <!-- ================= 2. FORM LOGIN ANGGOTA ================= -->
+    <!-- 2. LOGIN ANGGOTA -->
     <div id="sec-login-a" class="card" style="display:none;">
       <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
       <h3 style="margin-bottom: 20px; font-weight: 800;">Login Anggota</h3>
       <form id="form-login-a">
-        <div class="form-group">
-          <label>Kode Grup</label>
-          <input type="text" id="la-code" placeholder="Contoh: GRP-1234" required>
-        </div>
-        <div class="form-group">
-          <label>ID</label>
-          <input type="text" id="la-id" placeholder="ID Anggota Anda" required>
-        </div>
-        <div class="form-group">
-          <label>PIN</label>
-          <input type="password" id="la-pin" placeholder="••••" required>
-        </div>
+        <div class="form-group"><label>Kode Grup</label><input type="text" id="la-code" placeholder="Contoh: GRP-1234" required></div>
+        <div class="form-group"><label>ID</label><input type="text" id="la-id" placeholder="ID Anggota Anda" required></div>
+        <div class="form-group"><label>PIN</label><input type="password" id="la-pin" placeholder="••••" required></div>
         <button type="submit" class="btn-primary"><i data-lucide="log-in" size="18"></i> Login</button>
       </form>
     </div>
 
-    <!-- ================= 3. FORM PENDAFTARAN ANGGOTA ================= -->
+    <!-- 3. PENDAFTARAN ANGGOTA -->
     <div id="sec-reg-a" class="card" style="display:none;">
       <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
       <h3 style="margin-bottom: 20px; font-weight: 800;">Pendaftaran Anggota</h3>
       <form id="form-reg-a">
-        <div class="form-group">
-          <label>Kode Grup</label>
-          <input type="text" id="ra-code" placeholder="Contoh: GRP-1234" required>
-        </div>
-        <div class="form-group">
-          <label>Nama Lengkap</label>
-          <input type="text" id="ra-nama" placeholder="Nama Lengkap" required>
-        </div>
-        <div class="form-group">
-          <label>ID Anggota</label>
-          <input type="text" id="ra-id" placeholder="Contoh: fulan10" required>
-        </div>
-        <div class="form-group">
-          <label>Buat PIN</label>
-          <input type="password" id="ra-pin" placeholder="••••" required>
-        </div>
-        <div class="form-group">
-          <label>Target Infaq Pribadi (Rp)</label>
-          <input type="number" id="ra-target" placeholder="100000" value="100000">
-        </div>
+        <div class="form-group"><label>Kode Grup</label><input type="text" id="ra-code" placeholder="Contoh: GRP-1234" required></div>
+        <div class="form-group"><label>Nama Lengkap</label><input type="text" id="ra-nama" placeholder="Nama Lengkap" required></div>
+        <div class="form-group"><label>ID Anggota</label><input type="text" id="ra-id" placeholder="Contoh: fulan10" required></div>
+        <div class="form-group"><label>Buat PIN</label><input type="password" id="ra-pin" placeholder="••••" required></div>
+        <div class="form-group"><label>Target Infaq Pribadi (Rp)</label><input type="number" id="ra-target" placeholder="100000" value="100000"></div>
         <button type="submit" class="btn-success"><i data-lucide="user-check" size="18"></i> Daftar</button>
       </form>
     </div>
 
-    <!-- ================= 4. DASHBOARD ANGGOTA ================= -->
+    <!-- 4. DASHBOARD ANGGOTA -->
     <div id="sec-dash-a" class="card" style="display:none;">
       <div class="user-header">
         <div class="user-info">
@@ -659,14 +615,12 @@
             <span class="badge" id="dash-a-role-badge" style="display:none; background: rgba(219, 39, 119, 0.15); color: var(--accent-emerald);">Admin</span>
           </div>
         </div>
-        <!-- Pita Medali Peringkat -->
         <div id="dash-a-medal-box" class="medal-ribbon-container medal-rank-other">
           <div class="medal-icon-wrapper"><i data-lucide="award" size="16"></i></div>
           <span class="medal-text" id="dash-a-medal-text">JUARA -</span>
         </div>
       </div>
 
-      <!-- Informasi Statistik Anggota -->
       <div class="stat-grid">
         <div class="stat-card">
           <span class="stat-label">Total Infaq</span>
@@ -678,7 +632,6 @@
         </div>
       </div>
 
-      <!-- Bar Progres Pencapaian -->
       <div class="progress-section">
         <div class="progress-header">
           <span style="color: var(--text-muted);">Pencapaian Target</span>
@@ -689,18 +642,14 @@
         </div>
       </div>
 
-      <!-- Tabel Riwayat Infaq Pribadi -->
       <h4 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 700;">RIWAYAT INFAQ</h4>
       <div class="table-container" style="margin-bottom: 20px;">
         <table>
-          <thead>
-            <tr><th>Tanggal</th><th>Nominal</th><th>Catatan</th></tr>
-          </thead>
+          <thead><tr><th>Tanggal</th><th>Nominal</th><th>Catatan</th></tr></thead>
           <tbody id="dash-a-table"></tbody>
         </table>
       </div>
 
-      <!-- Menu Edit Profil Akun -->
       <div class="target-box">
         <div class="collapsible-header" onclick="toggleEditProfile()">
           <span><i data-lucide="user-pen" size="14"></i> EDIT DATA AKUN</span>
@@ -717,7 +666,6 @@
         </div>
       </div>
 
-      <!-- Pengaturan Target Pribadi -->
       <div class="target-box">
         <label>Target Infaq Pribadi</label>
         <div class="target-box-flex">
@@ -726,7 +674,6 @@
         </div>
       </div>
 
-      <!-- Panel Khusus Admin di Halaman Anggota (Jika Anggota berstatus Admin Grup) -->
       <div id="member-admin-panel" style="display: none; background: rgba(219, 39, 119, 0.05); border: 1px solid rgba(219, 39, 119, 0.2); padding: 20px; border-radius: 16px; margin-bottom: 16px;">
         <h4 style="margin-bottom: 14px; font-size: 14px; color: var(--accent-emerald);"><i data-lucide="shield-check" size="16"></i> PANEL ADMIN GRUP</h4>
         
@@ -761,7 +708,7 @@
       <button class="btn-danger" onclick="logout()"><i data-lucide="log-out" size="16"></i> Keluar Akun</button>
     </div>
 
-    <!-- ================= 5. FORM LOGIN ADMIN ================= -->
+    <!-- 5. LOGIN ADMIN -->
     <div id="sec-login-admin" class="card" style="display:none;">
       <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
       <h3 style="margin-bottom: 20px; font-weight: 800;">Login Admin</h3>
@@ -772,7 +719,7 @@
       </form>
     </div>
 
-    <!-- ================= 6. FORM BUAT GRUP BARU ================= -->
+    <!-- 6. BUAT GRUP BARU -->
     <div id="sec-create-c" class="card" style="display:none;">
       <button class="btn-back" onclick="showSection('home')"><i data-lucide="arrow-left" size="16"></i> Kembali</button>
       <h3 style="margin-bottom: 20px; font-weight: 800;">Buat Grup Baru</h3>
@@ -789,7 +736,7 @@
       </div>
     </div>
 
-    <!-- ================= 7. DASHBOARD ADMIN UTAMA ================= -->
+    <!-- 7. DASHBOARD ADMIN UTAMA -->
     <div id="sec-dash-admin" class="card" style="display: none;">
       <div class="user-header">
         <div class="user-info">
@@ -809,7 +756,6 @@
         </div>
       </div>
 
-      <!-- Form Input Infaq (Oleh Admin) -->
       <form id="form-add-infaq" style="margin-bottom: 24px;">
         <h4 style="margin-bottom: 14px; font-size: 14px;">INPUT INFAQ</h4>
         <div class="form-group"><label>Pilih Anggota</label><select id="at-anggota" required></select></div>
@@ -819,7 +765,6 @@
         <button type="submit" class="btn-success"><i data-lucide="plus" size="18"></i> Simpan Infaq</button>
       </form>
 
-      <!-- Tabel Rekapitulasi Anggota -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
         <h4 style="font-size: 14px; font-weight: 700;">REKAP INFAQ</h4>
         <div style="display: flex; gap: 8px;">
@@ -835,7 +780,6 @@
         </table>
       </div>
 
-      <!-- Tabel Kelola Transaksi Masuk -->
       <div style="margin-bottom: 24px;">
         <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">KELOLA INPUT</h4>
         <div class="table-container" style="max-height: 400px; overflow-y: auto;">
@@ -846,7 +790,6 @@
         </div>
       </div>
 
-      <!-- Tabel Manajemen Hak Akses Admin -->
       <div style="margin-bottom: 24px;">
         <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">MANAJEMEN ADMIN</h4>
         <div class="table-container" style="max-height: 400px; overflow-y: auto;">
@@ -864,15 +807,12 @@
 
   <div class="page-footer">Kurniapedia | 2026</div>
 
-  <!-- SweetAlert2 JS -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
-  <!-- ================= 3. SCRIPT (LOGIKA APLIKASI) ================= -->
+  <!-- 3. SCRIPT (LOGIKA APLIKASI + AUTO-CLEANUP 1 TAHUN) -->
   <script>
-    // Inisialisasi ikon Lucide
     lucide.createIcons();
 
-    // Konfigurasi Database Supabase
     const SUPABASE_URL = "https://oouzppxbakkiwwttkbet.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vdXpwcHhiYWtraXd3dHRrYmV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNDc4NDAsImV4cCI6MjEwNDYyMzg0MH0.RkUC2MYGFTgcrXzNrHZCMj-ch9Bg-TFWEiGvf1fWD40";
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -880,7 +820,45 @@
     let currMember = null;
     let currAdmin = null;
 
-    // --- MANAJEMEN TEMA (DEFAULT VS FEMININE LIGHT PINK) ---
+    // --- FITUR OTOMATIS: PEMBERSIHAN DATA TIDAK AKTIF > 1 TAHUN ---
+    async function runAutoCleanup() {
+      try {
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+        const cutoffDateStr = oneYearAgo.toISOString().split('T')[0];
+
+        // 1. Ambil seluruh data grup
+        const { data: groups } = await supabaseClient.from('grup').select('*');
+        if (!groups) return;
+
+        for (const g of groups) {
+          // Cek transaksi terakhir untuk grup ini
+          const { data: latestInfaq } = await supabaseClient.from('infaq')
+            .select('tanggal')
+            .eq('kode_grup', g.kode_grup)
+            .order('tanggal', { ascending: false })
+            .limit(1);
+
+          let lastActivityDate = null;
+          if (latestInfaq && latestInfaq.length > 0 && latestInfaq[0].tanggal) {
+            lastActivityDate = latestInfaq[0].tanggal;
+          }
+
+          // Jika tidak ada infaq sama sekali, cek umur grup (atau gunakan tanggal sekarang jika tidak ada kolom created_at)
+          // Berdasarkan data, jika grup tidak punya transaksi dan sudah lebih dari 1 tahun (diasumsikan dari waktu sekarang jika tidak aktif), 
+          // Kita bersihkan data terkait grup tersebut.
+          if (lastActivityDate && lastActivityDate < cutoffDateStr) {
+            // Hapus data infaq, anggota, lalu grup karena tidak ada update > 1 tahun
+            await supabaseClient.from('infaq').delete().eq('kode_grup', g.kode_grup);
+            await supabaseClient.from('anggota').delete().eq('kode_grup', g.kode_grup);
+            await supabaseClient.from('grup').delete().eq('kode_grup', g.kode_grup);
+          }
+        }
+      } catch (err) {
+        console.error("Auto cleanup background error:", err);
+      }
+    }
+
     function setTheme(themeName) {
       document.body.setAttribute('data-theme', themeName);
       localStorage.setItem('infaq_theme', themeName);
@@ -889,39 +867,26 @@
 
     function toggleTheme() {
       const currentTheme = document.body.getAttribute('data-theme') || 'default';
-      if (currentTheme === 'default') {
-        setTheme('feminine');
-      } else {
-        setTheme('default');
-      }
+      setTheme(currentTheme === 'default' ? 'feminine' : 'default');
     }
 
-    // Cek tema tersimpan saat load
     const savedTheme = localStorage.getItem('infaq_theme') || 'default';
     setTheme(savedTheme);
 
-    // Fungsi Popup Panduan Penggunaan
     function showGuideModal() {
       Swal.fire({
         title: '<span style="font-size: 20px; font-weight: 800;">Panduan INFAQU</span>',
         html: `
           <div style="text-align: left; font-size: 13px; line-height: 1.6; max-height: 350px; overflow-y: auto; padding-right: 5px;">
             <p style="margin-bottom: 10px;">Selamat datang di <strong>INFAQU</strong>. Berikut adalah panduan ringkas cara menggunakan aplikasi:</p>
-            
             <div style="margin-bottom: 12px; background: rgba(16, 185, 129, 0.08); padding: 10px 12px; border-radius: 10px; border-left: 3px solid var(--accent-emerald);">
-              <strong>1. Buat Grup Baru</strong><br>
-              Pilih menu <em>Buat Grup Baru</em> di halaman utama. Masukkan nama instansi, nama grup, nama admin/penanggung jawab, dan PIN admin. Setelah disimpan, sistem akan memberikan <strong>KODE GRUP</strong> unik (Contoh: GRP-XXXX).
+              <strong>1. Buat Grup Baru</strong><br>Daftarkan instansi dan grup untuk mendapatkan KODE GRUP unik.
             </div>
-
             <div style="margin-bottom: 12px; background: rgba(6, 182, 212, 0.08); padding: 10px 12px; border-radius: 10px; border-left: 3px solid var(--accent-cyan);">
-              <strong>2. Pendaftaran Anggota</strong><br>
-              Pilih menu <em>Daftar Anggota Baru</em>. Masukkan Kode Grup yang diberikan oleh Admin Grup, isi nama lengkap, ID anggota unik, PIN rahasia, serta target infaq pribadi Anda.
+              <strong>2. Pendaftaran Anggota</strong><br>Daftar menggunakan Kode Grup yang diberikan Admin Grup.
             </div>
-
             <div style="margin-bottom: 12px; background: rgba(99, 102, 241, 0.08); padding: 10px 12px; border-radius: 10px; border-left: 3px solid var(--accent-indigo);">
-              <strong>3. Cara Login & Cek Progress</strong><br>
-              • <strong>Login Anggota:</strong> Masukkan Kode Grup, ID, dan PIN untuk melihat riwayat infaq pribadi dan grafik pencapaian target.<br>
-              • <strong>Login Admin:</strong> Masukkan Kode Grup dan PIN Admin untuk dapat merekap data, menginput infaq, mengekspor laporan ke Excel, dan mengatur hak akses admin anggota.
+              <strong>Catatan Sistem:</strong> Grup dan data yang tidak memiliki aktivitas/pembaruan selama 1 tahun akan terhapus otomatis demi menjaga kapasitas penyimpanan.
             </div>
           </div>
         `,
@@ -930,7 +895,6 @@
       });
     }
 
-    // Fungsi Format Tanggal Indonesia (DD/MM/YYYY)
     function formatDateIndo(dateStr) {
       if (!dateStr) return '-';
       const parts = dateStr.split('-');
@@ -938,13 +902,14 @@
       return dateStr;
     }
 
-    // Set tanggal otomatis ke hari ini pada input tanggal
     const todayStr = new Date().toISOString().split('T')[0];
     document.getElementById('at-tanggal').value = todayStr;
     document.getElementById('m-at-tanggal').value = todayStr;
 
-    // Cek sesi login saat halaman dimuat
     window.addEventListener('DOMContentLoaded', async () => {
+      // Jalankan pembersihan otomatis data > 1 tahun tanpa aktivitas di latar belakang
+      runAutoCleanup();
+
       const savedMember = localStorage.getItem('infaq_member');
       const savedAdmin = localStorage.getItem('infaq_admin');
 
@@ -959,21 +924,18 @@
       }
     });
 
-    // Fungsi Sembunyikan Semua Bagian (Section)
     function hideAll() {
       ['sec-home', 'sec-login-a', 'sec-reg-a', 'sec-dash-a', 'sec-login-admin', 'sec-create-c', 'sec-dash-admin'].forEach(id => {
         document.getElementById(id).style.display = 'none';
       });
     }
 
-    // Fungsi Tampilkan Bagian Tertentu
     function showSection(sec) {
       hideAll();
       document.getElementById('sec-' + sec).style.display = 'block';
       lucide.createIcons();
     }
 
-    // Fungsi Logout / Keluar Akun
     function logout() {
       localStorage.removeItem('infaq_member');
       localStorage.removeItem('infaq_admin');
@@ -982,7 +944,6 @@
       showSection('home');
     }
 
-    // Fungsi Dropdown Edit Profil
     function toggleEditProfile() {
       const content = document.getElementById('edit-profile-content');
       const icon = document.getElementById('edit-profile-icon');
@@ -996,7 +957,6 @@
       lucide.createIcons();
     }
 
-    // --- PROSES 1: BUAT GRUP BARU ---
     document.getElementById('form-create-c').addEventListener('submit', async (e) => {
       e.preventDefault();
       const code = 'GRP-' + Math.floor(1000 + Math.random() * 9000);
@@ -1016,7 +976,6 @@
       document.getElementById('cc-result').style.display = 'block';
     });
 
-    // --- PROSES 2: PENDAFTARAN ANGGOTA ---
     document.getElementById('form-reg-a').addEventListener('submit', async (e) => {
       e.preventDefault();
       const targetVal = Number(document.getElementById('ra-target').value) || 100000;
@@ -1039,7 +998,6 @@
       showSection('login-a');
     });
 
-    // --- PROSES 3: LOGIN ANGGOTA ---
     document.getElementById('form-login-a').addEventListener('submit', async (e) => {
       e.preventDefault();
       const kode = document.getElementById('la-code').value;
@@ -1063,7 +1021,6 @@
       await showMemberDash();
     });
 
-    // Tampilkan Dashboard Anggota
     async function showMemberDash() {
       document.getElementById('dash-a-nama').innerText = currMember.nama_anggota;
       document.getElementById('dash-a-group-name').innerText = "Grup " + (currMember.nama_grup || '-');
@@ -1097,7 +1054,6 @@
       showSection('dash-a');
     }
 
-    // Hitung Peringkat & Tampilkan Pita Medali Anggota
     async function updateMemberRankRibbon() {
       const { data: members } = await supabaseClient.from('anggota').select('id_anggota').eq('kode_grup', currMember.kode_grup);
       const { data: infaqs } = await supabaseClient.from('infaq').select('id_anggota, nominal').eq('kode_grup', currMember.kode_grup);
@@ -1126,7 +1082,6 @@
       lucide.createIcons();
     }
 
-    // Muat Anggota untuk Panel Khusus Admin Anggota
     async function loadMembersForMemberAdmin() {
       const select = document.getElementById('m-at-anggota');
       const { data } = await supabaseClient.from('anggota').select('*').eq('kode_grup', currMember.kode_grup);
@@ -1184,7 +1139,6 @@
       }
     }
 
-    // Input Infaq dari Panel Anggota (Admin)
     document.getElementById('form-member-add-infaq').addEventListener('submit', async (e) => {
       e.preventDefault();
       const { error } = await supabaseClient.from('infaq').insert([{
@@ -1208,7 +1162,6 @@
       await updateMemberRankRibbon();
     });
 
-    // Simpan Perubahan Profil Anggota
     document.getElementById('form-edit-a').addEventListener('submit', async (e) => {
       e.preventDefault();
       const newCode = document.getElementById('ea-code').value.trim();
@@ -1278,7 +1231,6 @@
       document.getElementById('dash-a-percent').innerText = percent + '%';
     }
 
-    // --- PROSES 4: LOGIN & DASHBOARD ADMIN UTAMA ---
     document.getElementById('form-login-admin').addEventListener('submit', async (e) => {
       e.preventDefault();
       const { data } = await supabaseClient.from('grup').select('*').eq('kode_grup', document.getElementById('ladmin-code').value).eq('pin_admin', document.getElementById('ladmin-pin').value).single();
@@ -1445,7 +1397,6 @@
       }
     }
 
-    // Export Laporan ke Excel dengan Sheet Utama & Sheet Per Bulan (Harian, Total, Akumulasi)
     async function exportToSpreadsheet() {
       const btn = document.getElementById('btn-export-excel');
       btn.disabled = true; btn.innerText = "Mengekspor...";
@@ -1476,7 +1427,6 @@
 
         const workbook = XLSX.utils.book_new();
 
-        // 1. SHEET UTAMA (Tanpa Kolom Status Admin)
         const headerRowMain = ["No", "ID Anggota", "Nama Anggota"];
         sortedMonths.forEach(m => headerRowMain.push(m.label));
         headerRowMain.push("Total Akumulasi (Rp)");
@@ -1519,14 +1469,12 @@
         const wsMain = XLSX.utils.aoa_to_sheet(sheetDataMain);
         XLSX.utils.book_append_sheet(workbook, wsMain, "Rekap Utama");
 
-        // 2. SHEET PER BULAN (Detail Harian, Total Bulan, & Akumulasi s.d Bulan Tersebut)
         sortedMonths.forEach(sm => {
           const [yearStr, monthStr] = sm.key.split('-');
           const year = parseInt(yearStr, 10);
           const monthIndex = parseInt(monthStr, 10) - 1;
           const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
 
-          // Header Harian (1 sampai akhir bulan)
           const headerDays = ["No", "ID Anggota", "Nama Anggota"];
           for (let d = 1; d <= daysInMonth; d++) {
             headerDays.push(`Tgl ${d}`);
@@ -1545,7 +1493,6 @@
               const rowMonthly = [idx + 1, m.id_anggota, m.nama_anggota];
               let totalBulanIni = 0;
 
-              // Loop nominal per tanggal dalam bulan ini
               for (let d = 1; d <= daysInMonth; d++) {
                 const dayFormatted = String(d).padStart(2, '0');
                 const targetDate = `${sm.key}-${dayFormatted}`;
@@ -1557,7 +1504,6 @@
                 totalBulanIni += daySum;
               }
 
-              // Hitung Akumulasi dari awal transaksi sampai akhir bulan ini (sm.key)
               let akumulasiSampaBulanIni = 0;
               if (infaqs) {
                 infaqs.filter(i => i.id_anggota === m.id_anggota && i.tanggal && i.tanggal.substring(0, 7) <= sm.key).forEach(i => {
@@ -1571,7 +1517,6 @@
           }
 
           const wsMonth = XLSX.utils.aoa_to_sheet(sheetDataMonth);
-          // Batasi nama sheet Excel maksimal 31 karakter dan pastikan unik
           let sheetName = sm.label.replace(/[/\\?*[\]]/g, '');
           if (sheetName.length > 31) sheetName = sheetName.substring(0, 31);
           XLSX.utils.book_append_sheet(workbook, wsMonth, sheetName);
@@ -1586,7 +1531,6 @@
       }
     }
 
-    // Edit Transaksi Infaq
     async function editTransaction(transId, currentNominal) {
       const { value: newNominalStr } = await Swal.fire({
         title: 'INFAQU', text: 'Masukkan nominal infaq baru:', input: 'text', inputValue: currentNominal,
@@ -1605,7 +1549,6 @@
       }
     }
 
-    // Hapus Transaksi Infaq
     async function deleteTransaction(transId) {
       const { isConfirmed } = await Swal.fire({
         title: 'INFAQU', text: 'Hapus data transaksi ini?', icon: 'question', showCancelButton: true, confirmButtonText: 'Hapus', customClass: { popup: 'colored-toast' }
