@@ -621,6 +621,12 @@
         </div>
       </div>
 
+      <!-- FITUR BARU: INFAQ ANGGOTA GRUP HARI INI -->
+      <div class="stat-card" style="margin-bottom: 12px; background: rgba(16, 185, 129, 0.08); border-color: var(--accent-emerald);">
+        <span class="stat-label" style="color: var(--accent-emerald);">Infaq Grup Hari Ini</span>
+        <div class="stat-value" style="color: var(--accent-emerald);">Rp <span id="dash-a-today">0</span></div>
+      </div>
+
       <div class="stat-grid">
         <div class="stat-card">
           <span class="stat-label">Total Infaq</span>
@@ -677,6 +683,12 @@
       <div id="member-admin-panel" style="display: none; background: rgba(219, 39, 119, 0.05); border: 1px solid rgba(219, 39, 119, 0.2); padding: 20px; border-radius: 16px; margin-bottom: 16px;">
         <h4 style="margin-bottom: 14px; font-size: 14px; color: var(--accent-emerald);"><i data-lucide="shield-check" size="16"></i> PANEL ADMIN GRUP</h4>
         
+        <!-- FITUR BARU: INFAQ HARI INI DI PANEL ADMIN ANGGOTA -->
+        <div class="stat-card" style="margin-bottom: 12px; background: rgba(0,0,0,0.05);">
+          <span class="stat-label">Infaq Hari Ini</span>
+          <div class="stat-value" style="color: var(--accent-emerald);">Rp <span id="dash-member-admin-today">0</span></div>
+        </div>
+
         <div class="stat-grid" style="margin-bottom: 16px;">
           <div class="stat-card" style="background: rgba(0,0,0,0.05);">
             <span class="stat-label">Infaq Bulan Ini</span>
@@ -743,6 +755,12 @@
           <h3 id="dash-admin-title">Panel Admin</h3>
           <p class="group-title">Instansi <span id="dash-admin-sekolah" style="color: var(--text-main);">-</span> | Kode <span id="dash-admin-code" style="color: var(--accent-emerald);">-</span></p>
         </div>
+      </div>
+
+      <!-- FITUR BARU: INFAQ HARI INI DI PANEL ADMIN UTAMA -->
+      <div class="stat-card" style="margin-bottom: 12px; background: rgba(16, 185, 129, 0.08); border-color: var(--accent-emerald);">
+        <span class="stat-label" style="color: var(--accent-emerald);">Infaq Hari Ini</span>
+        <div class="stat-value" style="color: var(--accent-emerald);">Rp <span id="dash-admin-today">0</span></div>
       </div>
 
       <div class="stat-grid">
@@ -827,12 +845,10 @@
         oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
         const cutoffDateStr = oneYearAgo.toISOString().split('T')[0];
 
-        // 1. Ambil seluruh data grup
         const { data: groups } = await supabaseClient.from('grup').select('*');
         if (!groups) return;
 
         for (const g of groups) {
-          // Cek transaksi terakhir untuk grup ini
           const { data: latestInfaq } = await supabaseClient.from('infaq')
             .select('tanggal')
             .eq('kode_grup', g.kode_grup)
@@ -844,11 +860,7 @@
             lastActivityDate = latestInfaq[0].tanggal;
           }
 
-          // Jika tidak ada infaq sama sekali, cek umur grup (atau gunakan tanggal sekarang jika tidak ada kolom created_at)
-          // Berdasarkan data, jika grup tidak punya transaksi dan sudah lebih dari 1 tahun (diasumsikan dari waktu sekarang jika tidak aktif), 
-          // Kita bersihkan data terkait grup tersebut.
           if (lastActivityDate && lastActivityDate < cutoffDateStr) {
-            // Hapus data infaq, anggota, lalu grup karena tidak ada update > 1 tahun
             await supabaseClient.from('infaq').delete().eq('kode_grup', g.kode_grup);
             await supabaseClient.from('anggota').delete().eq('kode_grup', g.kode_grup);
             await supabaseClient.from('grup').delete().eq('kode_grup', g.kode_grup);
@@ -917,7 +929,6 @@
     document.getElementById('m-at-tanggal').value = todayStr;
 
     window.addEventListener('DOMContentLoaded', async () => {
-      // Jalankan pembersihan otomatis data > 1 tahun tanpa aktivitas di latar belakang
       runAutoCleanup();
 
       const savedMember = localStorage.getItem('infaq_member');
@@ -1106,16 +1117,24 @@
       const { data: infaqs } = await supabaseClient.from('infaq').select('nominal, tanggal').eq('kode_grup', currMember.kode_grup);
       if (!infaqs) return;
       const now = new Date(), currentYear = now.getFullYear(), currentMonth = now.getMonth();
-      let totalMonthly = 0, totalYearly = 0;
+      let totalToday = 0, totalMonthly = 0, totalYearly = 0;
 
       infaqs.forEach(item => {
         if (!item.tanggal) return;
-        const tDate = new Date(item.tanggal), nominal = Number(item.nominal) || 0;
+        const nominal = Number(item.nominal) || 0;
+        
+        if (item.tanggal === todayStr) {
+          totalToday += nominal;
+        }
+
+        const tDate = new Date(item.tanggal);
         if (tDate.getFullYear() === currentYear) {
           totalYearly += nominal;
           if (tDate.getMonth() === currentMonth) totalMonthly += nominal;
         }
       });
+      const todayElem = document.getElementById('dash-member-admin-today');
+      if (todayElem) todayElem.innerText = totalToday.toLocaleString('id-ID');
       document.getElementById('dash-member-admin-monthly').innerText = totalMonthly.toLocaleString('id-ID');
       document.getElementById('dash-member-admin-yearly').innerText = totalYearly.toLocaleString('id-ID');
     }
@@ -1220,6 +1239,19 @@
 
     async function loadMyInfaq() {
       const { data } = await supabaseClient.from('infaq').select('*').eq('kode_grup', currMember.kode_grup).eq('id_anggota', currMember.id_anggota).order('tanggal', { ascending: false }).order('id', { ascending: false });
+      
+      // Ambil seluruh data infaq grup untuk hari ini
+      const { data: todayGroupData } = await supabaseClient.from('infaq')
+        .select('nominal')
+        .eq('kode_grup', currMember.kode_grup)
+        .eq('tanggal', todayStr);
+
+      let totalToday = 0;
+      if (todayGroupData) {
+        todayGroupData.forEach(item => totalToday += Number(item.nominal) || 0);
+      }
+      document.getElementById('dash-a-today').innerText = totalToday.toLocaleString('id-ID');
+
       const tbody = document.getElementById('dash-a-table');
       tbody.innerHTML = '';
       let total = 0;
@@ -1270,16 +1302,23 @@
       const { data: infaqs } = await supabaseClient.from('infaq').select('nominal, tanggal').eq('kode_grup', currAdmin.kode_grup);
       if (!infaqs) return;
       const now = new Date(), currentYear = now.getFullYear(), currentMonth = now.getMonth();
-      let totalMonthly = 0, totalYearly = 0;
+      let totalToday = 0, totalMonthly = 0, totalYearly = 0;
 
       infaqs.forEach(item => {
         if (!item.tanggal) return;
-        const tDate = new Date(item.tanggal), nominal = Number(item.nominal) || 0;
+        const nominal = Number(item.nominal) || 0;
+
+        if (item.tanggal === todayStr) {
+          totalToday += nominal;
+        }
+
+        const tDate = new Date(item.tanggal);
         if (tDate.getFullYear() === currentYear) {
           totalYearly += nominal;
           if (tDate.getMonth() === currentMonth) totalMonthly += nominal;
         }
       });
+      document.getElementById('dash-admin-today').innerText = totalToday.toLocaleString('id-ID');
       document.getElementById('dash-admin-monthly').innerText = totalMonthly.toLocaleString('id-ID');
       document.getElementById('dash-admin-yearly').innerText = totalYearly.toLocaleString('id-ID');
     }
