@@ -506,34 +506,8 @@
   </style>
 
 <!-- Tailwind CSS CDN -->
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-    tailwind.config = {
-        darkMode: 'class',
-        theme: {
-            extend: {
-                colors: {
-                    'neon-cyan': '#00f2fe',
-                    'neon-purple': '#bd00ff',
-                    'neon-pink': '#ff007f',
-                    'neon-green': '#00ff87',
-                }
-            }
-        }
-    }
-</script>
-<!-- Font Awesome Icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- Google Fonts: Inter -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<!-- CSS Custom untuk Glassmorphism -->
 <style>
-    body {
-        font-family: 'Inter', sans-serif;
-        background-color: #030712;
-        color: #f8fafc;
-    }
+    /* Efek Panel Kaca (Glassmorphism) untuk Ikon */
     .glass-panel {
         background: rgba(15, 23, 42, 0.65);
         backdrop-filter: blur(12px);
@@ -542,6 +516,9 @@
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     }
 </style>
+
+<!-- Pastikan juga Font Awesome sudah ada di <head> Anda agar ikon muncul -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
 </head>
 <body data-theme="default">
@@ -1651,8 +1628,9 @@
       }
     }
   </script>
-  <!-- Bagian yang Anda miliki -->
-<div class="w-full max-w-md mx-auto py-4"> <!-- Contoh pembungkus opsional -->
+  <!-- Bagian Bawah Halaman (Social Media & Footer) -->
+<div class="w-full py-6 mt-auto flex flex-col items-center justify-center gap-3">
+    
     <!-- Social Media Icon Bar -->
     <div id="socialMediaRow" class="flex items-center justify-center gap-2.5">
         <a href="https://instagram.com/kurniapedia" target="_blank" class="w-8 h-8 rounded-full glass-panel flex items-center justify-center text-slate-300 hover:text-neon-cyan hover:border-neon-cyan/60 transition-all text-xs">
@@ -1668,11 +1646,12 @@
             <i class="fa-brands fa-whatsapp"></i>
         </a>
     </div>
-</div>
 
-<!-- Footer -->
-<footer class="text-center py-3 text-[11px] text-slate-500">
-    <p>Powered by <span class="text-neon-cyan font-semibold">Kurniapedia</span> &copy; 2026</p>
-</footer>
+    <!-- Footer -->
+    <footer class="text-center text-[11px] text-slate-500">
+        <p>Powered by <span class="text-neon-cyan font-semibold">Kurniapedia</span> &copy; 2026</p>
+    </footer>
+
+</div>
 </body>
 </html>
