@@ -506,9 +506,30 @@
   </style>
 
 <!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    'neon-cyan': '#00f2fe',
+                    'neon-purple': '#bd00ff',
+                    'neon-pink': '#ff007f',
+                    'neon-green': '#00ff87',
+                }
+            }
+        }
+    }
+</script>
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- CSS Custom untuk Glassmorphism -->
 <style>
-    /* Efek Panel Kaca (Glassmorphism) untuk Ikon */
-    .glass-panel {
+   .glass-panel {
         background: rgba(15, 23, 42, 0.65);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
@@ -516,9 +537,6 @@
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     }
 </style>
-
-<!-- Pastikan juga Font Awesome sudah ada di <head> Anda agar ikon muncul -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
 </head>
 <body data-theme="default">
