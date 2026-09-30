@@ -506,12 +506,28 @@
   </style>
 
 <!-- Tailwind CSS CDN -->
-
-<!-- Font Awesome & Google Fonts -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    'neon-cyan': '#00f2fe',
+                    'neon-purple': '#bd00ff',
+                    'neon-pink': '#ff007f',
+                    'neon-green': '#00ff87',
+                }
+            }
+        }
+    }
+</script>
+<!-- Font Awesome Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Google Fonts: Inter -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- CSS Custom khusus untuk Glassmorphism (Tanpa mengatur body secara global) -->
+<!-- CSS Custom untuk Glassmorphism -->
 <style>
     .glass-panel {
         background: rgba(15, 23, 42, 0.65);
